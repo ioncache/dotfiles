@@ -1,0 +1,11 @@
+# files
+*.ksf
+*.komodoproject
+*.deb
+
+# folders
+tmp
+modules_tmp
+.carton
+.komodotools
+ant_package

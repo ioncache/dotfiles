@@ -1,0 +1,48 @@
+[user]
+	name = Mark Jubenville
+	email = ioncache@gmail.com
+[core]
+    editor = vim
+	excludesfile = ~/.gitignore
+[branch]
+	autosetupmerge = true
+[push]
+    default = tracking
+[color]
+    ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[branch "develop"]
+    remote = origin
+    merge = develop
+[diff]
+    tool = vimdiff
+    prompt = false
+[alias]
+    feature = flow feature
+    find = !git ls-files | ack
+    flog = log --stat --abbrev-commit --relative-date --pretty=oneline
+    heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
+    hotfix = flow hotfix
+    ls = ls-files
+    plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    release = flow release
+    slog = log --pretty=format:\"%h %s\" --graph
+    st = status
+    undo = reset --soft HEAD^
+    vim = !sh -c 'vim `git ls-files | ack $0 | head -1`'
+

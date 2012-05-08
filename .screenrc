@@ -1,0 +1,15 @@
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'
+defscrollback 5000
+shell bash
+startup_message off
+autodetach on
+
+#default windows
+screen -t current 0
+screen -t test 1
+screen -t logs 2
+screen -t db 3
+screen -t remote01 4
+screen -t misc02 5
+screen -t misc02 6
