@@ -14,6 +14,10 @@ if [ -d "/usr/local/sbin" ] ; then
     PATH="/usr/local/sbin:$PATH"
 fi
 
+if [ -d "/oanda/system/bin" ] ; then
+    PATH="/oanda/system/bin:$PATH"
+fi
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -128,7 +132,7 @@ fi
 
 # some even more OS specific aliases/otpions
 if [ "$OS" == "Darwin" ]; then
-	alias ll='ls -alhF'
+	alias ll='ls -alhFG'
     alias updatedb='sudo /usr/libexec/locate.updatedb'
 elif [ "$OS" == "SunOS" ] ; then
 	alias top='prstat -s cpu -a -n 8 '
@@ -136,8 +140,13 @@ elif [ "$OS" == "SunOS" ] ; then
     PATH="/usr/ccs/bin/:$PATH"
 fi
 
+# enables grc on OSX
+if [ -f /etc/grc.bashrc ] ; then
+	source "`brew --prefix`/etc/grc.bashrc"
+fi
+
 # enable ack in installed from the ack-grep package
-if [ $(which ack-grep) ] ; then
+if command -v ack-grep >/dev/null 2>&1 ; then
 	alias ack='ack-grep'
 fi
 
@@ -146,6 +155,15 @@ if [ -d "$HOME/perl5/perlbrew" ] && [ ! "$OS" == "SunOS" ] ; then
     source ~/perl5/perlbrew/etc/bashrc
 fi
 
+# use local minicpan for cpanm if it exists
+if [ -d /Users/mjubenville/minicpan ] ; then
+	export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
+fi
+
 if [ -f ~/.git-completion.sh ]; then
 	source ~/.git-completion.sh
+fi
+
+if [ -d  /usr/local/lib/node_modules ] ; then
+	export NODE_PATH='/usr/local/lib/node_modules'
 fi
