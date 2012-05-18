@@ -1,0 +1,48 @@
+===============================================
+ General Information About the Weather Utility
+===============================================
+
+:Copyright: (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+            use, copy, modify, and distribute this software is granted under
+            terms provided in the LICENSE file distributed with this software.
+
+.. contents::
+
+What?
+-----
+This command-line utility is intended to provide quick access to current
+weather conditions and forecasts. Presently, it is capable of returning data
+for localities throughout the USA by retrieving and formatting decoded METARs
+(Meteorological Aerodrome Reports) from NOAA (the USA National Oceanic and
+Atmospheric Administration) and forecasts from NWS (the USA National Weather
+Service). The tool is written to function in the same spirit as other
+command-line informational utilities like cal(1), calendar(1) and dict(1). It
+can retrieve arbitrary weather data via specific command-line switches (station
+ID, city, state), or aliases can be configured system wide and on a per-user
+basis. It can be freely used and redistributed under the terms of a BSD-like
+License.
+
+Why?
+----
+My girlfriend had a long commute to/from work and school, and often wanted to
+check the weather both for home and her office. Unfortunately, starting a Web
+browser, pulling up a weather site, entering multiple ZIP codes and waiting for
+them to load is time-consuming for the marginally-impatient. Since she tended
+to stay logged into a shell server most of the time, I figured I'd install a
+quick command-line tool to retrieve weather info for her commute, but to my
+surprise, a quick search turned up little that met my basic requirements:
+
+ * retrieve current data on-demand
+ * provide both current conditions and short-term forecasts
+ * simple, human-readable output
+ * easy to configure and use
+ * flexible command-line switches and options
+
+Where?
+------
+A tarball for the most recent version of the weather utility can be had here:
+
+ * http://fungi.yuggoth.org/weather/src/
+
+Alternatively, Debian and Ubuntu users can install the weather-util package
+from any mirror.

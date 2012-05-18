@@ -1,0 +1,121 @@
+.TH WEATHERRC 5 "March 15, 2010" "" \" -*- nroff -*-
+\" Copyright (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>.
+\" Permission to use, copy, modify, and distribute this software is
+\" granted under terms provided in the LICENSE file distributed with
+\" this software.
+.SH NAME
+weatherrc \- configuration file format for the
+.BR weather (1)
+utility
+.SH DESCRIPTION
+The weatherrc file format is intended to specify a set of macros
+by which to group a METAR station ID for current conditions data with a
+city/state combination for a forecast, but many of the other
+command\-line options and flags for the weather utility can be specified
+as well. The file is organized as an INI-format config, with the alias
+name in [] brackets and the associated parameter/value pairs on following
+lines. Parameters and their values as separated by = or : characters.
+Multi-word values do not need quoting.
+.SH PARAMETERS
+These parameters are supported...
+.TP
+.B alert
+include local alert notices
+.TP
+.B atypes
+alert notification types to display
+.TP
+.B aurl
+alert URL (including %atype% and %zone%)
+.TP
+.B city
+the city name (ex: Raleigh Durham)
+.TP
+.B conditions
+output current conditions (possible values are False and True or 0 and 1)
+.TP
+.B flines
+maximum number of forecast lines to show (integer value, 0 means unlimited)
+.TP
+.B forecast
+include a local forecast (possible values are False and True or 0 and 1)
+.TP
+.B furl
+forecast URL (ex: http://forecast.org/%st%/%city%.txt)
+.TP
+.B headers
+the conditions headers to display (ex: temperature,wind)
+.TP
+.B id
+the METAR station ID (ex: KRDU)
+.TP
+.B imperial
+filter/convert for US/UK units
+.TP
+.B metric
+filter/convert for metric units
+.TP
+.B murl
+METAR URL (ex: http://metar.org/%id%.txt)
+.TP
+.B quiet
+skip preambles and don't indent (possible values are False and True or 0 and 1)
+.TP
+.B st
+the state abbreviation (ex: NC)
+.TP
+.B verbose
+show full decoded feeds (possible values are False and True or 0 and 1)
+.TP
+.B zones
+alert zones (ex: nc/ncc183,nc/ncz041)
+.SH URL FORMAT
+The placeholders %city% and %st% in the furl URL and %id% in the murl URL
+will be replaced with the city, st and id definitions respectively. If the
+placeholder has all letters lowercased, the replacement will be forced to
+all lowercase. If the placeholder has all letters uppercased, the
+replacement will be forced to all uppercase. If the placeholder has its
+first letter uppercased and the remainder lowercased, then all words in the
+replacement will start with an uppercase letter and the rest will be
+lowercase. If the placeholder has its last letter uppercased and the
+remainder lowercased, then case will be preserved in the replacement. Also,
+after replacement, any spaces in the resulting URL will be converted to
+underscore characters prior to use.
+.SH EXAMPLES
+Following is an example
+.B ~/.weatherrc
+defining the default settings to be used when running the utility with no
+aliases specified, and a couple definitions for aliases named home and
+work...
+.P
+.RS
+[default]
+.br
+City = Asheville
+.br
+Forecast = True
+.br
+ID = KAVL
+.br
+St = NC
+.P
+[home]
+.br
+City = Raleigh Durham
+.br
+ID = KRDU
+.br
+St = NC
+.P
+[work]
+.br
+City = Greensboro
+.br
+ID = KGSO
+.br
+St = NC
+.RE
+.SH SEE ALSO
+.BR weather (1)
+.SH AUTHOR
+Specification and manual written by Jeremy Stanley <fungi@yuggoth.org>.

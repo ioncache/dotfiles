@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+# distributions may wish to edit the above to refer to a specific interpreter
+# path, such as #!/usr/bin/python
+
+# Copyright (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+# use, copy, modify, and distribute this software is granted under terms
+# provided in the LICENSE file distributed with this software.
+
+"""Wrapper utility using the weather.py module."""
+
+# added so distributors can consistently specify a private module location
+private_module_path = None
+if private_module_path:
+   import sys
+   sys.path.insert(1, private_module_path)
+
+import weather
+
+# initialize options and configs
+selections = weather.Selections()
+get = selections.get
+get_bool = selections.get_bool
+
+# this mode just lists the aliases defined in the config
+if get_bool("list"): print weather.list_aliases(selections.config)
+
+# normal operation
+else:
+   output = ""
+   for argument in selections.arguments:
+      if get_bool("conditions", argument) or not (
+         get_bool("alert", argument) or get_bool("forecast", argument)
+      ):
+         partial = weather.get_metar(
+            id=get("id", argument),
+            verbose=get_bool("verbose", argument),
+            quiet=get_bool("quiet", argument),
+            headers=get("headers", argument),
+            murl=get("murl", argument),
+            imperial=get_bool("imperial", argument),
+            metric=get_bool("metric", argument)
+         )
+         if partial: output += partial + "\n"
+      if get_bool("forecast", argument) or not (
+         get_bool("alert", argument) or get_bool("conditions", argument)
+      ):
+         partial = weather.get_forecast(
+            city=get("city", argument),
+            st=get("st", argument),
+            verbose=get_bool("verbose", argument),
+            quiet=get_bool("quiet", argument),
+            flines=get("flines", argument),
+            furl=get("furl", argument),
+            imperial=get_bool("imperial", argument),
+            metric=get_bool("metric", argument)
+         )
+         if partial: output += partial + "\n"
+      if get_bool("alert", argument) or not (
+         get_bool("conditions", argument) or get_bool("forecast", argument)
+      ):
+         alert_text = ""
+         for atype in get("atypes", argument).split(","):
+            for zone in get("zones", argument).split(","):
+               partial = weather.get_alert(
+                  zone=zone,
+                  verbose=get_bool("verbose", argument),
+                  quiet=get_bool("quiet", argument),
+                  atype=atype,
+                  aurl=get("aurl", argument),
+                  imperial=get_bool("imperial", argument),
+                  metric=get_bool("metric", argument)
+               )
+               if partial: alert_text += partial + "\n"
+         if not alert_text: alert_text = "(no current alerts for your zones)\n"
+         output += alert_text
+      output = output.strip()
+      if output: print( output )

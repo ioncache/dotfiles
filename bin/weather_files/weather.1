@@ -1,0 +1,127 @@
+.TH WEATHER 1 "March 15, 2010" "" \" -*- nroff -*-
+\" Copyright (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>.
+\" Permission to use, copy, modify, and distribute this software is
+\" granted under terms provided in the LICENSE file distributed with
+\" this software.
+.SH NAME
+weather \- command\-line tool to obtain weather conditions and forecasts
+.SH SYNOPSIS
+.B weather [ options ] [ alias [ alias [...] ] ]
+.SH DESCRIPTION
+This utility is intended to provide quick access to current weather
+conditions and forecasts. Presently, it is capable of providing data for
+localities throughout the United States of America by retrieving and
+processing METAR data from the National Oceanic and Atmospheric
+Administration and forecasts from the National Weather Service. Behavior
+can be determined by command\-line options and specification of zero or
+more aliases. Aliases are defined in weatherrc files, as a convenient
+means of grouping option combinations together using a short name.
+Specifying multiple aliases on the command line causes the utility to
+output data for each, as if it had been invoked multiple times. If no
+alias is specified, then an alias of "default" is used (assuming it has
+been defined) or the built\-in default values are chosen (if it has not).
+.SH OPTIONS
+A summary of options is included below.
+.TP
+.B \-\-version
+show program's version number and exit
+.TP
+.B \-h, \-\-help
+show a help message and exit
+.TP
+.B \-a, \-\-alert
+include local alert notices
+.TP
+.B \-\-atypes=ATYPES
+alert notification types to display
+.TP
+.B \-\-aurl=AURL
+alert URL (including %atype% and %zone%)
+.TP
+.B \-c CITY, \-\-city=CITY
+the city name (ex: "Raleigh Durham")
+.TP
+.B \-\-flines=FLINES
+maximum number of forecast lines to show
+.TP
+.B \-f, \-\-forecast
+include a local forecast
+.TP
+.B \-\-furl=FURL
+forecast URL (including %city% and %st%)
+.TP
+.B \-\-headers=HEADERS
+the conditions headers to display
+.TP
+.B \-i ID, \-\-id=ID
+the METAR station ID (ex: KRDU)
+.TP
+.B \-\-imperial
+filter/convert for US/UK units
+.TP
+.B \-l, \-\-list
+print a list of configured aliases
+.TP
+.B \-m, \-\-metric
+filter/convert for metric units
+.TP
+.B \-\-murl=MURL
+METAR URL (including %id%)
+.TP
+.B \-n, \-\-no\-conditions
+disable output of current conditions (forces \-f)
+.TP
+.B \-o, \-\-omit\-forecast
+omit the local forecast (cancels \-f)
+.TP
+.B \-\-quiet
+skip preambles and don't indent
+.TP
+.B \-s ST, \-\-st=ST
+the state abbreviation (ex: NC)
+.TP
+.B \-v, \-\-verbose
+show full decoded feeds (cancels \-q)
+.TP
+.B \-z ZONES, \-\-zones=ZONES
+alert zones (ex: nc/ncc183,nc/ncz041)
+.SH FILES
+.B weather
+may additionally obtain configuration data from a system\-wide
+configuration file, a per\-user configuration file, and a local
+directory configuration file. The file format and configuration options
+are described in
+.BR weatherrc (5) .
+They are aggregated in the following order:
+.TP
+.B /etc/weatherrc
+the system\-wide configuration
+.TP
+.B ~/.weatherrc
+the per\-user configuration (can be used to override the above)
+.TP
+.B ./weatherrc
+the local directory configuration (can be used to override the above)
+.SH EXAMPLES
+.TP
+.B weather
+View output for the defined default alias, or the built-in default values
+if there is no default alias defined in the configuration files.
+.TP
+.B weather -i kavl
+Display current conditions at the KAVL METAR station.
+.TP
+.B weather -n -c asheville -s nc
+See a forecast for the Asheville, NC area.
+.TP
+.B weather -fv gso
+Get the full decoded METAR for the station associated with the gso alias,
+and the forecast data for the city/state associated with the gso alias,
+without filtering or fancy formatting.
+.TP
+.B weather home work
+Show current conditions for both the home and work aliases in that order.
+.SH SEE ALSO
+.BR weatherrc (5)
+.SH AUTHOR
+Utility and manual written by Jeremy Stanley <fungi@yuggoth.org>.

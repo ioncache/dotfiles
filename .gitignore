@@ -2,6 +2,8 @@
 *.ksf
 *.komodoproject
 *.deb
+*.swp
+*.tmp
 
 # folders
 tmp

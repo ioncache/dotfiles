@@ -1,0 +1,124 @@
+2010-03-19 13:30:22 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* (all): Updated copyright notices for 2010.
+
+	* FAQ, INSTALL, LICENSE, README: Reformatted as ReStructuredText.
+
+	* FAQ: Updated to mention alternative sources for NOAA's stations
+	list, in case the recommended one is unavailable (thanks Celejar!).
+
+	* NEWS: Renamed to ChangeLog and refactored into GNU format.
+	
+	* weather: Added some comment padding between the shebang line and
+	the copyright, so that distributions wishing to carry patches which
+	modify the interpreter path don't have to refresh them every year
+	when the copyright line changes in their context.
+
+	* weather, weather.1, weatherrc.5, weather.py: Added experimental
+	alert, atypes, aurl and zones options to support retrieval,
+	filtering and formatting of unexpired NWS severe weather advisories.
+
+	* weather.1, weatherrc.5: Minor cosmetic fixes to option
+	descriptions.
+
+	* weather.1, weatherrc.5, weather.py: Added imperial and metric
+	options to filter/convert display units (thanks to Andrew Carter for
+	this suggestion!).
+
+	* weather.py: Fixed a METAR parsing error which would trigger an
+	IndexError exception if the NWS didn't have a station description on
+	file (thanks to Celejar for reporting the bug!). Fixed METAR title
+	line parsing to look for human-readable city and state in the first
+	line--previous code stopped showing the city name after NWS made
+	slight format mods. Upped the version to 1.5.
+
+	* weatherrc: Additional PIE (Saint Petersburg, FL), PNC (Ponca City,
+	OK), and PNS (Pensacola, FL) aliases.
+
+2008-07-13 07:49:02 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* (all): Updated the copyright years for 2008 on some of the files
+	in the current release and added a copyright statement to any files
+	previously lacking one.
+
+	* LICENSE: Replaced the previous BSD-like license with the one used
+	by the OpenBSD project (modeled after the Internet Software
+	Consortium's, a two-clause BSD license removing language made
+	unnecessary by the Berne convention); this new license is
+	functionally identical to the old one, just more terse and openly
+	recognized.
+
+	* weather: Clarified function parameters in calls from the wrapper
+	script to ease future ABI changes in the underlying module.
+
+	* weather, weather.py: Some extra comments were added to the source,
+	indentation style was updated from tab characters to three-space,
+	and lines longer than 79 columns were refactored or otherwise split.
+
+	* weather.1, weather.5, weather.py: Added an flines option to allow
+	the maximum number of forecast output lines to be shortened. Added
+	furl and murl options to allow overriding of the default current
+	conditions and forecast data retrieval URLs. Added a headers option
+	to allow overriding the default list of header names for current
+	conditions data filtering. Added a quiet option to suppress the
+	preamble lines and indentation for both current conditions and
+	forecast output.
+
+	* weather.py: Replaced the hardcoded fallback default METAR station
+	ID and forecast city/state abbreviation with error messages to
+	minimize confusion when necessary values are omitted. Adjusted a
+	couple of hard-coded error message strings to be consistent with the
+	output format of the option_parser module. Switched from urllib to
+	urllib2 for retrieving data, providing a simpler means to detect and
+	report retrieval errors. Upped the version to 1.4.
+
+2006-07-25 23:00:47 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* FAQ: Update to clarify that specifying an id won't automatically
+	provide a city and st to get the accompanying forecast.
+
+	* weather: Provided a consistent means for relocating weather.py to
+	a private location; thanks to Mark Tran for pointing out a conflict
+	with pyweather in ArchLinux (and presumably other distros as well).
+
+	* weather.py: Upped the version to 1.3.
+
+2006-06-30 17:42:14 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* FAQ, README: Updated for inclsuion of weather-util in Debian.
+
+	* weather.py: Upped the version to 1.2.
+
+	* weatherrc: Added more default aliases PAO and SJC (requested by
+	Russ Allbery).
+
+2006-04-18 04:33:21 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* weather: Switched to "#!/usr/bin/env python" instead for
+	portability.
+
+	* weather.1, weather.5, weather.py: Implemented the --omit-forecast
+	option to cancel --forecast.
+
+	* weather.py: Calling with undefined aliases now throws an error and
+	exits. Aliases, options and default overrides operate more
+	logically. Upped the version to 1.1.
+
+	* weatherrc: Added 214 standard aliases.
+
+2006-03-26 17:08:52 UTC  Jeremy Stanley  <fungi@yuggoth.org>
+
+	* Initial release 1.0.
+
+Copyright (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+use, copy, modify, and distribute this software is granted under terms
+provided in the LICENSE file distributed with this software.
+
+
+Local Variables:
+mode: change-log
+coding: utf-8
+left-margin: 8
+fill-column: 76
+version-control: never
+End:

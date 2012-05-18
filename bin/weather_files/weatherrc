@@ -1,0 +1,1114 @@
+# Copyright (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+# use, copy, modify, and distribute this software is granted under terms
+# provided in the LICENSE file distributed with this software.
+
+[ABE]
+City = Allentown
+ID = KABE
+St = PA
+
+[ABI]
+City = Abilene
+ID = KABI
+St = TX
+
+[ABQ]
+City = Albuquerque
+ID = KABQ
+St = NM
+
+[ABR]
+City = Aberdeen
+ID = KABR
+St = SD
+
+[ABY]
+City = Albany
+ID = KABY
+St = GA
+
+[ACT]
+City = Waco
+ID = KACT
+St = TX
+
+[ACY]
+City = Atlantic City
+ID = KACY
+St = NJ
+
+[AED]
+City = Anchorage
+ID = PAED
+St = AK
+
+[AEI]
+City = Fairbanks
+ID = PAEI
+St = AK
+
+[AFA]
+City = Fairbanks
+ID = PAFA
+St = AK
+
+[AGS]
+City = Augusta
+ID = KAGS
+St = GA
+
+[AHN]
+City = Athens
+ID = KAHN
+St = GA
+
+[AJN]
+City = Juneau
+ID = PAJN
+St = AK
+
+[AKT]
+City = Ketchikan
+ID = PAKT
+St = AK
+
+[ALB]
+City = Albany
+ID = KALB
+St = NY
+
+[ALO]
+City = Waterloo
+ID = KALO
+St = IA
+
+[ALS]
+City = Alamosa
+ID = KALS
+St = CO
+
+[AMA]
+City = Amarillo
+ID = KAMA
+St = TX
+
+[ANC]
+City = Anchorage
+ID = PANC
+St = AK
+
+[AOM]
+City = Nome
+ID = PAOM
+St = AK
+
+[APN]
+City = Alpena
+ID = KAPN
+St = MI
+
+[ASI]
+City = Sitka
+ID = PASI
+St = AK
+
+[AST]
+City = Astoria
+ID = KAST
+St = OR
+
+[ATL]
+City = Atlanta
+ID = KATL
+St = GA
+
+[AVL]
+City = Asheville
+ID = KAVL
+St = NC
+
+[AYA]
+City = Yakutat
+ID = PAYA
+St = AK
+
+[BDL]
+City = Windsor Locks
+ID = KBDL
+St = CT
+
+[BDR]
+City = Bridgeport
+ID = KBDR
+St = CT
+
+[BFF]
+City = Scottsbluff
+ID = KBFF
+St = NE
+
+[BFL]
+City = Bakersfield
+ID = KBFL
+St = CA
+
+[BGM]
+City = Binghamton
+ID = KBGM
+St = NY
+
+[BHM]
+City = Birmingham
+ID = KBHM
+St = AL
+
+[BIH]
+City = Bishop
+ID = KBIH
+St = CA
+
+[BIL]
+City = Billings
+ID = KBIL
+St = MT
+
+[BIS]
+City = Bismarck
+ID = KBIS
+St = ND
+
+[BJI]
+City = Bemidji
+ID = KBJI
+St = MN
+
+[BJN]
+City = Las Vegas
+ID = KBJN
+St = NV
+
+[BKW]
+City = Beckley
+ID = KBKW
+St = WV
+
+[BML]
+City = Berlin
+ID = KBML
+St = NH
+
+[BNA]
+City = Nashville
+ID = KBNA
+St = TN
+
+[BNO]
+City = Burns
+ID = KBNO
+St = OR
+
+[BOI]
+City = Boise
+ID = KBOI
+St = ID
+
+[BOS]
+City = Boston
+ID = KBOS
+St = MA
+
+[BRO]
+City = Brownsville
+ID = KBRO
+St = TX
+
+[BTV]
+City = Burlington
+ID = KBTV
+St = VT
+
+[BUF]
+City = Buffalo
+ID = KBUF
+St = NY
+
+[CAE]
+City = Columbia
+ID = KCAE
+St = SC
+
+[CAK]
+City = Akron
+ID = KCAK
+St = OH
+
+[CAR]
+City = Caribou
+ID = KCAR
+St = ME
+
+[CHA]
+City = Chattanooga
+ID = KCHA
+St = TN
+
+[CHS]
+City = Charleston
+ID = KCHS
+St = SC
+
+[CLE]
+City = Cleveland
+ID = KCLE
+St = OH
+
+[CLT]
+City = Charlotte
+ID = KCLT
+St = NC
+
+[CMH]
+City = Columbus
+ID = KCMH
+St = OH
+
+[CMX]
+City = Hancock
+ID = KCMX
+St = MI
+
+[CNK]
+City = Concordia
+ID = KCNK
+St = KS
+
+[COD]
+City = Cody
+ID = KCOD
+St = WY
+
+[CON]
+City = Concord
+ID = KCON
+St = NH
+
+[COS]
+City = Colorado Springs
+ID = KCOS
+St = CO
+
+[COU]
+City = Columbia
+ID = KCOU
+St = MO
+
+[CPR]
+City = Casper
+ID = KCPR
+St = WY
+
+[CRP]
+City = Corpus Christi
+ID = KCRP
+St = TX
+
+[CRW]
+City = Charleston
+ID = KCRW
+St = WV
+
+[CTY]
+City = Cross City
+ID = KCTY
+St = FL
+
+[CYS]
+City = Cheyenne
+ID = KCYS
+St = WY
+
+[DAY]
+City = Dayton
+ID = KDAY
+St = OH
+
+[DBQ]
+City = Dubuque
+ID = KDBQ
+St = IA
+
+[DDC]
+City = Dodge City
+ID = KDDC
+St = KS
+
+[DEN]
+City = Denver
+ID = KDEN
+St = CO
+
+[DGW]
+City = Douglas
+ID = KDGW
+St = WY
+
+[DLH]
+City = Duluth
+ID = KDLH
+St = MN
+
+[DRT]
+City = Del Rio
+ID = KDRT
+St = TX
+
+[DSM]
+City = Des Moines
+ID = KDSM
+St = IA
+
+[DTW]
+City = Detroit
+ID = KDTW
+St = MI
+
+[EKN]
+City = Elkins
+ID = KEKN
+St = WV
+
+[ELP]
+City = El Paso
+ID = KELP
+St = TX
+
+[ELY]
+City = Ely
+ID = KELY
+St = NV
+
+[ERI]
+City = Erie
+ID = KERI
+St = PA
+
+[ESC]
+City = Escanaba
+ID = KESC
+St = MI
+
+[EUG]
+City = Eugene
+ID = KEUG
+St = OR
+
+[EVV]
+City = Evansville
+ID = KEVV
+St = IN
+
+[EWR]
+City = Newark
+ID = KEWR
+St = NJ
+
+[EYW]
+City = Key West
+ID = KEYW
+St = FL
+
+[FAR]
+City = Fargo
+ID = KFAR
+St = ND
+
+[FAT]
+City = Fresno
+ID = KFAT
+St = CA
+
+[FNT]
+City = Flint
+ID = KFNT
+St = MI
+
+[FOD]
+City = Fort Dodge
+ID = KFOD
+St = IA
+
+[FSD]
+City = Sioux Falls
+ID = KFSD
+St = SD
+
+[FSM]
+City = Fort Smith
+ID = KFSM
+St = AR
+
+[FWA]
+City = Fort Wayne
+ID = KFWA
+St = IN
+
+[GCC]
+City = Gillette
+ID = KGCC
+St = WY
+
+[GEG]
+City = Spokane
+ID = KGEG
+St = WA
+
+[GGG]
+City = Longview
+ID = KGGG
+St = TX
+
+[GJT]
+City = Grand Junction
+ID = KGJT
+St = CO
+
+[GLD]
+City = Goodland
+ID = KGLD
+St = KS
+
+[GLS]
+City = Galveston
+ID = KGLS
+St = TX
+
+[GPI]
+City = Kalispell
+ID = KGPI
+St = MT
+
+[GRB]
+City = Green Bay
+ID = KGRB
+St = WI
+
+[GRI]
+City = Grand Island
+ID = KGRI
+St = NE
+
+[GRR]
+City = Grand Rapids
+ID = KGRR
+St = MI
+
+[GSO]
+City = Greensboro
+ID = KGSO
+St = NC
+
+[GTF]
+City = Great Falls
+ID = KGTF
+St = MT
+
+[HLN]
+City = Helena
+ID = KHLN
+St = MT
+
+[HNL]
+City = Honolulu
+ID = PHNL
+St = HI
+
+[HON]
+City = Huron
+ID = KHON
+St = SD
+
+[HSV]
+City = Huntsville
+ID = KHSV
+St = AL
+
+[HTS]
+City = Huntington
+ID = KHTS
+St = WV
+
+[HVR]
+City = Havre
+ID = KHVR
+St = MT
+
+[IAH]
+City = Houston
+ID = KIAH
+St = TX
+
+[ICT]
+City = Wichita
+ID = KICT
+St = KS
+
+[IGM]
+City = Kingman
+ID = KIGM
+St = AZ
+
+[IND]
+City = Indianapolis
+ID = KIND
+St = IN
+
+[INL]
+City = International Falls
+ID = KINL
+St = MN
+
+[INW]
+City = Winslow
+ID = KINW
+St = AZ
+
+[IPT]
+City = Williamsport
+ID = KIPT
+St = PA
+
+[ISN]
+City = Williston
+ID = KISN
+St = ND
+
+[JAN]
+City = Jackson
+ID = KJAN
+St = MS
+
+[JAX]
+City = Jacksonville
+ID = KJAX
+St = FL
+
+[JCT]
+City = Junction
+ID = KJCT
+St = TX
+
+[JFK]
+City = New York
+ID = KJFK
+St = NY
+
+[LAN]
+City = Lansing
+ID = KLAN
+St = MI
+
+[LAS]
+City = Las Vegas
+ID = KLAS
+St = NV
+
+[LBB]
+City = Lubbock
+ID = KLBB
+St = TX
+
+[LBF]
+City = North Platte
+ID = KLBF
+St = NE
+
+[LCH]
+City = Lake Charles
+ID = KLCH
+St = LA
+
+[LEX]
+City = Lexington
+ID = KLEX
+St = KY
+
+[LGA]
+City = New York
+ID = KLGA
+St = NY
+
+[LND]
+City = Lander
+ID = KLND
+St = WY
+
+[LNK]
+City = Lincoln
+ID = KLNK
+St = NE
+
+[LRD]
+City = Laredo
+ID = KLRD
+St = TX
+
+[LSE]
+City = La Crosse
+ID = KLSE
+St = WI
+
+[LYH]
+City = Lynchburg
+ID = KLYH
+St = VA
+
+[MAF]
+City = Midland
+ID = KMAF
+St = TX
+
+[MCI]
+City = Kansas City
+ID = KMCI
+St = MO
+
+[MCN]
+City = Macon
+ID = KMCN
+St = GA
+
+[MCO]
+City = Orlando
+ID = KMCO
+St = FL
+
+[MDW]
+City = Chicago
+ID = KMDW
+St = IL
+
+[MEI]
+City = Meridian
+ID = KMEI
+St = MS
+
+[MEM]
+City = Memphis
+ID = KMEM
+St = TN
+
+[MFR]
+City = Medford
+ID = KMFR
+St = OR
+
+[MGM]
+City = Montgomery
+ID = KMGM
+St = AL
+
+[MIA]
+City = Miami
+ID = KMIA
+St = FL
+
+[MKE]
+City = Milwaukee
+ID = KMKE
+St = WI
+
+[MKG]
+City = Muskegon
+ID = KMKG
+St = MI
+
+[MLB]
+City = Melbourne
+ID = KMLB
+St = FL
+
+[MLI]
+City = Moline
+ID = KMLI
+St = IL
+
+[MLS]
+City = Miles City
+ID = KMLS
+St = MT
+
+[MOB]
+City = Mobile
+ID = KMOB
+St = AL
+
+[MQT]
+City = Marquette
+ID = KMQT
+St = MI
+
+[MRF]
+City = Marfa
+ID = KMRF
+St = TX
+
+[MSN]
+City = Madison
+ID = KMSN
+St = WI
+
+[MSO]
+City = Missoula
+ID = KMSO
+St = MT
+
+[MSP]
+City = Minneapolis
+ID = KMSP
+St = MN
+
+[MSY]
+City = New Orleans
+ID = KMSY
+St = LA
+
+[NKX]
+City = San Diego
+ID = KNKX
+St = CA
+
+[OKC]
+City = Oklahoma City
+ID = KOKC
+St = OK
+
+[OMA]
+City = Omaha
+ID = KOMA
+St = NE
+
+[ORD]
+City = Chicago
+ID = KORD
+St = IL
+
+[PAH]
+City = Paducah
+ID = KPAH
+St = KY
+
+[PAO]
+City = San Francisco
+ID = KPAO
+St = CA
+
+[PBI]
+City = West Palm Beach
+ID = KPBI
+St = FL
+
+[PDT]
+City = Pendleton
+ID = KPDT
+St = OR
+
+[PDX]
+City = Portland
+ID = KPDX
+St = OR
+
+[PGA]
+City = Page
+ID = KPGA
+St = AZ
+
+[PHL]
+City = Philadelphia
+ID = KPHL
+St = PA
+
+[PHX]
+City = Phoenix
+ID = KPHX
+St = AZ
+
+[PIA]
+City = Peoria
+ID = KPIA
+St = IL
+
+[PIE]
+City = Saint Petersburg
+ID = KPIE
+St = FL
+
+[PIH]
+City = Pocatello
+ID = KPIH
+St = ID
+
+[PIT]
+City = Pittsburgh
+ID = KPIT
+St = PA
+
+[PNC]
+City = Ponca City
+ID = KPNC
+St = OK
+
+[PNS]
+City = Pensacola
+ID = KPNS
+St = FL
+
+[PQI]
+City = Presque Isle
+ID = KPQI
+St = ME
+
+[PUB]
+City = Pueblo
+ID = KPUB
+St = CO
+
+[PVD]
+City = Providence
+ID = KPVD
+St = RI
+
+[PWM]
+City = Portland
+ID = KPWM
+St = ME
+
+[RAP]
+City = Rapid City
+ID = KRAP
+St = SD
+
+[RBL]
+City = Red Bluff
+ID = KRBL
+St = CA
+
+[RDU]
+City = Raleigh Durham
+ID = KRDU
+St = NC
+
+[RFD]
+City = Rockford
+ID = KRFD
+St = IL
+
+[RIC]
+City = Richmond
+ID = KRIC
+St = VA
+
+[RIW]
+City = Riverton
+ID = KRIW
+St = WY
+
+[RKS]
+City = Rock Springs
+ID = KRKS
+St = WY
+
+[RMG]
+City = Rome
+ID = KRMG
+St = GA
+
+[RNO]
+City = Reno
+ID = KRNO
+St = NV
+
+[ROC]
+City = Rochester
+ID = KROC
+St = NY
+
+[RST]
+City = Rochester
+ID = KRST
+St = MN
+
+[RUE]
+City = Russellville
+ID = KRUE
+St = AR
+
+[SAC]
+City = Sacramento
+ID = KSAC
+St = CA
+
+[SAN]
+City = San Diego
+ID = KSAN
+St = CA
+
+[SAT]
+City = San Antonio
+ID = KSAT
+St = TX
+
+[SAV]
+City = Savannah
+ID = KSAV
+St = GA
+
+[SBN]
+City = South Bend
+ID = KSBN
+St = IN
+
+[SDF]
+City = Louisville
+ID = KSDF
+St = KY
+
+[SEA]
+City = Seattle
+ID = KSEA
+St = WA
+
+[SFO]
+City = San Francisco
+ID = KSFO
+St = CA
+
+[SGF]
+City = Springfield
+ID = KSGF
+St = MO
+
+[SHR]
+City = Sheridan
+ID = KSHR
+St = WY
+
+[SHV]
+City = Shreveport
+ID = KSHV
+St = LA
+
+[SJC]
+City = San Jose
+ID = KSJC
+St = CA
+
+[SJT]
+City = San Angelo
+ID = KSJT
+St = TX
+
+[SLC]
+City = Salt Lake City
+ID = KSLC
+St = UT
+
+[SLE]
+City = Salem
+ID = KSLE
+St = OR
+
+[SLO]
+City = Salem
+ID = KSLO
+St = IL
+
+[SNY]
+City = Sidney
+ID = KSNY
+St = NE
+
+[SPS]
+City = Wichita Falls
+ID = KSPS
+St = TX
+
+[SUX]
+City = Sioux City
+ID = KSUX
+St = IA
+
+[SYR]
+City = Syracuse
+ID = KSYR
+St = NY
+
+[TLH]
+City = Tallahassee
+ID = KTLH
+St = FL
+
+[TOL]
+City = Toledo
+ID = KTOL
+St = OH
+
+[TOP]
+City = Topeka
+ID = KTOP
+St = KS
+
+[TPA]
+City = Tampa
+ID = KTPA
+St = FL
+
+[TUL]
+City = Tulsa
+ID = KTUL
+St = OK
+
+[TUP]
+City = Tupelo
+ID = KTUP
+St = MS
+
+[TUS]
+City = Tucson
+ID = KTUS
+St = AZ
+
+[TYS]
+City = Knoxville
+ID = KTYS
+St = TN
+
+[VCT]
+City = Victoria
+ID = KVCT
+St = TX
+
+[VTN]
+City = Valentine
+ID = KVTN
+St = NE
+
+[WMC]
+City = Winnemucca
+ID = KWMC
+St = NV
+
+[WWR]
+City = Woodward
+ID = KWWR
+St = OK
+
+[YKM]
+City = Yakima
+ID = KYKM
+St = WA
+
+[YNG]
+City = Youngstown
+ID = KYNG
+St = OH
+

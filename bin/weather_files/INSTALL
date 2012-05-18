@@ -1,0 +1,56 @@
+==============================================================
+ Basic Unix Installation Instructions for the Weather Utility
+==============================================================
+
+:Copyright: (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+            use, copy, modify, and distribute this software is granted under
+            terms provided in the LICENSE file distributed with this software.
+
+.. contents::
+
+Prerequisites
+-------------
+You need the Python interpreter installed somewhere in your path (most modern
+UNIX derivatives come with one already). If you need to get Python, it can be
+obtained from http://www.python.org/ (but chances are your operating system at
+least provides some sort of native package for it, which you should probably
+install in whatever means is recommended by your OS vendor/distributor).
+
+Running in Place
+----------------
+An easy way to try it out is to unpack the tarball and change to the resulting
+directory::
+
+   tar xzf weather-*.tar.gz
+   cd weather-*
+   ./weather --version
+   ./weather --help
+   man ./weather.1
+   man ./weatherrc.5
+   ./weather --forecast --no-conditions --city=charlotte --st=nc
+   ./weather ord sea
+
+...and so on. The weather utility, included Python module and documentation are
+all fully functional when kept together in one directory, if somewhat
+inconvenient.
+
+Installing the Utility
+----------------------
+The file named weather should be made executable and put somewhere in your path
+(/usr/local/bin/ or ~/bin/ for example). Similarly, weather.py needs to be
+somewhere in Python's include path. You can see your Python interpreter's
+default include path by running::
+
+   python -c "import sys ; print sys.path"
+
+Configuration
+-------------
+The weatherrc file should go in /etc/ or you can save it in your home directory
+as a dotfile (~/.weatherrc) to support user-specific alias configuration and
+overrides of the global /etc/weatherrc file.
+
+Manuals
+-------
+Optionally, the weather.1 and weatherrc.5 files can be placed in sane locations
+for TROFF/NROFF manual files on your system (for example, /usr/local/share/man/
+or ~/man/).

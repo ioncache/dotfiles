@@ -1,0 +1,68 @@
+======================================================
+ Frequently Asked Questions About the Weather Utility
+======================================================
+
+:Copyright: (c) 2006-2010 Jeremy Stanley <fungi@yuggoth.org>. Permission to
+            use, copy, modify, and distribute this software is granted under
+            terms provided in the LICENSE file distributed with this software.
+
+.. contents::
+
+1. Can I help?
+--------------
+Sure! Bug reports and feature suggestions are always welcome, but fixes and
+patches are of course preferred. Contact fungi@yuggoth.org if desired, but
+please read this FAQ and the included manuals for weather(1) and weatherrc(5)
+before asking questions that might be answered therein. One big way anyone can
+help is to provide me with some additional mappings of METAR station ID, city
+name and state abbreviation for inclusion in the default /etc/weatherrc file.
+
+2. How do I figure out my local METAR station ID?
+-------------------------------------------------
+The list of stations is found at http://weather.noaa.gov/data/nsd_cccc.gz (it's
+thousands of lines long, so I recommend keyword searching in your browser or
+using grep(1) to find what you're looking for). From time to time, the
+compression on their site seems to be failing, resulting in zero-byte files. If
+you run into this issue, you can get uncompressed and zip-compressed versions
+by replacing the "gz" suffix in the URL with "txt" or "zip" respectively. The
+list can also be obtained from the following URLs in a pinch, though they are
+not guaranteed to be up to date (thanks Celejar!):
+
+ * http://www.rap.ucar.edu/weather/surface/stations.txt
+ * http://aviationweather.gov/adds/metars/stations.txt
+
+3. How do I figure out my local city name and state abbreviation?
+-----------------------------------------------------------------
+The forecasts can be located starting from
+http://weather.noaa.gov/pub/data/forecasts/city/ (choose the state abbreviation
+to get to a list of cities in that state).
+
+4. I live outside the USA--can this be made to work for me anyway?
+------------------------------------------------------------------
+METAR station IDs can be found for cities and airports worldwide, but forecast
+data is harder to come by. If you have any recommendations of forecast data for
+other countries available in a format like NOAA's, I will be happy to try and
+find a way to integrate it into the weather utility, but I suspect that some
+serious modification would be necessary given that the data is likely to be
+published in a non-English language, requiring some additional input from
+speakers of that language for how to handle filtering and formatting of the
+text.
+
+5. Why do I get the wrong forecast when specifying -i or --id?
+--------------------------------------------------------------
+The -i or --id switch (or the id parameter in an alias definition), only tells
+weather(1) what current conditions to retrieve. If you specify -f or --forecast
+on the command line (or forecast=True in an alias) without providing a city
+name and state abbreviation (-c/--city and -s/--st, or city and st in an alias)
+and are seeing an actual forecast, then you probably have a default city and
+state abbreviation set in your config. See question 3 above for information on
+figuring out what city name and state abbreviation to use, and the manual for
+weatherrc(5) for information on defining aliases.
+
+6. Where can I get a list of the NWS advisory zones for alerts?
+---------------------------------------------------------------
+The lists of advisory zones by region are found aggregated at
+http://weather.noaa.gov/pub/data/zonecatalog.curr.tar (it's several thousand
+files totalling well over a hundred thousand lines of text, so I recommend
+downloading, unpacking and using a recursive grep(1) to find what you're
+looking for).
