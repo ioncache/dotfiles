@@ -1,0 +1,9 @@
+#!/usr/bin/env perl
+
+use Modern::Perl;
+use Crypt::XkcdPassword;
+
+say Crypt::XkcdPassword->make_password;
+
+1;
+
