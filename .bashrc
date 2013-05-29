@@ -2,6 +2,18 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+if [ -d "/usr/sbin" ] ; then
+    PATH="/usr/sbin:$PATH"    
+fi
+
+if [ -d "/usr/local/sbin" ] ; then
+    PATH="/usr/local/sbin:$PATH"
+fi
+
+if [ -d "/sbin" ] ; then
+    PATH="/sbin:$PATH"	
+fi
+
 if [ -d "/usr/local/mysql/bin/" ] ; then
     PATH="/usr/local/mysql/bin/:$PATH"
 fi
@@ -10,12 +22,20 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-if [ -d "/usr/local/sbin" ] ; then
-    PATH="/usr/local/sbin:$PATH"
-fi
-
 if [ -d "/oanda/system/bin" ] ; then
     PATH="/oanda/system/bin:$PATH"
+fi
+
+if [ -d "/oanda/system/sbin" ] ; then
+    PATH="/oanda/system/sbin:$PATH"	
+fi
+
+if [ -d /var/lib/gems/1.8/bin/ ] ; then
+    PATH="/var/lib/gems/1.8/bin/:$PATH"
+fi
+
+if [ -d "/opt/csw/bin" ] ; then
+    PATH="/opt/csw/bin:$PATH"
 fi
 
 # If not running interactively, don't do anything
@@ -127,7 +147,7 @@ if [ "$OS" == "Darwin" ]; then
 	export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
 else
 	alias ll='ls -alhF --color --group-directories-first'
-	alias ko='~/Applications/Komodo-IDE-7/bin/komodo'
+	alias ko='~/Applications/Komodo-IDE-8/bin/komodo'
 fi
 
 # some even more OS specific aliases/otpions
@@ -145,7 +165,7 @@ if [ -f /etc/grc.bashrc ] ; then
 	source "`brew --prefix`/etc/grc.bashrc"
 fi
 
-# enable ack in installed from the ack-grep package
+# enable ack if installed from the ack-grep package
 if command -v ack-grep >/dev/null 2>&1 ; then
 	alias ack='ack-grep'
 fi
