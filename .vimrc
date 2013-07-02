@@ -7,12 +7,13 @@ call pathogen#infect()
 " Bundle: git://github.com/ervandew/supertab.git
 " Bundle: git://github.com/henrik/vim-indexed-search.git
 " Bundle: git://github.com/Lokaltog/vim-powerline
+" Bundle: git://github.com/petdance/vim-perl.git
 " Bundle: git://github.com/scrooloose/nerdcommenter.git
 " Bundle: git://github.com/scrooloose/nerdtree.git
-" Bundle: git://github.com/tpope/vim-surround.git
 " Bundle: git://github.com/scrooloose/syntastic.git
 " Bundle: git://github.com/tpope/vim-fugitive.git
 " Bundle: git://github.com/tpope/vim-git.git
+" Bundle: git://github.com/tpope/vim-surround.git
 " Bundle: git://github.com/vim-scripts/closetag.vim.git
 " Bundle: git://github.com/vim-scripts/ctrlp.vim.git
 " Bundle: git://github.com/vim-scripts/perl-support.vim.git

@@ -1,18 +1,16 @@
 [user]
-	name = Mark Jubenville
-	email = ioncache@gmail.com
+    name = Mark Jubenville
+    email = ioncache@gmail.com
 [core]
     editor = vim
-	excludesfile = ~/.gitignore
+    excludesfile = ~/.gitignore
 [branch]
-	autosetupmerge = true
-[push]
-    default = tracking
+    autosetupmerge = true
 [color]
     ui = auto
-	diff = auto
-	status = auto
-	branch = auto
+    diff = auto
+    status = auto
+    branch = auto
 [color "branch"]
     current = yellow reverse
     local = yellow
@@ -33,17 +31,33 @@
     tool = vimdiff
     prompt = false
 [alias]
+    branches = !legit branches
     clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    diff2 = diff --word-diff
+    dl = "!git ll -1"
+    dlc = diff --cached HEAD^
     feature = flow feature
-    find = !git ls-files | ack
+    find = !git ls-files | ack -i
+    fl = log -u
     flog = log --stat --abbrev-commit --relative-date --pretty=oneline
+    graft = !legit graft \"$@\"
+    harvest = !legit harvest \"$@\"
     heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
     hotfix = flow hotfix
+    ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+    lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    le = log --oneline --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     ls = ls-files
     plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    publish = !legit publish \"$@\"
     release = flow release
     slog = log --pretty=format:\"%h %s\" --graph
+    sprout = !legit sprout \"$@\"
     st = status
+    switch = !legit switch \"$@\"
+    sync = !legit sync \"$@\"
+    undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
     undo = reset --soft HEAD^
+    unpublish = !legit unpublish \"$@\"
     vim = !sh -c 'vim `git ls-files | ack $0 | head -1`'
-
