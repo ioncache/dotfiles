@@ -977,8 +977,8 @@ foreach (my $F = 0; $F < scalar @fh - 1; $F++) {
             $Ignored{$file_R} = "--exclude-lang=$Lang_R}";
             next;
         }
-        if (!defined @{$Filters_by_Language{$Lang_L} } or
-            !defined @{$Filters_by_Language{$Lang_R} }
+        if (!@{$Filters_by_Language{$Lang_L} } or
+            !@{$Filters_by_Language{$Lang_R} }
            ) {
             if (($Lang_L eq "(unknown)") or ($Lang_R eq "(unknown)")) {
                 $Ignored{$fh[$F  ]}{$file_L} = "language unknown (#1)";
@@ -1300,7 +1300,7 @@ foreach my $file (sort keys %unique_source_file) {
         $Ignored{$file} = "--exclude-lang=$Language{$file}";
         next;
     }
-    if (!defined @{$Filters_by_Language{$Language{$file}} }) {
+    if (!@{$Filters_by_Language{$Language{$file}} }) {
         if ($Language{$file} eq "(unknown)") {
             $Ignored{$file} = "language unknown (#1)";
         } else {
@@ -1431,7 +1431,7 @@ sub combine_results {                        # {{{1
                    )?
                    $}x) {
                 if ($report_type eq "by language") {
-                    next unless defined @{$rhaa_Filters_by_Language->{$1}};
+                    next unless @{$rhaa_Filters_by_Language->{$1}};
                     # above test necessary to avoid trying to sum reports
                     # of reports (which have no language breakdown).
                     $found_language = 1;
@@ -1838,7 +1838,7 @@ sub diff_csv_report {                        # {{{1
        $line = "File, " if $BY_FILE;
     foreach my $item (qw(files blank comment code)) {
         next if $BY_FILE and $item eq 'files';
-        foreach my $symbol qw( == != + - ) {
+        foreach my $symbol (qw/ == != + - /) {
             $line .= "$symbol $item, ";
         }
     }
