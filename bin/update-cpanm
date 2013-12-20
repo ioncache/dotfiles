@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cpan-outdated | xargs cpanm --mirror /Users/mjubenville/minicpan/
+cpan-outdated | xargs cpanm --mirror /home/markj/minicpan/

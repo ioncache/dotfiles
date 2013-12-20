@@ -38,6 +38,10 @@ if [ -d "/opt/csw/bin" ] ; then
     PATH="/opt/csw/bin:$PATH"
 fi
 
+if [ -d "/usr/local/bin" ] ; then
+    PATH="/usr/local/bin:$PATH"
+fi
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -142,22 +146,19 @@ OS=$(uname -s)
 
 # some OSX vs. linux aliases/options
 if [ "$OS" == "Darwin" ]; then
-	alias ll='ls -alhF'
-	alias ko='/Applications/Komodo\ IDE.app/Contents/MacOS/komodo-bin'
-	export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
-else
-	alias ll='ls -alhF --color --group-directories-first'
-	alias ko='~/Applications/Komodo-IDE-8/bin/komodo'
-fi
-
-# some even more OS specific aliases/otpions
-if [ "$OS" == "Darwin" ]; then
 	alias ll='ls -alhFG'
+	alias ko='/Applications/Komodo\ IDE\ 8.app/Contents/MacOS/komodo-bin'
     alias updatedb='sudo /usr/libexec/locate.updatedb'
+	#export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
+
 elif [ "$OS" == "SunOS" ] ; then
 	alias top='prstat -s cpu -a -n 8 '
 	alias ps='/usr/ucb/ps'
-    PATH="/usr/ccs/bin/:$PATH"
+    #PATH="/usr/ccs/bin/:$PATH"
+
+else
+	alias ll='ls -alhF --color --group-directories-first'
+	alias ko='~/Applications/Komodo-IDE-8/bin/komodo'
 fi
 
 # enables grc on OSX

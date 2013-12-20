@@ -6,7 +6,9 @@ call pathogen#infect()
 " Bundle: git://github.com/bronson/vim-trailing-whitespace.git
 " Bundle: git://github.com/ervandew/supertab.git
 " Bundle: git://github.com/henrik/vim-indexed-search.git
+" Bundle: git://github.com/kchmck/vim-coffee-script.git
 " Bundle: git://github.com/Lokaltog/vim-powerline
+" Bundle: git://github.com/nono/vim-handlebars.git bundle/handlebars
 " Bundle: git://github.com/petdance/vim-perl.git
 " Bundle: git://github.com/scrooloose/nerdcommenter.git
 " Bundle: git://github.com/scrooloose/nerdtree.git
@@ -98,3 +100,4 @@ let g:syntastic_quiet_warnings=1
 
 " Powerline config
 let g:Powerline_symbols = 'fancy'
+

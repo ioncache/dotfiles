@@ -30,6 +30,8 @@
 [diff]
     tool = vimdiff
     prompt = false
+[push]
+    default = simple
 [alias]
     branches = !legit branches
     clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"

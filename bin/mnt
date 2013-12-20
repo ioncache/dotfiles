@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo mount -t nfs -o rw,vers=3,wsize=32768,rsize=32768 toronto-fs.dev.oanda.com:/volumes/home/markj /Volumes/markj
