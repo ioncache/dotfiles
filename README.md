@@ -17,17 +17,17 @@ Installation
 ```make```
 
 This will:
-- backup all current dotfiles to ~/.dotfile_backups/`<current timestamp>`
+- backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
-- install new dotfiles to ~/
+- install new dotfiles to `~/`
 
 <a name="targets"></a>
 Make Targets
 ------------
 
-- `backup` - will backup current dotfiles to ~/.dotfile_backups/`<current timestamp>`
-- `deps` - will try to isntall dependencies
-- `install` - will install the new dotfiles to ~/
+- `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
+- `deps` - will try to install dependencies
+- `install` - will install the new dotfiles to `~/`
 - `restore` - will restore backed up dotfiles, usage `make restore RESTORE_TIMESTAMP=<desired timestamp>`
 
 <a name="dependencies"></a>
