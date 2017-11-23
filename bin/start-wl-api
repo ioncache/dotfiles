@@ -1,2 +1,0 @@
-#!/bin/bash
-/oanda/system/bin/plackup -s Starman --port 11600 /oanda/whitelabel-api/bin/app.pl

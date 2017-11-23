@@ -1,6 +1,0 @@
-#!/bin/sh
-export DISPLAY=:0
-export GPU_MAX_ALLOC_PERCENT=100
-export GPU_USE_SYNC_OBJECTS=1
-/Users/markj/bin/cgminer-scrypt/cgminer --scrypt --url=stratum+tcp://stratum01.hashco.ws:8888 --userpass=ioncache.work1:ioncache3 --intensity 11
-#--worksize 256 --thread-concurrency 2400 --gpu-threads 1

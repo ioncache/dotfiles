@@ -1,9 +1,11 @@
 #!/usr/bin/env perl
 
-use Modern::Perl;
+use strict;
+use warnings;
+use v5.10;
+
 use Crypt::XkcdPassword;
 
 say Crypt::XkcdPassword->make_password;
 
 1;
-
