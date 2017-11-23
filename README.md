@@ -3,6 +3,8 @@ dotfiles
 
 'nix dotfiles
 
+Well, it will probably work on a nix system.  It's actually mostly been tested on OSX, and some of the dependencies will only install automatically on OSX.
+
 Table of contents
 -----------------
 
