@@ -1,27 +1,30 @@
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-" Bundle: tpope/vim-pathogen
-call pathogen#infect()
+call plug#begin('~/.vim/plugged')
 
-" Bundle: git://github.com/altercation/vim-colors-solarized.git
-" Bundle: git://github.com/bronson/vim-trailing-whitespace.git
-" Bundle: git://github.com/ervandew/supertab.git
-" Bundle: git://github.com/henrik/vim-indexed-search.git
-" Bundle: git://github.com/kchmck/vim-coffee-script.git
-" Bundle: git://github.com/Lokaltog/vim-powerline
-" Bundle: git://github.com/nono/vim-handlebars.git bundle/handlebars
-" Bundle: git://github.com/petdance/vim-perl.git
-" Bundle: git://github.com/scrooloose/nerdcommenter.git
-" Bundle: git://github.com/scrooloose/nerdtree.git
-" Bundle: git://github.com/scrooloose/syntastic.git
-" Bundle: git://github.com/tpope/vim-fugitive.git
-" Bundle: git://github.com/tpope/vim-git.git
-" Bundle: git://github.com/tpope/vim-surround.git
-" Bundle: git://github.com/vim-scripts/closetag.vim.git
-" Bundle: git://github.com/vim-scripts/ctrlp.vim.git
-" Bundle: git://github.com/vim-scripts/perl-support.vim.git
-" Bundle: git://github.com/vim-scripts/SearchComplete.git
-" Bundle: git://github.com/vim-scripts/taglist.vim.git
-" Bundle: git://github.com/vim-scripts/yaifa.vim.git
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'ervandew/supertab'
+Plug 'henrik/vim-indexed-search'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'kchmck/vim-coffee-script'
+Plug 'nono/vim-handlebars'
+Plug 'petdance/vim-perl'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'rstacruz/vim-hyperstyle'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/closetag.vim'
+Plug 'vim-scripts/ctrlp.vim'
+Plug 'vim-scripts/SearchComplete'
+Plug 'vim-scripts/taglist.vim'
+Plug 'vim-scripts/yaifa.vim'
+
+call plug#end()
 
 " Some basic VIM settings
 
@@ -42,7 +45,6 @@ set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
-set mouse=a
 set number
 set showmatch
 set smartcase
@@ -63,8 +65,11 @@ set autoindent
 set copyindent
 set smartindent
 
+" word wrap vimdiff
+autocmd FilterWritePre * if &diff | setlocal wrap< | endif
+
 " some Perl settings
-autocmd FileType perl set showmatch
+"autocmd FileType perl set showmatch
 command -range=% -nargs=* Tidy <line1>,<line2>!
   \perltidy -pbp <args>
 
@@ -94,10 +99,10 @@ map <leader>n :NERDTreeToggle<CR>
 
 " syntastic config
 set matchpairs=(:),{:},[:],<:>
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_quiet_warnings=1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
-" Powerline config
-let g:Powerline_symbols = 'fancy'
-
+" Airline config
+let g:airline_powerline_fonts = 1

@@ -1,9 +1,7 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# ioncache .bashrc
 
 if [ -d "/usr/sbin" ] ; then
-    PATH="/usr/sbin:$PATH"    
+    PATH="/usr/sbin:$PATH"
 fi
 
 if [ -d "/usr/local/sbin" ] ; then
@@ -11,7 +9,7 @@ if [ -d "/usr/local/sbin" ] ; then
 fi
 
 if [ -d "/sbin" ] ; then
-    PATH="/sbin:$PATH"	
+    PATH="/sbin:$PATH"
 fi
 
 if [ -d "/usr/local/mysql/bin/" ] ; then
@@ -22,12 +20,16 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+if [ -d "$HOME/bin/arcanist/bin" ] ; then
+    PATH="$HOME/bin/arcanist/bin:$PATH"
+fi
+
 if [ -d "/oanda/system/bin" ] ; then
     PATH="/oanda/system/bin:$PATH"
 fi
 
 if [ -d "/oanda/system/sbin" ] ; then
-    PATH="/oanda/system/sbin:$PATH"	
+    PATH="/oanda/system/sbin:$PATH"
 fi
 
 if [ -d /var/lib/gems/1.8/bin/ ] ; then
@@ -42,20 +44,15 @@ if [ -d "/usr/local/bin" ] ; then
     PATH="/usr/local/bin:$PATH"
 fi
 
+if [ -d "/usr/local/opt/gnu-tar/libexec/gnubin" ] ; then
+    PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+fi
+
+#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#export PYENV_ROOT=/usr/local/opt/pyenv
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
-
-# don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=ignoredups
-# ... and ignore same sucessive entries.
-export HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -74,20 +71,22 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
+# uncomment for a colored prompt, if the terminal has the capability
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
+fi
+
+if [ -f ~/.git-prompt.sh ] ; then
+    source ~/.git-prompt.sh
 fi
 
 if [ "$color_prompt" = yes ]; then
@@ -96,6 +95,11 @@ else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W$(__git_ps1 " (%s)")\$ '
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
+
+if [ -f ~/.oh-my-git/prompt.sh ] ; then
+    source ~/.oh-my-git/prompt.sh
+fi
+
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -111,64 +115,77 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
+    alias grep='grep --color=always'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+
+# don't put duplicate lines in the history. See bash(1) for more options
+export HISTCONTROL=ignoredups:erasedups
+# ... and ignore same sucessive entries.
+export HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+export EDITOR=vim
+export PAGER=less
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
+# cache OS name for some conditionals
+OS=$(uname -s)
 
 # custom aliases
 alias la='ls -A'
 alias l='ls -CF'
 alias prereqs='find -name '\''*pl'\'' -o -name '\''*pm'\'' | xargs scan_prereqs | perl -ne '\''next if /^\*/; s/\s+=.*$//; print'\'' | sort | uniq'
 
-# cache OS name for some conditionals
-OS=$(uname -s)
+if which exa > /dev/null; then
+  alias ls='exa'
+  alias ll='ls -alhF --group-directories-first'
+else
+  alias ll='ls -alhF --color --group-directories-first'
+fi
 
 # some OSX vs. linux aliases/options
 if [ "$OS" == "Darwin" ]; then
-	alias ll='ls -alhFG'
-	alias ko='/Applications/Komodo\ IDE\ 8.app/Contents/MacOS/komodo-bin'
+    if ! which exa > /dev/null; then
+      alias ll='ls -alhFG'
+    fi
+
     alias updatedb='sudo /usr/libexec/locate.updatedb'
-	#export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
-
 elif [ "$OS" == "SunOS" ] ; then
-	alias top='prstat -s cpu -a -n 8 '
-	alias ps='/usr/ucb/ps'
-    #PATH="/usr/ccs/bin/:$PATH"
-
-else
-	alias ll='ls -alhF --color --group-directories-first'
-	alias ko='~/Applications/Komodo-IDE-8/bin/komodo'
-fi
-
-# enables grc on OSX
-if [ -f /etc/grc.bashrc ] ; then
-	source "`brew --prefix`/etc/grc.bashrc"
+    alias top='prstat -s cpu -a -n 8 '
+    if [ -f /usr/ucb/ps ] ; then
+      alias ps='/usr/ucb/ps'
+    fi
 fi
 
 # enable ack if installed from the ack-grep package
 if command -v ack-grep >/dev/null 2>&1 ; then
-	alias ack='ack-grep'
+    alias ack='ack-grep'
 fi
 
 # setup perlbrew
@@ -176,15 +193,27 @@ if [ -d "$HOME/perl5/perlbrew" ] && [ ! "$OS" == "SunOS" ] ; then
     source ~/perl5/perlbrew/etc/bashrc
 fi
 
-# use local minicpan for cpanm if it exists
-if [ -d /Users/mjubenville/minicpan ] ; then
-	export PERL_CPANM_OPT='--metacpan --mirror /Users/mjubenville/minicpan'
+# brew bash completion
+if [ -f /usr/local/etc/bash_completion.d ]; then
+    source /usr/local/etc/bash_completion.d
 fi
 
 if [ -f ~/.git-completion.sh ]; then
-	source ~/.git-completion.sh
+    source ~/.git-completion.sh
 fi
 
 if [ -d  /usr/local/lib/node_modules ] ; then
-	export NODE_PATH='/usr/local/lib/node_modules'
+    export NODE_PATH='/usr/local/lib/node_modules'
 fi
+
+# store any access keys, credentials, etc. in ~/.bash_secrets
+if [ -f ~/.bash_secrets ] ; then
+  source ~/.bash_secrets
+fi
+
+alias apm=apm-beta
+alias atom=atom-beta
+
+stghosts() { host -l stage.oanda.com 10.1.1.9 | grep $1; }
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
