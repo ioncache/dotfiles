@@ -24,14 +24,6 @@ if [ -d "$HOME/bin/arcanist/bin" ] ; then
     PATH="$HOME/bin/arcanist/bin:$PATH"
 fi
 
-if [ -d "/oanda/system/bin" ] ; then
-    PATH="/oanda/system/bin:$PATH"
-fi
-
-if [ -d "/oanda/system/sbin" ] ; then
-    PATH="/oanda/system/sbin:$PATH"
-fi
-
 if [ -d /var/lib/gems/1.8/bin/ ] ; then
     PATH="/var/lib/gems/1.8/bin/:$PATH"
 fi
@@ -214,6 +206,5 @@ fi
 alias apm=apm-beta
 alias atom=atom-beta
 
-stghosts() { host -l stage.oanda.com 10.1.1.9 | grep $1; }
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
