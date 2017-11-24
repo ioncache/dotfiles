@@ -5,7 +5,7 @@
 # why on earth did I do this as a Makefile?  I hate Makefiles.
 
 OS 					   		 = $(shell uname -s)
-FILELIST			 		 = .bash_profile .bashrc .git-completion.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc
+FILELIST			 		 = .bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc
 MAKE_TIMESTAMP     = $(shell date +%s)``
 RESTORE_TIMESTAMP ?= 'notarealbackupttimestamp'
 
@@ -64,6 +64,7 @@ deps:
 		if [ ! -x "$$(command -v fzf)" ] ; then \
 			echo "\tinstalling fzf" ; \
 			brew install fzf ; \
+			$$(brew --prefix)/opt/fzf/install ; \
 		fi; \
 	fi;
 

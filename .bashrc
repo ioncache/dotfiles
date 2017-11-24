@@ -190,8 +190,8 @@ if [ -f /usr/local/etc/bash_completion.d ]; then
     source /usr/local/etc/bash_completion.d
 fi
 
-if [ -f ~/.git-completion.sh ]; then
-    source ~/.git-completion.sh
+if [ -f ~/.git-prompt.sh ]; then
+    source ~/.git-prompt.sh
 fi
 
 if [ -d  /usr/local/lib/node_modules ] ; then
@@ -207,4 +207,3 @@ alias apm=apm-beta
 alias atom=atom-beta
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
