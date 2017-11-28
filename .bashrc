@@ -146,6 +146,12 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [ -f ~/.git-completion.sh ] && ! shopt -oq posix; then
+    . ~/.git-completion.sh
+elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && ! shopt -oq posix; then
+    . /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
 # cache OS name for some conditionals
 OS=$(uname -s)
 
