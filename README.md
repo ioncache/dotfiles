@@ -48,6 +48,8 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 TODO
 ----
 
+- install bin files in ~/bin (~/bin is already added to path in .bashrc)
+- install fonts in correct place
 - make dependencies install correctly on linux
 - make dependencies upgrade existing installed versions possibly
 - install vim-plug plugins automatically
