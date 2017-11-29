@@ -11,6 +11,7 @@ Table of contents
 - [Installation](#installation)
 - [Make Targets](#targets)
 - [Dependencies](#dependencies)
+- [TODO](#todo)
 
 <a name="installation"></a>
 Installation
@@ -41,4 +42,13 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 - exa - ls replacement - https://github.com/ogham/exa
 - fzf - fuzzy finder - https://github.com/junegunn/fzf
 - oh-my-git - git bash prompt - https://github.com/arialdomartini/oh-my-git
-- vim-plug - https://github.com/junegunn/vim-plug
+- vim-plug - vim plugin manager - https://github.com/junegunn/vim-plug
+
+<a name="todo"></a>
+TODO
+----
+
+- make dependencies install correctly on linux
+- make dependencies upgrade existing installed versions possibly
+- install vim-plug plugins automatically
+- do something other than the silly make file... or at least use less bash in the file and more make style commands
