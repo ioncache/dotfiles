@@ -73,7 +73,14 @@ deps:
 		git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git ; \
 	fi;
 
-	@@if [ ! -f ~/.vim/autoload/plug.vim ] ; then \
+	@if [ -x "$$(command -v npm)" ] ; then \
+		if [ ! -x "$$(command -v gr)" ] ; then \
+			echo "\tinstalling gr" ; \
+			npm install -g git-run ; \
+		fi; \
+	fi;
+
+	@if [ ! -f ~/.vim/autoload/plug.vim ] ; then \
 		echo "\tinstalling vim-plug" ; \
 		curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim ; \
 	fi;

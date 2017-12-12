@@ -213,3 +213,9 @@ alias apm=apm-beta
 alias atom=atom-beta
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+if which gr > /dev/null; then
+  # NOTE: error when running the line below, using eval instead, yes it's evil
+  # . <(gr completion)
+  eval "$(gr completion)"
+fi

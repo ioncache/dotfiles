@@ -1,4 +1,4 @@
-dotfiles
+adotfiles
 ========
 
 'nix dotfiles
@@ -40,5 +40,6 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 
 - exa - ls replacement - https://github.com/ogham/exa
 - fzf - fuzzy finder - https://github.com/junegunn/fzf
+- gr - Multiple git repository management tool - https://github.com/mixu/gr
 - oh-my-git - git bash prompt - https://github.com/arialdomartini/oh-my-git
 - vim-plug - https://github.com/junegunn/vim-plug
