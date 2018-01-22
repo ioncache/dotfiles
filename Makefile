@@ -2,7 +2,7 @@
 # ioncache Dotfile Makefile
 ########################################################################
 
-# why on earth did I do this as a Makefile?  I hate Makefiles.
+# why on earth did I do this as a Makefile? I hate Makefiles.
 
 OS 					   		 = $(shell uname -s)
 FILELIST			 		 = .bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc

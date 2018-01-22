@@ -1,65 +1,51 @@
-[user]
-    name = Mark Jubenville
-    email = ioncache@gmail.com
+# user specific config, such as name and email
+[include]
+  path = ~/.gitconfig_custom
 [core]
-    editor = vim
-    excludesfile = ~/.gitignore
+  editor = vim
+  excludesfile = ~/.gitignore
 [branch]
-    autosetupmerge = true
+  autosetupmerge = true
 [color]
-    ui = auto
-    diff = auto
-    status = auto
-    branch = auto
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 [diff]
-    tool = vimdiff
-    prompt = false
+  tool = vimdiff
+  prompt = false
 [alias]
-branches = !legit branches
-clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-dearc = "!f() { git branch | grep arcpatch | xargs git branch -D; }; f"
-dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy | less --tabs=4 -RFX; }; f"
-diff2 = diff --word-diff
-dl = "!git ll -1"
-dlc = diff --cached HEAD^
-feature = flow feature
-fetchupd = !git fetch upstream && git rebase upstream/develop
-fetchupm = !git fetch upstream && git rebase upstream/master
-find = !git ls-files | ack -i
-fl = log -u
-flog = log --stat --abbrev-commit --relative-date --pretty=oneline
-graft = !legit graft \"$@\"
-harvest = !legit harvest \"$@\"
-heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
-hotfix = flow hotfix
-ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
-lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
-le = log --oneline --decorate
-ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-ls = ls-files
-plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-publish = !legit publish \"$@\"
-release = flow release
-rmu = !"rm `git ls-files --others --exclude-standard`"
-slog = log --pretty=format:\"%h %s\" --graph
-sprout = !legit sprout \"$@\"
-st = status
-switch = !legit switch \"$@\"
-sync = !legit sync \"$@\"
-undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
-undo = reset --soft HEAD^
-unpublish = !legit unpublish \"$@\"
-vim = !sh -c 'vim `git ls-files | ack $0 | head -1`'
+  clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+  dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy | less --tabs=4 -RFX; }; f"
+  diff2 = diff --word-diff
+  dl = "!git ll -1"
+  dlc = diff --cached HEAD^
+  find = !git ls-files | ack -i
+  fl = log -u
+  flog = log --stat --abbrev-commit --relative-date --pretty=oneline
+  heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
+  ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+  lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+  le = log --oneline --decorate
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  ls = ls-files
+  plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  rmu = !"rm `git ls-files --others --exclude-standard`"
+  slog = log --pretty=format:\"%h %s\" --graph
+  st = status
+  undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
+  undo = reset --soft HEAD^
+  vim = !sh -c 'vim `git ls-files | ack $0 | head -1`'
