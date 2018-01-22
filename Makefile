@@ -94,6 +94,13 @@ deps:
 		fi; \
 	fi;
 
+	@if [ -x "$$(command -v brew)" ] ; then \
+		if [ ! -x "$$(command -v git-summary)" ] ; then \
+			echo "\tinstalling git-extras" ; \
+			brew install git-extras ; \
+		fi; \
+	fi;
+
 	@if [ ! -d ~/.oh-my-git ] ; then \
 		echo "\tinstalling oh-my-git" ; \
 		git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git ; \

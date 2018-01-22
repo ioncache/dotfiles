@@ -46,6 +46,7 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 
 - exa - ls replacement - https://github.com/ogham/exa
 - fzf - fuzzy finder - https://github.com/junegunn/fzf
+- git-extras - some extra commands for git - https://github.com/tj/git-extras
 - gr - Multiple git repository management tool - https://github.com/mixu/gr
 - oh-my-git - git bash prompt - https://github.com/arialdomartini/oh-my-git
 - vim-plug - vim plugin manager - https://github.com/junegunn/vim-plug
