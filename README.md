@@ -23,14 +23,19 @@ This will:
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
 - install new dotfiles to `~/`
+- install new fonts to `~/Library/Fonts` (OSX only for fonts right now)
 
 <a name="targets"></a>
 Make Targets
 ------------
 
+- `default target`: runs the `backup`, `deps` and `install` targets
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - `deps` - will try to install dependencies
-- `install` - will install the new dotfiles to `~/`
+- `install` - will run the `install_dotfiles` and `install_fonts` targets
+- `install_bin` - will install new binaries to `~/bin`; `~/bin` is already added to the path in the included .bashrc
+- `install_dotfiles` - will install the new dotfiles to `~/`
+- `install_fonts` - will install new fonts to `~/Library/Fonts` (OSX only for fonts right now)
 - `restore` - will restore backed up dotfiles, usage `make restore RESTORE_TIMESTAMP=<desired timestamp>`
 
 <a name="dependencies"></a>
@@ -49,9 +54,9 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 TODO
 ----
 
-- install bin files in ~/bin (~/bin is already added to path in .bashrc)
-- install fonts in correct place
+- install fonts in correct place on linux
 - make dependencies install correctly on linux
 - make dependencies upgrade existing installed versions possibly
 - install vim-plug plugins automatically
 - do something other than the silly make file... or at least use less bash in the file and more make style commands
+- if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed

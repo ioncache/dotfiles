@@ -14,7 +14,11 @@ RESTORE_TIMESTAMP ?= 'notarealbackupttimestamp'
 main: backup deps install
 
 .PHONY: install
-install:
+# install: install_dotfiles install_fonts install_bin
+install: install_dotfiles install_fonts
+
+.PHONY: install_dotfiles
+install_dotfiles:
 	@echo
 	@echo '***** Installing new Dotfiles *****'
 	@echo
@@ -24,6 +28,28 @@ install:
 		echo "\tinstalling $$f" ; \
 		cp ./$$f ~/ ; \
 	done ;
+
+.PHONY: install_fonts
+install_fonts:
+	@echo
+	@echo '***** Installing new Fonts *****'
+	@echo
+
+	@if [ $(OS) == Darwin ] ; then \
+		cp ./fonts/* ~/Library/Fonts ; \
+	fi;
+
+.PHONY: install_bin
+install_bin:
+	@echo
+	@echo '***** Installing extra bin files in ~/bin *****'
+	@echo
+
+	@if [ ! -d ~/bin ] ; then \
+		mkdir ~/bin ; \
+	fi;
+
+	@cp ./bin/* ~/bin
 
 .PHONY: backup
 backup:
