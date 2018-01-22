@@ -29,7 +29,7 @@ call plug#end()
 " Some basic VIM settings
 
 au BufReadPost *.pl   set keywordprg=perldoc\ -f
-colorscheme solarized
+colorscheme desert
 filetype plugin indent on
 nnoremap j gj
 nnoremap k gk
