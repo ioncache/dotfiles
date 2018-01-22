@@ -11,7 +11,7 @@ Table of contents
 - [Installation](#installation)
 - [Make Targets](#targets)
 - [Dependencies](#dependencies)
-- [Manual Changes](#manual_changes)
+- [Post Install Manual Changes](#manual_changes)
 - [TODO](#todo)
 
 <a name="installation"></a>
@@ -53,17 +53,17 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 - vim-plug - vim plugin manager - https://github.com/junegunn/vim-plug
 
 <a name="manual_changes"></a>
-Manual Changes
---------------
+Post Install Manual Changes
+---------------------------
 
-1. add a custom .gitconfig for setting git name and email
+1. add a custom .gitconfig for setting git name and email and any other settings that the user desires
   - `vim ~/.gitconfig_custom`
-  - add:
+  - insert the following into the file:
 
 ```
 [user]
-name = <your name>
-email = <your email>
+  name = <your name>
+  email = <your email>
 ```
 
 2. change the font in your terminal to the newly installed `SourceCodePro+Powerline+Awesome`
