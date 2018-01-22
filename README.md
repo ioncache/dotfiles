@@ -11,6 +11,7 @@ Table of contents
 - [Installation](#installation)
 - [Make Targets](#targets)
 - [Dependencies](#dependencies)
+- [Manual Changes](#manual_changes)
 - [TODO](#todo)
 
 <a name="installation"></a>
@@ -51,6 +52,22 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 - oh-my-git - git bash prompt - https://github.com/arialdomartini/oh-my-git
 - vim-plug - vim plugin manager - https://github.com/junegunn/vim-plug
 
+<a name="manual_changes"></a>
+Manual Changes
+--------------
+
+1. add a custom .gitconfig for setting git name and email
+  - `vim ~/.gitconfig_custom`
+  - add:
+
+```
+[user]
+name = <your name>
+email = <your email>
+```
+
+2. change the font in your terminal to the newly installed `SourceCodePro+Powerline+Awesome`
+
 <a name="todo"></a>
 TODO
 ----
@@ -61,3 +78,4 @@ TODO
 - install vim-plug plugins automatically
 - do something other than the silly make file... or at least use less bash in the file and more make style commands
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
+- ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
