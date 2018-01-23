@@ -94,7 +94,7 @@ nmap <silent> ,/ :nohlsearch<CR>
 
 " plugin specific settings
 
-" NERTTree config
+" NERDTTree config
 map <leader>n :NERDTreeToggle<CR>
 
 " syntastic config
