@@ -1,4 +1,8 @@
-# ioncache .bashrc
+# base .bashrc
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
 
 if [ -d "/usr/sbin" ] ; then
   PATH="/usr/sbin:$PATH"
@@ -20,12 +24,9 @@ if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
 fi
 
+# arcanist is a CLI for use with Phabricator
 if [ -d "$HOME/bin/arcanist/bin" ] ; then
   PATH="$HOME/bin/arcanist/bin:$PATH"
-fi
-
-if [ -d "/opt/csw/bin" ] ; then
-  PATH="/opt/csw/bin:$PATH"
 fi
 
 if [ -d "/usr/local/bin" ] ; then
@@ -36,28 +37,12 @@ if [ -d "/usr/local/opt/gnu-tar/libexec/gnubin" ] ; then
   PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 fi
 
-#if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-#export PYENV_ROOT=/usr/local/opt/pyenv
-
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-  xterm-color) color_prompt=yes;;
-esac
 
 # uncomment for a colored prompt, if the terminal has the capability
 force_color_prompt=yes
@@ -69,7 +54,7 @@ if [ -n "$force_color_prompt" ]; then
     # a case would tend to support setf rather than setaf.)
     color_prompt=yes
   else
-    color_prompt=
+    unset color_prompt
   fi
 fi
 
@@ -77,11 +62,15 @@ if [ -f $HOME/.git-prompt.sh ] ; then
   source $HOME/.git-prompt.sh
 fi
 
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+  debian_chroot=$(cat /etc/debian_chroot)
+fi
+
 if [ "$color_prompt" = yes ]; then
   PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]$(__git_ps1 " (%s)")\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W$(__git_ps1 " (%s)")\$ '
-  #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 
 if [ -f $HOME/.oh-my-git/prompt.sh ] ; then
@@ -108,30 +97,15 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-export HISTSIZE=1000
-export HISTFILESIZE=2000
-
-# don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=ignoredups:erasedups
-# ... and ignore same sucessive entries.
-export HISTCONTROL=ignoreboth
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-export EDITOR=vim
-export PAGER=less
-
+# setup iterm2 stuff if it exists
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-# Alias definitions.
+#####################
+# alias definitions #
+#####################
 
 if [ -f $HOME/.bash_aliases ]; then
   . $HOME/.bash_aliases
@@ -147,7 +121,7 @@ elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && ! shopt -oq 
   . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
-# custom aliases
+# common custom aliases
 alias la='ls -A'
 alias l='ls -CF'
 alias prereqs='find -name '\''*pl'\'' -o -name '\''*pm'\'' | xargs scan_prereqs | perl -ne '\''next if /^\*/; s/\s+=.*$//; print'\'' | sort | uniq'
@@ -203,11 +177,6 @@ if [ -d  /usr/local/lib/node_modules ] ; then
     export NODE_PATH='/usr/local/lib/node_modules'
 fi
 
-# store any access keys, credentials, etc. in $HOME/.bash_secrets
-if [ -f $HOME/.bash_secrets ] ; then
-  source $HOME/.bash_secrets
-fi
-
 if which atom-beta > /dev/null ; then
   alias apm=apm-beta
   alias atom=atom-beta
@@ -219,4 +188,23 @@ if which gr > /dev/null; then
   # NOTE: error when running the line below, using eval instead, yes it's evil
   # . <(gr completion)
   eval "$(gr completion)"
+fi
+
+#########################
+# environment variables #
+#########################
+# NOTE: override in .bash_secrets if desired
+
+export EDITOR=vim # emacs is a cruel punishment on humanity
+export PAGER=less
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
+export HISTCONTROL=ignoreboth # ignore same sucessive entries
+
+# NOTE: leaave this as the last section of this file so things in .bash_secrets can override anything else in this fiel
+# store any access keys, credentials, etc. in $HOME/.bash_secrets
+# can also be used to setup other custom things, like extra additions to $PATH or custom aliases
+if [ -f $HOME/.bash_secrets ] ; then
+  source $HOME/.bash_secrets
 fi
