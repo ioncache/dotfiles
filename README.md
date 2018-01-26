@@ -30,9 +30,10 @@ This will:
 Make Targets
 ------------
 
-- `default target`: runs the `backup`, `deps` and `install` targets
+- `default target`: runs the `backup`, `deps` `generate_ssl_cert` and `install` targets
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - `deps` - will try to install dependencies
+- `generate_ssl_cert` - will generate a self-signed ssl cert and copy the files to your home folder
 - `install` - will run the `install_dotfiles` and `install_fonts` targets
 - `install_bin` - will install new binaries to `~/bin`; `~/bin` is already added to the path in the included .bashrc
 - `install_dotfiles` - will install the new dotfiles to `~/`

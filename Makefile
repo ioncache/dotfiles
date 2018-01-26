@@ -8,10 +8,11 @@ OS 					   		 = $(shell uname -s)
 FILELIST			 		 = .bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc
 MAKE_TIMESTAMP     = $(shell date +%s)``
 RESTORE_TIMESTAMP ?= 'notarealbackupttimestamp'
+HOSTNAME           = $(shell hostname)
 
 ##### Default actions when running make -- makes the base api package
 .PHONY: main
-main: backup deps install
+main: backup deps generate_ssl_cert install
 
 .PHONY: install
 # install: install_dotfiles install_fonts install_bin
@@ -73,6 +74,28 @@ backup:
 		fi ; \
 	done ;
 
+.PHONY: generate_ssl_cert
+generate_ssl_cert:
+	@echo
+	@echo '***** Creating a self-signed SSL cert for local dev *****'
+	@echo
+
+	@if [ -x "$$(command -v openssl)" ] ; then \
+		openssl genrsa -des3 -passout pass:x -out ssl.pass.key 2048 ; \
+		openssl rsa -passin pass:x -in ssl.pass.key -out ssl.key ; \
+		rm ssl.pass.key ; \
+		openssl req -new -key ssl.key -out ssl.csr -subj /C=XX/ST=Some\ Place/L=Some\ Town/O=Some\ Org/OU=Some\ Group/CN=$(HOSTNAME) ; \
+		openssl x509 -req -sha256 -days 365 -in ssl.csr -signkey ssl.key -out ssl.crt ; \
+		rm ssl.csr ; \
+		mv ssl.key ~/ ; \
+		mv ssl.crt ~/ ; \
+		echo ; \
+		echo "\tssl.cert and ssl.key created in home folder" ; \
+		echo ; \
+	else \
+		echo "\topenssl is not installed" ; \
+	fi;
+
 .PHONY: deps
 deps:
 	@echo
@@ -84,17 +107,11 @@ deps:
 			echo "\tinstalling exa" ; \
 			brew install exa ; \
 		fi; \
-	fi;
-
-	@if [ -x "$$(command -v brew)" ] ; then \
 		if [ ! -x "$$(command -v fzf)" ] ; then \
 			echo "\tinstalling fzf" ; \
 			brew install fzf ; \
 			$$(brew --prefix)/opt/fzf/install ; \
 		fi; \
-	fi;
-
-	@if [ -x "$$(command -v brew)" ] ; then \
 		if [ ! -x "$$(command -v git-summary)" ] ; then \
 			echo "\tinstalling git-extras" ; \
 			brew install git-extras ; \
