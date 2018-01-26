@@ -4,10 +4,10 @@
 
 # why on earth did I do this as a Makefile? I hate Makefiles.
 
-OS 					   		 = $(shell uname -s)
-FILELIST			 		 = .bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc
+OS                 = $(shell uname -s)
+FILELIST           = .bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc
 MAKE_TIMESTAMP     = $(shell date +%s)``
-RESTORE_TIMESTAMP ?= 'notarealbackupttimestamp'
+RESTORE_TIMESTAMP ?= "notarealbackuptimestamp"
 HOSTNAME           = $(shell hostname)
 
 ##### Default actions when running make -- makes the base api package
@@ -36,8 +36,13 @@ install_fonts:
 	@echo '***** Installing new Fonts *****'
 	@echo
 
-	@if [ $(OS) == Darwin ] ; then \
+	@if [ $(OS) = Darwin ] ; then \
 		cp ./fonts/* ~/Library/Fonts ; \
+	else \
+		if [ ! -d ~/.fonts ] ; then \
+			mkdir ~/.fonts ; \
+		fi; \
+		cp ./fonts/* ~/.fonts ; \
 	fi;
 
 .PHONY: install_bin
@@ -80,7 +85,7 @@ generate_ssl_cert:
 	@echo '***** Creating a self-signed SSL cert for local dev *****'
 	@echo
 
-	@if [ -x "$$(command -v openssl)" ] ; then \
+	@if [ -x "$$(command -v openssl)" ]; then \
 		openssl genrsa -des3 -passout pass:x -out ssl.pass.key 2048 ; \
 		openssl rsa -passin pass:x -in ssl.pass.key -out ssl.key ; \
 		rm ssl.pass.key ; \
@@ -147,10 +152,10 @@ restore:
 	@echo '***** Restoring dotfiles from timestamp $(RESTORE_TIMESTAMP) *****'
 	@echo
 
-	@if [ $(RESTORE_TIMESTAMP) == notarealbackupttimestamp ] ; then \
+	@if [ $(RESTORE_TIMESTAMP) = notarealbackuptimestamp ] ; then \
 		echo "\tYou must supply a timestamp when trying to restore: make restore RESTORE_TIMESTAMP=<desired timestamp>" ; \
 	elif [ -d ~/.dotfile_backups/$(RESTORE_TIMESTAMP) ] ; then \
-		cp ~/.dotfile_backups/$(RESTORE_TIMESTAMP)/.* ~/ ; \
+		cp ~/.dotfile_backups/$(RESTORE_TIMESTAMP)/.* ~/ 2>/dev/null; \
 	else \
 		echo "\tNo backups found for timestamp $(RESTORE_TIMESTAMP)" ; \
 	fi;
