@@ -173,10 +173,6 @@ if [ -f $HOME/.git-prompt.sh ]; then
     source $HOME/.git-prompt.sh
 fi
 
-if [ -d  /usr/local/lib/node_modules ] ; then
-    export NODE_PATH='/usr/local/lib/node_modules'
-fi
-
 if which atom-beta > /dev/null ; then
   alias apm=apm-beta
   alias atom=atom-beta
@@ -202,9 +198,14 @@ export HISTFILESIZE=2000
 export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # ignore same sucessive entries
 
+if [ -d $HOME/n ] ; then
+  export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+fi
+
 # NOTE: leaave this as the last section of this file so things in .bash_secrets can override anything else in this fiel
 # store any access keys, credentials, etc. in $HOME/.bash_secrets
 # can also be used to setup other custom things, like extra additions to $PATH or custom aliases
 if [ -f $HOME/.bash_secrets ] ; then
   source $HOME/.bash_secrets
 fi
+
