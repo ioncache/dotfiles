@@ -37,8 +37,8 @@ Setup Commands
 - `install_bin` - will install new binaries to `~/bin`; `~/bin` is already added to the path in the included .bashrc
 - `install_dotfiles` - will install the new dotfiles to `~/`
 - `install_fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
-- `restore` - will restore backed up dotfiles, usage `make restore RESTORE_TIMESTAMP=<desired timestamp>`
-- `setup_git` - asks you to entire a name and email for user when making commits with git
+- `restore` - will restore backed up dotfiles, usage `RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore`
+- `setup_git` - asks you to enter a name and email used when making commits with git
 
 <a name="dependencies"></a>
 Dependencies
@@ -57,17 +57,7 @@ Not completely necessary, but may be desired.  Will be installed by default if p
 Post Install Manual Changes
 ---------------------------
 
-1. add a custom .gitconfig for setting git name and email and any other settings that the user desires
-  - `vim ~/.gitconfig_custom`
-  - insert the following into the file:
-
-```
-[user]
-  name = <your name>
-  email = <your email>
-```
-
-2. change the font in your terminal to the newly installed `SourceCodePro+Powerline+Awesome`
+1. change the font in your terminal to the newly installed `SourceCodePro+Powerline+Awesome`
 
 <a name="todo"></a>
 TODO
