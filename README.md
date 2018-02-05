@@ -23,6 +23,7 @@ Installation
 This will:
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
+- generate a self-signed ssl cert and copy it to `~/`
 - install new dotfiles to `~/`
 - install new fonts to `~/Library/Fonts` (OSX only for fonts right now)
 
