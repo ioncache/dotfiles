@@ -9,7 +9,7 @@ Table of contents
 -----------------
 
 - [Installation](#installation)
-- [Make Targets](#targets)
+- [Setup Comands](#commands)
 - [Dependencies](#dependencies)
 - [Post Install Manual Changes](#manual_changes)
 - [TODO](#todo)
@@ -18,7 +18,7 @@ Table of contents
 Installation
 ------------
 
-```make```
+```./setup.sh```
 
 This will:
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
@@ -26,19 +26,19 @@ This will:
 - install new dotfiles to `~/`
 - install new fonts to `~/Library/Fonts` (OSX only for fonts right now)
 
-<a name="targets"></a>
-Make Targets
-------------
+<a name="commands"></a>
+Setup Commands
+--------------
 
-- `default target`: runs the `backup`, `deps` `generate_ssl_cert` and `install` targets
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - `deps` - will try to install dependencies
 - `generate_ssl_cert` - will generate a self-signed ssl cert and copy the files to your home folder
-- `install` - will run the `install_dotfiles` and `install_fonts` targets
+- `install`: runs the `backup`, `deps` `generate_ssl_cert` `install_dotfiles`, `install_fonts` and `setup_git` targets -- this is the default command
 - `install_bin` - will install new binaries to `~/bin`; `~/bin` is already added to the path in the included .bashrc
 - `install_dotfiles` - will install the new dotfiles to `~/`
-- `install_fonts` - will install new fonts to `~/Library/Fonts` (OSX only for fonts right now)
+- `install_fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
 - `restore` - will restore backed up dotfiles, usage `make restore RESTORE_TIMESTAMP=<desired timestamp>`
+- `setup_git` - asks you to entire a name and email for user when making commits with git
 
 <a name="dependencies"></a>
 Dependencies
@@ -73,10 +73,8 @@ Post Install Manual Changes
 TODO
 ----
 
-- install fonts in correct place on linux
 - make dependencies install correctly on linux
 - make dependencies upgrade existing installed versions possibly
 - install vim-plug plugins automatically
-- do something other than the silly make file... or at least use less bash in the file and more make style commands
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
 - ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
