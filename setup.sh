@@ -20,7 +20,7 @@ backup () {
   for f in ${FILELIST[@]}
   do
     if [ -f ~/$f ] ; then
-      printf "\tbacking up $f"
+      printf "\tbacking up $f\n"
       cp ~/$f ~/.dotfile_backups/$MAKE_TIMESTAMP
     fi
   done
@@ -33,36 +33,36 @@ deps () {
 
   if [ -x "$(command -v brew)" ] ; then
     if [ ! -x "$(command -v exa)" ] ; then
-      printf "\tinstalling exa"
+      printf "\tinstalling exa\n"
       brew install exa
     fi
 
     if [ ! -x "$(command -v fzf)" ] ; then
-      printf "\tinstalling fzf"
+      printf "\tinstalling fzf\n"
       brew install fzf
       $(brew --prefix)/opt/fzf/install
     fi
 
     if [ ! -x "$(command -v git-summary)" ] ; then
-      printf "\tinstalling git-extras"
+      printf "\tinstalling git-extras\n"
       brew install git-extras
     fi
   fi
 
   if [ ! -d ~/.oh-my-git ] ; then
-    printf "\tinstalling oh-my-git"
+    printf "\tinstalling oh-my-git\n"
     git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git
   fi
 
   if [ -x "$(command -v npm)" ] ; then
     if [ ! -x "$(command -v gr)" ] ; then
-      printf "\tinstalling gr"
+      printf "\tinstalling gr\n"
       npm install -g git-run
     fi
   fi
 
   if [ ! -f ~/.vim/autoload/plug.vim ] ; then
-    printf "\tinstalling vim-plug"
+    printf "\tinstalling vim-plug\n"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
@@ -82,10 +82,10 @@ generate_ssl_cert () {
     mv ssl.key ~/
     mv ssl.crt ~/
     echo
-    printf "\tssl.cert and ssl.key created in home folder"
+    printf "\tssl.cert and ssl.key created in home folder\n"
     echo
   else
-    printf "\topenssl is not installed"
+    printf "\topenssl is not installed\n"
   fi
 }
 
@@ -107,10 +107,10 @@ install_dotfiles () {
   echo
 
   for f in ${FILELIST[@]}
-	do
-		printf "\tinstalling $f"
-		cp ./$f ~/
-	done
+  do
+    printf "\tinstalling $f\n"
+    cp ./$f ~/
+  done
 }
 
 install_fonts () {
@@ -119,14 +119,14 @@ install_fonts () {
   echo
 
   if [ $(uname -s) = Darwin ] ; then
-    printf "\tCopying new fonts to ~/Library/Fonts"
+    printf "\tCopying new fonts to ~/Library/Fonts\n"
     cp ./fonts/* ~/Library/Fonts
   else
     if [ ! -d ~/.fonts ] ; then
       mkdir ~/.fonts
     fi
 
-    printf "\tCopying new fonts to ~/.fonts"
+    printf "\tCopying new fonts to ~/.fonts\n"
     cp ./fonts/* ~/.fonts
   fi;
 }
@@ -134,7 +134,7 @@ install_fonts () {
 restore () {
   if [ $RESTORE_TIMESTAMP = notarealbackuptimestamp ] ; then
     echo
-    printf "You must supply a timestamp when trying to restore: RESTORE_TIMESTAMP=<desired timestamp> install.sh"
+    printf "You must supply a timestamp when trying to restore: RESTORE_TIMESTAMP=<desired timestamp> install.sh\n"
     echo
   elif [ -d ~/.dotfile_backups/$RESTORE_TIMESTAMP ] ; then
     echo
@@ -143,7 +143,7 @@ restore () {
 
     cp ~/.dotfile_backups/$RESTORE_TIMESTAMP/.* ~/ 2>/dev/null
   else
-    printf "\tNo backups found for timestamp $RESTORE_TIMESTAMP"
+    printf "\tNo backups found for timestamp $RESTORE_TIMESTAMP\n"
   fi
 }
 
