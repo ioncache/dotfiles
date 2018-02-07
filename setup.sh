@@ -277,5 +277,6 @@ if [ $COMMAND_RUN = 0 ] ; then
   install
 fi
 
+echo
 echo "NOTE: you will need to reload your ~/.bashrc or open a new terminal for installation to take effect"
 echo

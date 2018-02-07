@@ -64,7 +64,7 @@ Post Install Manual Changes
 TODO
 ----
 
-- make dependencies install correctly on linux
+- make dependencies install correctly on linux -- mostly done
 - make dependencies upgrade existing installed versions possibly
 - install vim-plug plugins automatically
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
