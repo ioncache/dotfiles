@@ -51,7 +51,7 @@ deps () {
       fi
     fi
   else
-    if [ -x "$(command -v cargo)" ] && -x "$(command -v cmake)" ]  && [ ! -x "$(command -v exa)" ] ; then
+    if [ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ] ; then
       printf "\tinstalling exa (this requires sudo)\n"
       git clone https://github.com/ogham/exa.git
       cd exa
