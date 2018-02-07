@@ -51,14 +51,18 @@ deps () {
       fi
     fi
   else
-    if [ -x "$(command -v cargo)" ] && [ ! -x "$(command -v exa)" ]; then
-      printf "\tinstalling exa\n"
-      cargo install exa
+    if [ -x "$(command -v cargo)" ] && -x "$(command -v cmake)" ]  && [ ! -x "$(command -v exa)" ] ; then
+      printf "\tinstalling exa (this requires sudo)\n"
+      git clone https://github.com/ogham/exa.git
+      cd exa
+      sudo make install
+      cd ..
+      rm -rf exa
     fi
 
     if [ ! -x "$(command -v fzf)" ] ; then
       printf "\tinstalling fzf\n"
-      printf "\tanswer y, y, n, during install\n"
+      printf "\tanswer y, n, during install\n"
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install
     fi
@@ -273,4 +277,5 @@ if [ $COMMAND_RUN = 0 ] ; then
   install
 fi
 
+echo "NOTE: you will need to reload your ~/.bashrc or open a new terminal for installation to take effect"
 echo
