@@ -2,6 +2,7 @@
 
 FILELIST=(.bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
 MAKE_TIMESTAMP="$(date +%s)"
+OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
 
 backup () {
@@ -31,21 +32,40 @@ deps () {
   echo '***** Installing Dependencies *****'
   echo
 
-  if [ -x "$(command -v brew)" ] ; then
-    if [ ! -x "$(command -v exa)" ] ; then
+  if [ $OS = Darwin ] ; then
+    if [ -x "$(command -v brew)" ] ; then
+      if [ ! -x "$(command -v exa)" ] ; then
+        printf "\tinstalling exa\n"
+        brew install exa
+      fi
+
+      if [ ! -x "$(command -v fzf)" ] ; then
+        printf "\tinstalling fzf\n"
+        brew install fzf
+        $(brew --prefix)/opt/fzf/install
+      fi
+
+      if [ ! -x "$(command -v git-summary)" ] ; then
+        printf "\tinstalling git-extras\n"
+        brew install git-extras
+      fi
+    fi
+  else
+    if [ -x "$(command -v cargo)" ] && [ ! -x "$(command -v exa)" ]; then
       printf "\tinstalling exa\n"
-      brew install exa
+      cargo install exa
     fi
 
     if [ ! -x "$(command -v fzf)" ] ; then
       printf "\tinstalling fzf\n"
-      brew install fzf
-      $(brew --prefix)/opt/fzf/install
+      printf "\tanswer y, y, n, during install\n"
+      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      ~/.fzf/install
     fi
 
     if [ ! -x "$(command -v git-summary)" ] ; then
-      printf "\tinstalling git-extras\n"
-      brew install git-extras
+      printf "\tinstalling git-extras (this requires sudo)\n"
+      sudo apt-get install git-extras
     fi
   fi
 
@@ -118,7 +138,7 @@ install_fonts () {
   echo '***** Installing new Fonts *****'
   echo
 
-  if [ $(uname -s) = Darwin ] ; then
+  if [ $OS = Darwin ] ; then
     printf "\tCopying new fonts to ~/Library/Fonts\n"
     cp ./fonts/* ~/Library/Fonts
   else
