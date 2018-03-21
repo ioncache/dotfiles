@@ -1,4 +1,4 @@
-adotfiles
+dotfiles
 ========
 
 'nix dotfiles
