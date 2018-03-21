@@ -180,6 +180,7 @@ fi
 
 [ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
 
+# git-run bash completion
 if which gr > /dev/null; then
   # NOTE: error when running the line below, using eval instead, yes it's evil
   # . <(gr completion)

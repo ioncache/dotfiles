@@ -33,6 +33,12 @@ deps () {
   echo
 
   if [ $OS = Darwin ] ; then
+
+    # install homebrew if not already installed -- the installation will pause and allow for cancelling if desired
+    if [ ! -x "$(command -v brew)" ] ; then
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
     if [ -x "$(command -v brew)" ] ; then
       if [ ! -x "$(command -v exa)" ] ; then
         printf "\tinstalling exa\n"
