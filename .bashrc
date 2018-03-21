@@ -108,28 +108,28 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 #####################
 
 if [ -f $HOME/.bash_aliases ]; then
-  . $HOME/.bash_aliases
+  source $HOME/.bash_aliases
 fi
 
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-  . /etc/bash_completion
+  source /etc/bash_completion
 fi
 
 if [ -f $HOME/.git-completion.sh ] && ! shopt -oq posix; then
-  . $HOME/.git-completion.sh
+  source $HOME/.git-completion.sh
 elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && ! shopt -oq posix; then
-  . /usr/local/etc/bash_completion.d/git-completion.bash
+  source /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
-# common custom aliases
-alias la='ls -A'
-alias l='ls -CF'
-alias prereqs='find -name '\''*pl'\'' -o -name '\''*pm'\'' | xargs scan_prereqs | perl -ne '\''next if /^\*/; s/\s+=.*$//; print'\'' | sort | uniq'
-
+# 'ls' related aliases
 if which exa > /dev/null; then
   alias ls='exa'
+  alias l='ls -F'
+  alias la='ls -a'
   alias ll='ls -alhF --group-directories-first'
 else
+  alias l='ls -CF'
+  alias la='ls -A'
   alias ll='ls -alhF --color --group-directories-first'
 fi
 
@@ -159,7 +159,7 @@ if command -v ack-grep >/dev/null 2>&1 ; then
   alias ack='ack-grep'
 fi
 
-# setup perlbrew
+# setup perlbrew -- you should really use perlbrew instead of your system perl, seriously
 if [ -d "$HOME/perl5/perlbrew" ] && [ ! "$OS" == "SunOS" ] ; then
   source $HOME/perl5/perlbrew/etc/bashrc
 fi
@@ -208,4 +208,3 @@ fi
 if [ -f $HOME/.bash_secrets ] ; then
   source $HOME/.bash_secrets
 fi
-
