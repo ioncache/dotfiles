@@ -157,7 +157,7 @@ install_fonts () {
 
     printf "\tCopying new fonts to ~/.fonts\n"
     cp ./fonts/* ~/.fonts
-  fi;
+  fi
 }
 
 restore () {
