@@ -44,6 +44,7 @@
   diff2 = diff --word-diff
   dl = "!git ll -1"
   dlc = diff --cached HEAD^
+  dlog = log --date-order --graph --tags --simplify-by-decoration --pretty=format:\"%ai %h %d\"
   find = !git ls-files | ack -i
   fl = log -u
   flog = log --stat --abbrev-commit --relative-date --pretty=oneline
