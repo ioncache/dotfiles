@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILELIST=(.bash_profile .bashrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
+FILELIST=(.bash_profile .bashrc .editorconfig .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
@@ -39,6 +39,11 @@ deps () {
     fi
 
     if [ -x "$(command -v brew)" ] ; then
+      if [ ! -f /usr/local/bin/ctags ] ; then
+        printf "\tinstalling ctags from homebrew\n"
+        brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+      fi
+
       if [ ! -x "$(command -v exa)" ] ; then
         printf "\tinstalling exa\n"
         brew install exa

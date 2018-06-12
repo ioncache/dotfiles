@@ -1,27 +1,22 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bronson/vim-trailing-whitespace'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'ervandew/supertab'
 Plug 'henrik/vim-indexed-search'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'kchmck/vim-coffee-script'
-Plug 'nono/vim-handlebars'
-Plug 'petdance/vim-perl'
+Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'rstacruz/vim-hyperstyle'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
-Plug 'vim-scripts/closetag.vim'
-Plug 'vim-scripts/ctrlp.vim'
 Plug 'vim-scripts/SearchComplete'
-Plug 'vim-scripts/taglist.vim'
 Plug 'vim-scripts/yaifa.vim'
 
 call plug#end()
@@ -106,3 +101,14 @@ let g:syntastic_check_on_wq = 0
 
 " Airline config
 let g:airline_powerline_fonts = 1
+
+" multi-cursor config
+let g:multi_cursor_use_default_mapping = 0
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-n>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'

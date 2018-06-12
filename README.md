@@ -47,6 +47,7 @@ Dependencies
 
 Not completely necessary, but may be desired.  Will be installed by default if possible.
 
+- ctags - this will only install on OSX as the BSD one installed is fairly outdated - https://github.com/universal-ctags/homebrew-universal-ctags
 - exa - ls replacement - https://github.com/ogham/exa
 - fzf - fuzzy finder - https://github.com/junegunn/fzf
 - git-extras - some extra commands for git - https://github.com/tj/git-extras
