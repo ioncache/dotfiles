@@ -126,7 +126,7 @@ if which exa > /dev/null; then
   alias ls='exa'
   alias l='ls -F'
   alias la='ls -a'
-  alias ll='ls -alhF --group-directories-first'
+  alias ll='ls --header --long --all --group-directories-first --git'
 else
   alias l='ls -CF'
   alias la='ls -A'
