@@ -1,6 +1,7 @@
 #!/bin/bash
 
 FILELIST=(.bash_profile .bashrc .editorconfig .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
+FORCE_UPGRADE="${FORCE_UPGRADE:-0}"
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
@@ -39,29 +40,29 @@ deps () {
     fi
 
     if [ -x "$(command -v brew)" ] ; then
-      if [ ! -f /usr/local/bin/ctags ] ; then
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -f /usr/local/bin/ctags ] ; then
         printf "\tinstalling ctags from homebrew\n"
         brew install --HEAD universal-ctags/universal-ctags/universal-ctags
       fi
 
-      if [ ! -x "$(command -v exa)" ] ; then
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v exa)" ] ; then
         printf "\tinstalling exa\n"
         brew install exa
       fi
 
-      if [ ! -x "$(command -v fzf)" ] ; then
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ] ; then
         printf "\tinstalling fzf\n"
         brew install fzf
         $(brew --prefix)/opt/fzf/install
       fi
 
-      if [ ! -x "$(command -v git-summary)" ] ; then
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v git-summary)" ] ; then
         printf "\tinstalling git-extras\n"
         brew install git-extras
       fi
     fi
   else
-    if [ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ] ; then
+    if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
       printf "\tinstalling exa (this requires sudo)\n"
       git clone https://github.com/ogham/exa.git
       cd exa
@@ -70,32 +71,32 @@ deps () {
       rm -rf exa
     fi
 
-    if [ ! -x "$(command -v fzf)" ] ; then
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ] ; then
       printf "\tinstalling fzf\n"
       printf "\tanswer y, n, during install\n"
       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       ~/.fzf/install
     fi
 
-    if [ ! -x "$(command -v git-summary)" ] ; then
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v git-summary)" ] ; then
       printf "\tinstalling git-extras (this requires sudo)\n"
       sudo apt-get install git-extras
     fi
   fi
 
-  if [ ! -d ~/.oh-my-git ] ; then
+  if [ $FORCE_UPGRADE = 1 ] || [ ! -d ~/.oh-my-git ] ; then
     printf "\tinstalling oh-my-git\n"
     git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git
   fi
 
   if [ -x "$(command -v npm)" ] ; then
-    if [ ! -x "$(command -v gr)" ] ; then
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v gr)" ] ; then
       printf "\tinstalling gr\n"
       npm install -g git-run
     fi
   fi
 
-  if [ ! -f ~/.vim/autoload/plug.vim ] ; then
+  if [ $FORCE_UPGRADE = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ] ; then
     printf "\tinstalling vim-plug\n"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
