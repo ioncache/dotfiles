@@ -178,7 +178,7 @@ if which atom-beta > /dev/null ; then
   alias atom=atom-beta
 fi
 
-[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git-run bash completion
 if which gr > /dev/null; then

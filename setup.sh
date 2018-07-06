@@ -74,7 +74,13 @@ deps () {
     if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ] ; then
       printf "\tinstalling fzf\n"
       printf "\tanswer y, n, during install\n"
-      git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      if [ -d ~/.fzf ] ; then
+        cd  ~/.fzf
+        git pull
+        cd -
+      else
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+      fi
       ~/.fzf/install
     fi
 
@@ -86,7 +92,13 @@ deps () {
 
   if [ $FORCE_UPGRADE = 1 ] || [ ! -d ~/.oh-my-git ] ; then
     printf "\tinstalling oh-my-git\n"
-    git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git
+    if [ -d ~/.oh-my-git ] ; then
+      cd  ~/.oh-my-git
+      git pull
+      cd -
+    else
+      git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git
+    fi
   fi
 
   if [ -x "$(command -v npm)" ] ; then
