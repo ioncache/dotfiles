@@ -63,6 +63,7 @@ deps () {
     fi
   else
     if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
+      # TODO: install make, cmake and cargo if required
       printf "\tinstalling exa (this requires sudo)\n"
       git clone https://github.com/ogham/exa.git
       cd exa
