@@ -42,6 +42,7 @@
   clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy | less --tabs=4 -RFX; }; f"
   diff2 = diff --word-diff
+  diff3 = difftool --tool=vimdiff
   dl = "!git ll -1"
   dlc = diff --cached HEAD^
   dlog = log --date-order --graph --tags --simplify-by-decoration --pretty=format:\"%ai %h %d\"

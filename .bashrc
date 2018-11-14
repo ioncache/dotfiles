@@ -203,6 +203,11 @@ if [ -d $HOME/n ] ; then
   export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 fi
 
+if [ -d $HOME/.nenv/bin ] ; then
+  export PATH="$HOME/.nenv/bin:$PATH"
+  eval "$(nenv init -)"
+fi
+
 # NOTE: leave this as the last section of this file so things in .bash_secrets can override anything else in this file
 # store any access keys, credentials, etc. in $HOME/.bash_secrets
 # can also be used to setup other custom things, like extra additions to $PATH or custom aliases
