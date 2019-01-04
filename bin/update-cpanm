@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cpan-outdated | xargs cpanm --mirror /home/markj/minicpan/
