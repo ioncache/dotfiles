@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILELIST=(.bash_profile .bashrc .editorconfig .eslintrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
+FILELIST=(.bash_profile .bashrc .bash_secrets .editorconfig .eslintrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
 FORCE_UPGRADE="${FORCE_UPGRADE:-0}"
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
