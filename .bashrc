@@ -203,7 +203,9 @@ if [ -d $HOME/n ] ; then
   export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 fi
 
-if [ -d $HOME/.nenv/bin ] ; then
+if which nodenv > /dev/null ; then
+  eval "$(nodenv init -)"
+elif [ -d $HOME/.nenv/bin ] ; then
   export PATH="$HOME/.nenv/bin:$PATH"
   eval "$(nenv init -)"
 fi
