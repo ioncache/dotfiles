@@ -187,6 +187,21 @@ if which gr > /dev/null; then
   eval "$(gr completion)"
 fi
 
+if [ -d $HOME/n ] ; then
+  export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+fi
+
+# non-stystem nonde
+if which nodenv > /dev/null ; then
+  eval "$(nodenv init -)"
+elif [ -d $HOME/.nenv/bin ] ; then
+  export PATH="$HOME/.nenv/bin:$PATH"
+  eval "$(nenv init -)"
+fi
+
+# autojump
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 #########################
 # environment variables #
 #########################
@@ -199,20 +214,10 @@ export HISTFILESIZE=2000
 export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth # ignore same sucessive entries
 
-if [ -d $HOME/n ] ; then
-  export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
-fi
-
-if which nodenv > /dev/null ; then
-  eval "$(nodenv init -)"
-elif [ -d $HOME/.nenv/bin ] ; then
-  export PATH="$HOME/.nenv/bin:$PATH"
-  eval "$(nenv init -)"
-fi
-
 # NOTE: leave this as the last section of this file so things in .bash_secrets can override anything else in this file
 # store any access keys, credentials, etc. in $HOME/.bash_secrets
 # can also be used to setup other custom things, like extra additions to $PATH or custom aliases
 if [ -f $HOME/.bash_secrets ] ; then
   source $HOME/.bash_secrets
 fi
+

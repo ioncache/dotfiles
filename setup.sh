@@ -60,6 +60,11 @@ deps () {
         printf "\tinstalling git-extras\n"
         brew install git-extras
       fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v j)" ] ; then
+        printf "\tinstalling autojump\n"
+        brew install autojump
+      fi
     fi
   else
     if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
