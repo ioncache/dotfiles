@@ -66,8 +66,8 @@ Post Install Manual Changes
 TODO
 ----
 
+- allow for other flavours of linux than debian, eg, redhat
 - make dependencies install correctly on linux -- mostly done
-- make dependencies upgrade existing installed versions possibly
 - install vim-plug plugins automatically
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
 - ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
