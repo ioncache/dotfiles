@@ -94,6 +94,11 @@ deps () {
       printf "\tinstalling git-extras (this requires sudo)\n"
       sudo apt-get install git-extras
     fi
+
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v j)" ] ; then
+      printf "\tinstalling autojump\n"
+      sudo apt-get install autojump
+    fi
   fi
 
   if [ $FORCE_UPGRADE = 1 ] || [ ! -d ~/.oh-my-git ] ; then

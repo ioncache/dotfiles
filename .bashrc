@@ -200,7 +200,11 @@ elif [ -d $HOME/.nenv/bin ] ; then
 fi
 
 # autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+if [ -f /usr/local/etc/profile.d/autojump.sh ] ; then 
+  . /usr/local/etc/profile.d/autojump.sh
+elif [ -f /usr/share/autojump/autojump.sh ] ; then 
+  . /usr/share/autojump/autojump.sh
+fi
 
 #########################
 # environment variables #
