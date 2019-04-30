@@ -71,3 +71,5 @@ TODO
 - install vim-plug plugins automatically
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
 - ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
+- add jq to deps
+- make dependency installation interactive so user can choose which they want... maybe entire process could be interactive
