@@ -46,7 +46,7 @@
   dl = "!git ll -1"
   dlc = diff --cached HEAD^
   dlog = log --date-order --graph --tags --simplify-by-decoration --pretty=format:\"%ai %h %d\"
-  find = !git ls-files | ack -i
+  find = !git ls-files | grep --color -i
   fl = log -u
   flog = log --stat --abbrev-commit --relative-date --pretty=oneline
   heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
@@ -62,4 +62,4 @@
   st = status
   undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
   undo = reset --soft HEAD^
-  vim = !sh -c 'vim `git ls-files | ack $0 | head -1`'
+  vim = !sh -c 'vim `git ls-files | grep $0 | head -1`'
