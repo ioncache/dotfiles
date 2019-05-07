@@ -8,11 +8,13 @@ Well, it will probably work on a nix system.  It's actually mostly been tested o
 Table of contents
 -----------------
 
-- [Installation](#installation)
-- [Setup Comands](#commands)
-- [Dependencies](#dependencies)
-- [Post Install Manual Changes](#manual_changes)
-- [TODO](#todo)
+- [dotfiles](#dotfiles)
+  - [Table of contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Setup Commands](#setup-commands)
+  - [Dependencies](#dependencies)
+  - [Post Install Manual Changes](#post-install-manual-changes)
+  - [TODO](#todo)
 
 <a name="installation"></a>
 Installation
@@ -47,12 +49,14 @@ Dependencies
 
 Not completely necessary, but may be desired.  Will be installed by default if possible.
 
+- autojump - a faster way to navigate your filesystem - https://github.com/wting/autojump
 - ctags - this will only install on OSX as the BSD one installed is fairly outdated - https://github.com/universal-ctags/homebrew-universal-ctags
 - exa - ls replacement - https://github.com/ogham/exa
-- fzf - fuzzy finder - https://github.com/junegunn/fzf
+- fzf - command-line fuzzy finder - https://github.com/junegunn/fzf
 - git-extras - some extra commands for git - https://github.com/tj/git-extras
 - gr - Multiple git repository management tool - https://github.com/mixu/gr
 - homebrew - package management for OSX - https://brew.sh/
+- jq - like sed for json - https://stedolan.github.io/jq/
 - oh-my-git - git bash prompt - https://github.com/arialdomartini/oh-my-git
 - vim-plug - vim plugin manager - https://github.com/junegunn/vim-plug
 
@@ -71,5 +75,4 @@ TODO
 - install vim-plug plugins automatically
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
 - ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
-- add jq to deps
 - make dependency installation interactive so user can choose which they want... maybe entire process could be interactive

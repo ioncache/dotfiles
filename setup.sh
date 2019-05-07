@@ -65,6 +65,11 @@ deps () {
         printf "\tinstalling autojump\n"
         brew install autojump
       fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v jq)" ] ; then
+        printf "\tinstalling jq\n"
+        brew install jq
+      fi
     fi
   else
     if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
@@ -98,6 +103,11 @@ deps () {
     if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v j)" ] ; then
       printf "\tinstalling autojump\n"
       sudo apt-get install autojump
+    fi
+
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v jq)" ] ; then
+      printf "\tinstalling jq\n"
+      sudo apt-get install jq
     fi
   fi
 
