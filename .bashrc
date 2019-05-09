@@ -192,8 +192,8 @@ if [ -d $HOME/n ] ; then
 fi
 
 # non-stystem node
-if [ -d "$HOME/.nodenv/bin" ] ; then
-  export PATH="$HOME/.nodenv/bin:$PATH"
+if [ -d "$HOME/.nodenv/shims" ] ; then
+  export PATH="$HOME/.nodenv/shims:$PATH"
   eval "$(nodenv init -)"
 elif [ -d "$HOME/.nenv/bin" ] ; then
   export PATH="$HOME/.nenv/bin:$PATH"
@@ -201,9 +201,9 @@ elif [ -d "$HOME/.nenv/bin" ] ; then
 fi
 
 # autojump
-if [ -f /usr/local/etc/profile.d/autojump.sh ] ; then 
+if [ -f /usr/local/etc/profile.d/autojump.sh ] ; then
   . /usr/local/etc/profile.d/autojump.sh
-elif [ -f /usr/share/autojump/autojump.sh ] ; then 
+elif [ -f /usr/share/autojump/autojump.sh ] ; then
   . /usr/share/autojump/autojump.sh
 fi
 
