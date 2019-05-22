@@ -70,6 +70,16 @@ deps () {
         printf "\tinstalling jq\n"
         brew install jq
       fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v bat)" ] ; then
+        printf "\tinstalling bat\n"
+        brew install bat
+      fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fd)" ] ; then
+        printf "\tinstalling fd\n"
+        brew install fd
+      fi
     fi
   else
     if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
@@ -108,6 +118,16 @@ deps () {
     if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v jq)" ] ; then
       printf "\tinstalling jq\n"
       sudo apt-get install jq
+    fi
+
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v bat)" ] ; then
+      printf "\tinstalling bat\n"
+      printf "\tTODO: install this for linux\n"
+    fi
+
+    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fd)" ] ; then
+      printf "\tinstalling fd\n"
+      printf "\tTODO: install this for linux\n"
     fi
   fi
 

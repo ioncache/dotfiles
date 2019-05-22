@@ -173,6 +173,12 @@ if [ -f $HOME/.git-prompt.sh ]; then
     source $HOME/.git-prompt.sh
 fi
 
+# code editor aliases for betas
+
+if which code-insiders > /dev/null ; then
+  alias code=code-insiders
+fi
+
 if which atom-beta > /dev/null ; then
   alias apm=apm-beta
   alias atom=atom-beta
