@@ -47,8 +47,8 @@ shopt -s checkwinsize
 # uncomment for a colored prompt, if the terminal has the capability
 force_color_prompt=yes
 
-if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+if [ -n "$force_color_prompt" ] ; then
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null ; then
     # We have color support; assume it's compliant with Ecma-48
     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
     # a case would tend to support setf rather than setaf.)
@@ -63,11 +63,11 @@ if [ -f $HOME/.git-prompt.sh ] ; then
 fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ] ; then
   debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-if [ "$color_prompt" = yes ]; then
+if [ "$color_prompt" = yes ] ; then
   PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
@@ -89,7 +89,7 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
+if [ -x /usr/bin/dircolors ] ; then
   test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
   alias ls='ls --color=auto'
   alias grep='grep --color=always'
@@ -107,22 +107,22 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 # alias definitions #
 #####################
 
-if [ -f $HOME/.bash_aliases ]; then
+if [ -f $HOME/.bash_aliases ] ; then
   source $HOME/.bash_aliases
 fi
 
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+if [ -f /etc/bash_completion ] && ! shopt -oq posix ; then
   source /etc/bash_completion
 fi
 
-if [ -f $HOME/.git-completion.sh ] && ! shopt -oq posix; then
+if [ -f $HOME/.git-completion.sh ] && ! shopt -oq posix ; then
   source $HOME/.git-completion.sh
 elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && ! shopt -oq posix; then
   source /usr/local/etc/bash_completion.d/git-completion.bash
 fi
 
 # 'ls' related aliases
-if which exa > /dev/null; then
+if which exa > /dev/null ; then
   alias ls='exa'
   alias l='ls -F'
   alias la='ls -a'
@@ -139,7 +139,7 @@ OS=$(uname -s)
 # some OS specific aliases/options
 case $OS in
   Darwin)
-    if ! which exa > /dev/null; then
+    if ! which exa > /dev/null ; then
       alias ll='ls -alhFG'
     fi
 
@@ -165,11 +165,11 @@ if [ -d "$HOME/perl5/perlbrew" ] && [ ! "$OS" == "SunOS" ] ; then
 fi
 
 # brew bash completion
-if [ -f /usr/local/etc/bash_completion.d ]; then
+if [ -f /usr/local/etc/bash_completion.d ] ; then
   source /usr/local/etc/bash_completion.d
 fi
 
-if [ -f $HOME/.git-prompt.sh ]; then
+if [ -f $HOME/.git-prompt.sh ] ; then
     source $HOME/.git-prompt.sh
 fi
 
@@ -187,7 +187,7 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git-run bash completion
-if which gr > /dev/null; then
+if which gr > /dev/null ; then
   # NOTE: error when running the line below, using eval instead, yes it's evil
   # . <(gr completion)
   eval "$(gr completion)"
@@ -204,6 +204,12 @@ if [ -d "$HOME/.nodenv/shims" ] ; then
 elif [ -d "$HOME/.nenv/bin" ] ; then
   export PATH="$HOME/.nenv/bin:$PATH"
   eval "$(nenv init -)"
+fi
+
+# add npm completion
+if which npm > /dev/null ; then
+  source <(npm completion)
+  # eval "`npm completion`"
 fi
 
 # autojump
