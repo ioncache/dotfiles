@@ -196,8 +196,13 @@ install_dotfiles () {
 
   for f in ${FILELIST[@]}
   do
-    printf "\tinstalling $f\n"
-    cp ./$f ~/
+    printf "\tinstalling $f"
+    if [ "$f" == ".bash_secrets" ] && [ -f ~/.bash_secrets ] ; then
+      printf ": already exists, skipping"
+    else 
+      cp ./$f ~/
+    fi
+    printf "\n"
   done
 }
 
