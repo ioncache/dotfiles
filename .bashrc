@@ -184,6 +184,10 @@ if which atom-beta > /dev/null ; then
   alias atom=atom-beta
 fi
 
+if which direnv > /dev/null ; then
+  eval "$(direnv hook bash)"
+fi
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git-run bash completion

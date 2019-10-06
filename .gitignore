@@ -7,7 +7,6 @@
 *.pem
 *.swp
 npm-debug.log
-package-lock.json
 
 # folders
 .carton
