@@ -42,6 +42,7 @@
   ci = commit
   clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   co = checkout
+  conflicts = diff --name-only --diff-filter=U
   di = dsf
   diff2 = diff --word-diff
   diff3 = difftool --tool=vimdiff
