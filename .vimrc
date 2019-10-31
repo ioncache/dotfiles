@@ -87,6 +87,15 @@ let mapleader = ","
 
 nmap <silent> ,/ :nohlsearch<CR>
 
+nnoremap <silent> <Leader>b :call ToggleBackground()<CR>
+function! ToggleBackground()
+    if &background == "light"
+        set background=dark
+    else
+        set background=light
+    endif
+endfunction
+
 " plugin specific settings
 
 " NERDTTree config
