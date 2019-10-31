@@ -211,10 +211,10 @@ elif [ -d "$HOME/.nenv/bin" ] ; then
 fi
 
 # add npm completion
-if which npm > /dev/null ; then
-  source <(npm completion)
-  # eval "`npm completion`"
-fi
+#if which npm > /dev/null ; then
+  #source <(npm completion)
+  #eval "`npm completion`"
+#fi
 
 # autojump
 if [ -f /usr/local/etc/profile.d/autojump.sh ] ; then
