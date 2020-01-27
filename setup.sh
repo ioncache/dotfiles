@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILELIST=(.bash_profile .bashrc .bash_secrets .editorconfig .eslintrc .git-prompt.sh .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
+FILELIST=(.bash_profile .bashrc .bash_secrets .editorconfig .eslintrc .gitconfig .gitignore .htoprc .perlcriticrc .perltidyrc .profile .screenrc .tmux.conf .vimrc)
 FORCE_UPGRADE="${FORCE_UPGRADE:-0}"
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
@@ -80,16 +80,29 @@ deps () {
         printf "\tinstalling fd\n"
         brew install fd
       fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v starship)" ] ; then
+        printf "\tinstalling starship\n"
+        brew install starship
+      fi
     fi
   else
-    if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cargo)" ] && [ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
-      # TODO: install make, cmake and cargo if required
-      printf "\tinstalling exa (this requires sudo)\n"
-      git clone https://github.com/ogham/exa.git
-      cd exa
-      sudo make install
-      cd ..
-      rm -rf exa
+
+    if [ -x "$(command -v cargo)" ] ; then
+      if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]) ; then
+        # TODO: install make, cmake and cargo if required
+        printf "\tinstalling exa (this requires sudo)\n"
+        git clone https://github.com/ogham/exa.git
+        cd exa
+        sudo make install
+        cd ..
+        rm -rf exa
+      fi
+
+      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v starship)" ] ; then
+        printf "\tinstalling starship\n"
+        cargo install starship
+      fi
     fi
 
     if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ] ; then
@@ -128,24 +141,6 @@ deps () {
     if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fd)" ] ; then
       printf "\tinstalling fd\n"
       printf "\tTODO: install this for linux\n"
-    fi
-  fi
-
-  if [ $FORCE_UPGRADE = 1 ] || [ ! -d ~/.oh-my-git ] ; then
-    printf "\tinstalling oh-my-git\n"
-    if [ -d ~/.oh-my-git ] ; then
-      cd  ~/.oh-my-git
-      git pull
-      cd -
-    else
-      git clone https://github.com/arialdomartini/oh-my-git.git ~/.oh-my-git
-    fi
-  fi
-
-  if [ -x "$(command -v npm)" ] ; then
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v gr)" ] ; then
-      printf "\tinstalling gr\n"
-      npm install -g git-run
     fi
   fi
 
@@ -199,7 +194,7 @@ install_dotfiles () {
     printf "\tinstalling $f"
     if [ "$f" == ".bash_secrets" ] && [ -f ~/.bash_secrets ] ; then
       printf ": already exists, skipping"
-    else 
+    else
       cp ./$f ~/
     fi
     printf "\n"

@@ -58,10 +58,6 @@ if [ -n "$force_color_prompt" ] ; then
   fi
 fi
 
-if [ -f $HOME/.git-prompt.sh ] ; then
-  source $HOME/.git-prompt.sh
-fi
-
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ] ; then
   debian_chroot=$(cat /etc/debian_chroot)
@@ -73,8 +69,8 @@ else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
 fi
 
-if [ -f $HOME/.oh-my-git/prompt.sh ] ; then
-  source $HOME/.oh-my-git/prompt.sh
+if [ -x "$(command -v starship)" ] ; then
+  eval "$(starship init bash)"
 fi
 
 unset color_prompt force_color_prompt
@@ -167,10 +163,6 @@ fi
 # brew bash completion
 if [ -f /usr/local/etc/bash_completion.d ] ; then
   source /usr/local/etc/bash_completion.d
-fi
-
-if [ -f $HOME/.git-prompt.sh ] ; then
-    source $HOME/.git-prompt.sh
 fi
 
 # code editor aliases for betas
