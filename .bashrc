@@ -37,6 +37,10 @@ if [ -d "/usr/local/opt/gnu-tar/libexec/gnubin" ] ; then
   PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 fi
 
+if [ -d "$HOME/.cargo/bin" ] ; then
+  PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
