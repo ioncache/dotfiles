@@ -1,19 +1,18 @@
 # files
-.ackrc
 .DS_Store
 *.deb
-*.komodoproject
-*.ksf
+# NOTE: this is for safety as a default
+.env*
+*.log
 *.pem
 *.swp
-npm-debug.log
 
 # folders
-.carton
-.komodotools
-ant_package
-bootstrap
-bower_components
-modules_tmp
-node_modules
-tmp
+ant_package/
+bootstrap/
+bower_components/
+coverage/
+dist/
+modules_tmp/
+node_modules/
+tmp/

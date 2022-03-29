@@ -1,0 +1,19 @@
+# files
+.ackrc
+.DS_Store
+*.deb
+*.komodoproject
+*.ksf
+*.pem
+*.swp
+npm-debug.log
+
+# folders
+.carton
+.komodotools
+ant_package
+bootstrap
+bower_components
+modules_tmp
+node_modules
+tmp
