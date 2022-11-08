@@ -39,6 +39,7 @@
 [tag]
   sort = version:refname
 [alias]
+  branch-diff = log --pretty --oneline --left-right --graph --cherry-pick
   ci = commit
   clog = !"git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
   co = checkout
