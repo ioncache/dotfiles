@@ -14,16 +14,16 @@ backup() {
     mkdir ~/.dotfile_backups
   fi
 
-  if [ ! -d ~/.dotfile_backups/$MAKE_TIMESTAMP ]; then
-    mkdir ~/.dotfile_backups/$MAKE_TIMESTAMP
+  if [ ! -d ~/.dotfile_backups/"$MAKE_TIMESTAMP" ]; then
+    mkdir ~/.dotfile_backups/"$MAKE_TIMESTAMP"
   fi
 
   for f in ./dotfiles/.[a-z]*; do
     dotfile=${f#"./dotfiles/"}
 
-    if [ -f ~/$dotfile ]; then
+    if [ -f ~/"$dotfile" ]; then
       printf "\tbacking up $dotfile\n"
-      cp ~/$dotfile ~/.dotfile_backups/$MAKE_TIMESTAMP
+      cp ~/"$dotfile" ~/.dotfile_backups/"$MAKE_TIMESTAMP"
     fi
   done
 }
@@ -33,118 +33,122 @@ deps() {
   echo '***** Installing Dependencies *****'
   echo
 
-  if [ $OS = Darwin ]; then
+  if [ "$OS" = Darwin ]; then
     # install homebrew if not already installed -- the installation will pause and allow for cancelling if desired
     if [ ! -x "$(command -v brew)" ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
     if [ -x "$(command -v brew)" ]; then
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -f /usr/local/bin/ctags ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f /usr/local/bin/ctags ]; then
         printf "\tinstalling ctags from homebrew\n"
         brew install --HEAD universal-ctags/universal-ctags/universal-ctags
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v exa)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v exa)" ]; then
         printf "\tinstalling exa\n"
         brew install exa
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
         printf "\tinstalling fzf\n"
         brew install fzf
-        $(brew --prefix)/opt/fzf/install
+        "$(brew --prefix)/opt/fzf/install"
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v git-summary)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v git-summary)" ]; then
         printf "\tinstalling git-extras\n"
         brew install git-extras
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v j)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v j)" ]; then
         printf "\tinstalling autojump\n"
         brew install autojump
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v jq)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v jq)" ]; then
         printf "\tinstalling jq\n"
         brew install jq
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v bat)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v bat)" ]; then
         printf "\tinstalling bat\n"
         brew install bat
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fd)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fd)" ]; then
         printf "\tinstalling fd\n"
         brew install fd
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v starship)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v starship)" ]; then
         printf "\tinstalling starship\n"
         brew install starship
       fi
+
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v diff-so-fancy)" ]; then
+        printf "\tinstalling diff-so-fancy\n"
+        brew install diff-so-fancy
+      fi
     fi
   else
-
     if [ -x "$(command -v cargo)" ]; then
-      if [ $FORCE_UPGRADE = 1 ] || ([ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]); then
+      if [ "$FORCE_UPGRADE" = 1 ] || ([ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]); then
         # TODO: install make, cmake and cargo if required
         printf "\tinstalling exa (this requires sudo)\n"
         git clone https://github.com/ogham/exa.git
-        cd exa
+        cd exa || exit
         sudo make install
         cd ..
         rm -rf exa
       fi
 
-      if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v starship)" ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v starship)" ]; then
         printf "\tinstalling starship\n"
         cargo install starship
       fi
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fzf)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
       printf "\tinstalling fzf\n"
       printf "\tanswer y, n, during install\n"
       if [ -d ~/.fzf ]; then
-        cd ~/.fzf
+        cd ~/.fzf || exit
         git pull
-        cd -
+        cd - || exit
       else
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       fi
       ~/.fzf/install
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v git-summary)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v git-summary)" ]; then
       printf "\tinstalling git-extras (this requires sudo)\n"
       sudo apt-get install git-extras
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v j)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v j)" ]; then
       printf "\tinstalling autojump\n"
       sudo apt-get install autojump
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v jq)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v jq)" ]; then
       printf "\tinstalling jq\n"
       sudo apt-get install jq
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v bat)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v bat)" ]; then
       printf "\tinstalling bat\n"
       printf "\tTODO: install this for linux\n"
     fi
 
-    if [ $FORCE_UPGRADE = 1 ] || [ ! -x "$(command -v fd)" ]; then
+    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fd)" ]; then
       printf "\tinstalling fd\n"
       printf "\tTODO: install this for linux\n"
     fi
   fi
 
-  if [ $FORCE_UPGRADE = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ]; then
+  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ]; then
     printf "\tinstalling vim-plug\n"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
@@ -159,7 +163,7 @@ generate_ssl_cert() {
     openssl genrsa -des3 -passout pass:x -out ssl.pass.key 2048 >/dev/null 2>&1
     openssl rsa -passin pass:x -in ssl.pass.key -out ssl.key >/dev/null 2>&1
     rm ssl.pass.key
-    openssl req -new -key ssl.key -out ssl.csr -subj /C=XX/ST=Some\ Place/L=Some\ Town/O=Some\ Org/OU=Some\ Group/CN=$(hostname) >/dev/null 2>&1
+    openssl req -new -key ssl.key -out ssl.csr -subj /C=XX/ST=Some\ Place/L=Some\ Town/O=Some\ Org/OU=Some\ Group/CN="$(hostname)" >/dev/null 2>&1
     openssl x509 -req -sha256 -days 365 -in ssl.csr -signkey ssl.key -out ssl.crt >/dev/null 2>&1
     rm ssl.csr
     mv ssl.key ~/
@@ -172,29 +176,17 @@ generate_ssl_cert() {
   fi
 }
 
-install_bin() {
-  echo
-  echo '***** Installing extra bin files in ~/bin *****'
-  echo
-
-  if [ ! -d ~/bin ]; then
-    mkdir ~/bin
-  fi
-
-  cp ./bin/* ~/bin
-}
-
 install_dotfiles() {
   echo
   echo '***** Installing new Dotfiles *****'
   echo
 
   for f in ./dotfiles/.[a-z]*; do
-    printf "\tinstalling $f"
-    if [ "$f" == ".bash_secrets" ] && [ -f ~/.bash_secrets ]; then
+    printf "\tinstalling %s" "$f"
+    if [ "$f" == ".shell_secrets" ] && [ -f ~/.shell_secrets ]; then
       printf ": already exists, skipping"
     else
-      cp ./$f ~/
+      cp ./"$f" ~/
     fi
     printf "\n"
   done
@@ -205,7 +197,7 @@ install_fonts() {
   echo '***** Installing new Fonts *****'
   echo
 
-  if [ $OS = Darwin ]; then
+  if [ "$OS" = Darwin ]; then
     printf "\tCopying new fonts to ~/Library/Fonts\n"
     cp ./fonts/* ~/Library/Fonts
   else
@@ -219,18 +211,18 @@ install_fonts() {
 }
 
 restore() {
-  if [ $RESTORE_TIMESTAMP = notarealbackuptimestamp ]; then
+  if [ "$RESTORE_TIMESTAMP" = notarealbackuptimestamp ]; then
     echo
     printf "You must supply a timestamp when trying to restore: RESTORE_TIMESTAMP=<desired timestamp> install.sh\n"
     echo
-  elif [ -d ~/.dotfile_backups/$RESTORE_TIMESTAMP ]; then
+  elif [ -d ~/.dotfile_backups/"$RESTORE_TIMESTAMP" ]; then
     echo
     echo "***** Restoring dotfiles from timestamp '$RESTORE_TIMESTAMP' *****"
     echo
 
-    cp ~/.dotfile_backups/$RESTORE_TIMESTAMP/.* ~/ 2>/dev/null
+    cp ~/.dotfile_backups/"$RESTORE_TIMESTAMP"/.* ~/ 2>/dev/null
   else
-    printf "\tNo backups found for timestamp $RESTORE_TIMESTAMP\n"
+    printf "\tNo backups found for timestamp %s\n" "$RESTORE_TIMESTAMP"
   fi
 }
 
@@ -240,12 +232,12 @@ setup_git() {
   echo
 
   echo "Enter the name for your git commits, followed by [ENTER]:"
-  read GIT_NAME
+  read -r GIT_NAME
 
   echo
 
   echo "Enter the email address for your git commits, followed by [ENTER]:"
-  read GIT_EMAIL
+  read -r GIT_EMAIL
 
   echo "[user]
   name = $GIT_NAME
@@ -269,7 +261,6 @@ help() {
   printf "\tdeps - will try to install dependencies\n"
   printf "\tgenerate_ssl_cert - will generate a self-signed ssl cert and copy the files to your home folder\n"
   printf "\tinstall - runs the 'backup', 'deps' 'generate_ssl_cert' 'install_dotfiles', 'install_fonts' and 'setup_git' targets -- this is the default command\n"
-  printf "\tinstall_bin - will install new binaries to '~/bin'; '~/bin' is already added to the path in the included .bashrc\n"
   printf "\tinstall_dotfiles - will install the new dotfiles to '~/'\n"
   printf "\tinstall_fonts - will install new fonts to '~/Library/Fonts' or '~/.fonts' on other systems\n"
   printf "\tinstall_restore - will restore backed up dotfiles, usage 'RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore'\n"
@@ -300,11 +291,6 @@ for key in "$@"; do
     ;;
   install)
     install
-    COMMAND_RUN=1
-    break
-    ;;
-  install_bin)
-    install_bin
     COMMAND_RUN=1
     break
     ;;
@@ -340,5 +326,5 @@ if [ $COMMAND_RUN = 0 ]; then
 fi
 
 echo
-echo "NOTE: you will need to reload your ~/.bashrc or open a new terminal for installation to take effect"
+echo "NOTE: you will need to reload your \$SHELL config or open a new terminal for installation to take effect"
 echo

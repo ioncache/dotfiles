@@ -209,7 +209,7 @@ eval "$(thefuck --alias)"
 #########################
 # environment variables #
 #########################
-# NOTE: override in .bash_secrets if desired
+# NOTE: override in .shell_secrets if desired
 
 export EDITOR=vim # emacs is a cruel punishment on humanity
 export PAGER=less
@@ -218,9 +218,9 @@ export HISTFILESIZE=2000
 export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
 export HISTCONTROL=ignoreboth           # ignore same sucessive entries
 
-# NOTE: leave this as the last section of this file so things in .bash_secrets can override anything else in this file
-# store any access keys, credentials, etc. in $HOME/.bash_secrets
+# NOTE: leave this as the last section of this file so things in .shell_secrets can override anything else in this file
+# store any access keys, credentials, etc. in $HOME/.shell_secrets
 # can also be used to setup other custom things, like extra additions to $PATH or custom aliases
-if [ -f "$HOME"/.bash_secrets ]; then
-  source "$HOME"/.bash_secrets
+if [ -f "$HOME"/.shell_secrets ]; then
+  source "$HOME"/.shell_secrets
 fi
