@@ -18,16 +18,16 @@ if [ -d "/sbin" ]; then
   PATH="/sbin:$PATH"
 fi
 
-if [ -d "$HOME/bin" ]; then
-  PATH="$HOME/bin:$PATH"
+if [ -d "/usr/local/opt/gnu-tar/libexec/gnubin" ]; then
+  PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 fi
 
 if [ -d "/usr/local/bin" ]; then
   PATH="/usr/local/bin:$PATH"
 fi
 
-if [ -d "/usr/local/opt/gnu-tar/libexec/gnubin" ]; then
-  PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
 fi
 
 if [ -d "$HOME/.cargo/bin" ]; then
