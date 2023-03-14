@@ -110,10 +110,6 @@ if [ -f /etc/zsh ] && ! setopt -oq posix; then
   source /etc/zsh
 fi
 
-if [ -f "$HOME"/.git-completion.sh ] && ! shopt -oq posix; then
-  source "$HOME"/.git-completion.sh
-fi
-
 # brew shell completion
 if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
   for FILE in $(brew --prefix)/etc/bash_completion.d; do
