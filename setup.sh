@@ -131,7 +131,7 @@ deps() {
   fi
 }
 
-install_dotfiles() {
+dotfiles() {
   echo
   echo '***** Installing new Dotfiles *****'
   echo
@@ -147,7 +147,7 @@ install_dotfiles() {
   done
 }
 
-install_fonts() {
+fonts() {
   echo
   echo '***** Installing new Fonts *****'
   echo
@@ -204,22 +204,29 @@ install() {
   backup
   deps
   setup_git
-  install_dotfiles
-  install_fonts
+  dotfiles
+  fonts
 }
 
 help() {
-  printf "\nsetup.sh - installs some dotfiles, fonts and useful applications for terminal environment\n\n"
+  printf "\nsetup.sh - installs some dotfiles, fonts and useful applications for terminal environments\n\n"
   echo "Commands:"
-  printf "\tbackup - will backup current dotfiles to '~/.dotfile_backups/<current timestamp>'\n"
-  printf "\tdeps - will try to install dependencies\n"
-  printf "\tinstall - runs the 'backup', 'deps' 'generate_ssl_cert' 'install_dotfiles', 'install_fonts' and 'setup_git' targets -- this is the default command\n"
-  printf "\tinstall_dotfiles - will install the new dotfiles to '~/'\n"
-  printf "\tinstall_fonts - will install new fonts to '~/Library/Fonts' or '~/.fonts' on other systems\n"
-  printf "\trestore - will restore backed up dotfiles, usage 'RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore'\n"
-  printf "\tsetup_git - asks you to enter a name and email used when making commits with git\n"
-  echo
-  echo "Note: the default command is 'install', it runs the 'backup', 'deps', 'generate_ssl_cert', 'install_dotfiles', and 'install_fonts' commands"
+
+  printf "\n  Default:\n\n"
+  printf "    install - runs the 'backup', 'deps' 'dotfiles', 'fonts' and 'setup_git' targets\n"
+
+  printf "\n  Individual setup:\n\n"
+  printf "    deps - will try to install dependencies\n"
+  printf "    dotfiles - will install the new dotfiles to '~/'\n"
+  printf "    fonts - will install new fonts to '~/Library/Fonts' or '~/.fonts' on other systems\n"
+
+  printf "\n  Utility:\n\n"
+  printf "    backup - will backup current dotfiles to '~/.dotfile_backups/<current timestamp>'\n"
+  printf "    restore - will restore backed up dotfiles, usage 'RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore'\n"
+  printf "    setup_git - asks you to enter a name and email used when making commits with git\n"
+
+  printf "\n  Flags:\n\n"
+  printf "    --help - prints this help information (actually any unknown command will print the help)\n"
   echo
 }
 
@@ -242,13 +249,13 @@ for key in "$@"; do
     COMMAND_RUN=1
     break
     ;;
-  install_dotfiles)
-    install_dotfiles
+  dotfiles)
+    dotfiles
     COMMAND_RUN=1
     break
     ;;
-  install_fonts)
-    install_fonts
+  fonts)
+    fonts
     COMMAND_RUN=1
     break
     ;;
