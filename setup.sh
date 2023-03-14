@@ -66,7 +66,7 @@ deps() {
     VOLTA_HOME="$HOME"/.volta
     PATH="$VOLTA_HOME/bin:$PATH"
     volta install node
-    npm install --global ncu snyk
+    npm install --global npm-check-updates snyk
 
   else
     if [ -x "$(command -v cargo)" ]; then
