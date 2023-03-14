@@ -110,8 +110,13 @@ fi
 
 if [ -f "$HOME"/.git-completion.sh ] && ! shopt -oq posix; then
   source "$HOME"/.git-completion.sh
-elif [ -f /usr/local/etc/bash_completion.d/git-completion.bash ] && ! shopt -oq posix; then
-  source /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
+# brew shell completion
+if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+  for FILE in $(brew --prefix)/etc/bash_completion.d; do
+    source "$FILE"
+  done
 fi
 
 # 'ls' related aliases
@@ -152,11 +157,6 @@ SunOS)
   ;;
 esac
 
-# brew bash completion
-if [ -f /usr/local/etc/bash_completion.d ]; then
-  source /usr/local/etc/bash_completion.d
-fi
-
 # code editor aliases for betas
 
 if which code-insiders >/dev/null; then
@@ -177,11 +177,6 @@ if which gr >/dev/null; then
   eval "$(gr completion)"
 fi
 
-if [ -d "$HOME"/n ]; then
-  export N_PREFIX="$HOME/n"
-  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
-fi
-
 # non-stystem node
 if [ -d "$HOME/.volta" ]; then
   export VOLTA_HOME="$HOME/.volta"
@@ -189,16 +184,18 @@ if [ -d "$HOME/.volta" ]; then
 elif [ -d "$HOME/.nodenv/shims" ]; then
   export PATH="$HOME/.nodenv/shims:$PATH"
   eval "$(nodenv init -)"
+elif [ -d "$HOME"/n ]; then
+  export N_PREFIX="$HOME/n"
+  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 elif [ -d "$HOME/.nenv/bin" ]; then
   export PATH="$HOME/.nenv/bin:$PATH"
   eval "$(nenv init -)"
 fi
 
 # add npm completion
-#if which npm > /dev/null ; then
-#source <(npm completion)
-#eval "`npm completion`"
-#fi
+if which npm >/dev/null; then
+  source <(npm completion)
+fi
 
 # thefuck is a command spelling error fixer
 eval "$(thefuck --alias)"

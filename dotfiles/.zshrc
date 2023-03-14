@@ -110,10 +110,15 @@ if [ -f /etc/zsh ] && ! setopt -oq posix; then
   source /etc/zsh
 fi
 
-if [ -f "$HOME"/.git-completion.zsh ] && ! setopt -oq posix; then
-  source "$HOME"/.git-completion.zsh
-elif [ -f /usr/local/etc/zsh_completion.d/git-completion.zsh ] && ! setopt -oq posix; then
-  source /usr/local/etc/zsh_completion.d/git-completion.zsh
+if [ -f "$HOME"/.git-completion.sh ] && ! shopt -oq posix; then
+  source "$HOME"/.git-completion.sh
+fi
+
+# brew shell completion
+if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+  for FILE in $(brew --prefix)/etc/bash_completion.d; do
+    source "$FILE"
+  done
 fi
 
 # 'ls' related aliases
@@ -154,11 +159,6 @@ SunOS)
   ;;
 esac
 
-# # brew shell completion
-if [ -f /usr/local/etc/zsh_completion.d ]; then
-  source /usr/local/etc/zsh_completion.d
-fi
-
 # code editor aliases for betas
 
 if which code-insiders >/dev/null; then
@@ -172,11 +172,6 @@ fi
 # fzf is a fuzzy finder
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
-if [ -d "$HOME"/n ]; then
-  export N_PREFIX="$HOME/n"
-  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
-fi
-
 # non-stystem node
 if [ -d "$HOME/.volta" ]; then
   export VOLTA_HOME="$HOME/.volta"
@@ -184,16 +179,18 @@ if [ -d "$HOME/.volta" ]; then
 elif [ -d "$HOME/.nodenv/shims" ]; then
   export PATH="$HOME/.nodenv/shims:$PATH"
   eval "$(nodenv init -)"
+elif [ -d "$HOME"/n ]; then
+  export N_PREFIX="$HOME/n"
+  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
 elif [ -d "$HOME/.nenv/bin" ]; then
   export PATH="$HOME/.nenv/bin:$PATH"
   eval "$(nenv init -)"
 fi
 
 # add npm completion
-#if which npm > /dev/null ; then
-#source <(npm completion)
-#eval "`npm completion`"
-#fi
+if which npm >/dev/null; then
+  source <(npm completion)
+fi
 
 # thefuck is a command spelling error fixer
 eval "$(thefuck --alias)"
@@ -208,10 +205,10 @@ eval "$(thefuck --alias)"
 
 export EDITOR=vim # emacs is a cruel punishment on humanity
 export PAGER=less
-export HISTSIZE=1000
-export HISTFILESIZE=2000
-export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
-export HISTCONTROL=ignoreboth           # ignore same sucessive entries
+export HISTSIZE=100000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_SPACE
 
 # NOTE: leave this as the last section of this file so things in .shell_secrets can override anything else in this file
 # store any access keys, credentials, etc. in $HOME/.shell_secrets
