@@ -28,7 +28,7 @@ backup() {
   done
 }
 
-HOMEBREW_DEPS=(azure-cli autojump bat diff-so-fancy direnv exa fd fzf git git-extras htop jq ripgrep scc starship thefuck tldr vim wget)
+HOMEBREW_DEPS=(azure-cli autojump bat diff-so-fancy direnv exa fd fzf git git-extras btop htop jq neofetch ripgrep scc starship thefuck tldr vim wget)
 
 deps() {
   echo
