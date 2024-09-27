@@ -28,7 +28,6 @@ backup() {
   done
 }
 
-HOMEBREW_DEPS=(azure-cli autojump bat diff-so-fancy direnv exa fd fzf git git-extras btop htop jq neofetch ripgrep scc starship thefuck tldr vim wget)
 
 deps() {
   echo
@@ -36,6 +35,8 @@ deps() {
   echo
 
   if [ "$OS" = Darwin ]; then
+    HOMEBREW_DEPS=(azure-cli autojump bat diff-so-fancy direnv eza fd fzf git git-extras btop htop jq neofetch ripgrep scc starship thefuck tldr vim wget)
+
     # install homebrew if not already installed -- the installation will pause and allow for cancelling if desired
     if [ ! -x "$(command -v brew)" ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -69,21 +70,12 @@ deps() {
     npm install --global npm-check-updates snyk
 
   else
-    if [ -x "$(command -v cargo)" ]; then
-      if [ "$FORCE_UPGRADE" = 1 ] || ([ -x "$(command -v cmake)" ] && [ ! -x "$(command -v exa)" ]); then
-        # TODO: install make, cmake and cargo if required
-        printf "\tinstalling exa (this requires sudo)\n"
-        git clone https://github.com/ogham/exa.git
-        cd exa || exit
-        sudo make install
-        cd ..
-        rm -rf exa
-      fi
+    LINUX_DEPS=(autojump bat direnv eza git git-extras btop htop jq neofetch ripgrep tldr vim wget zsh-autosuggestions)
 
-      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v starship)" ]; then
-        printf "\tinstalling starship\n"
-        cargo install starship
-      fi
+    if [ -x "$(command -v apt)" ]; then
+      printf "\tinstalling apt dependencies\n"
+      sudo apt update
+      sudo apt install "$LINUX_DEPS"
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
@@ -99,30 +91,12 @@ deps() {
       ~/.fzf/install
     fi
 
-    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v git-summary)" ]; then
-      printf "\tinstalling git-extras (this requires sudo)\n"
-      sudo apt-get install git-extras
-    fi
+    # TODO: setup azure-cli, fd, scc
+  fi
 
-    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v j)" ]; then
-      printf "\tinstalling autojump\n"
-      sudo apt-get install autojump
-    fi
-
-    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v jq)" ]; then
-      printf "\tinstalling jq\n"
-      sudo apt-get install jq
-    fi
-
-    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v bat)" ]; then
-      printf "\tinstalling bat\n"
-      printf "\tTODO: install this for linux\n"
-    fi
-
-    if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fd)" ]; then
-      printf "\tinstalling fd\n"
-      printf "\tTODO: install this for linux\n"
-    fi
+  # Common Deps
+  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d ~/.oh-my-zsh ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ]; then

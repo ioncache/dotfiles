@@ -9,11 +9,26 @@ source $HOME/.ohmyzshrc
 # Everything else config #
 #########################
 
-# enable Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# cache OS name for some conditionals
+OS=$(uname -s)
 
-export ZPLUG_HOME=$(brew --prefix)/opt/zplug
-source $ZPLUG_HOME/init.zsh
+# enable Homebrew
+if [ "$OS" = Darwin ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+
+  export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+  source $ZPLUG_HOME/init.zsh
+
+  # autojump
+  [ -f $(brew --prefix)/etc/profile.d/autojump.sh ] && . $(brew --prefix)/etc/profile.d/autojump.sh
+
+  # brew shell completion
+  if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+    for FILE in $(brew --prefix)/etc/bash_completion.d; do
+      source "$FILE"
+    done
+  fi
+fi
 
 if [ -d "/usr/sbin" ]; then
   PATH="/usr/sbin:$PATH"
@@ -110,13 +125,6 @@ if [ -f /etc/zsh ] && ! setopt -oq posix; then
   source /etc/zsh
 fi
 
-# brew shell completion
-if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
-  for FILE in $(brew --prefix)/etc/bash_completion.d; do
-    source "$FILE"
-  done
-fi
-
 # 'ls' related aliases
 if which exa >/dev/null; then
   # exa is a `ls` replacement
@@ -133,9 +141,6 @@ fi
 if which bat >/dev/null; then
   alias cat='bat -p --paging=never'
 fi
-
-# cache OS name for some conditionals
-OS=$(uname -s)
 
 # some OS specific aliases/options
 case $OS in
@@ -187,12 +192,6 @@ fi
 if which npm >/dev/null; then
   source <(npm completion)
 fi
-
-# thefuck is a command spelling error fixer
-eval "$(thefuck --alias)"
-
-# autojump
-[ -f $(brew --prefix)/etc/profile.d/autojump.sh ] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
 #########################
 # environment variables #
