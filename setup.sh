@@ -4,6 +4,18 @@ FORCE_UPGRADE="${FORCE_UPGRADE:-0}"
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+load_package_file() {
+  local package_file="$1"
+
+  if [ ! -f "$package_file" ]; then
+    printf "Missing package manifest: %s\n" "$package_file" >&2
+    exit 1
+  fi
+
+  mapfile -t PACKAGE_LIST <"$package_file"
+}
 
 backup() {
   echo
@@ -35,17 +47,19 @@ deps() {
   echo
 
   if [ "$OS" = Darwin ]; then
-    HOMEBREW_DEPS=(azure-cli autojump bat diff-so-fancy direnv eza fd fzf git git-extras btop htop jq neofetch ripgrep scc starship thefuck tldr vim wget)
+    load_package_file "$SCRIPT_DIR/packages/homebrew.txt"
 
     # install homebrew if not already installed -- the installation will pause and allow for cancelling if desired
     if [ ! -x "$(command -v brew)" ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      eval "$(/opt/homebrew/bin/brew shellenv)"
+      if [ -x "$(command -v brew)" ]; then
+        eval "$(brew shellenv)"
+      fi
     fi
 
     if [ -x "$(command -v brew)" ]; then
 
-      for dep in "${HOMEBREW_DEPS[@]}"; do
+      for dep in "${PACKAGE_LIST[@]}"; do
         printf "\tinstalling %s\n" "$dep"
         brew install "$dep"
       done
@@ -67,15 +81,16 @@ deps() {
     VOLTA_HOME="$HOME"/.volta
     PATH="$VOLTA_HOME/bin:$PATH"
     volta install node
-    npm install --global npm-check-updates snyk
+    load_package_file "$SCRIPT_DIR/packages/npm-global.txt"
+    npm install --global "${PACKAGE_LIST[@]}"
 
   else
-    LINUX_DEPS=(autojump bat direnv eza git git-extras btop htop jq neofetch ripgrep tldr vim wget zsh-autosuggestions)
+    load_package_file "$SCRIPT_DIR/packages/apt.txt"
 
     if [ -x "$(command -v apt)" ]; then
       printf "\tinstalling apt dependencies\n"
       sudo apt update
-      sudo apt install "${LINUX_DEPS[@]}"
+      sudo apt install "${PACKAGE_LIST[@]}"
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then

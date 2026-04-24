@@ -1,0 +1,15 @@
+autojump
+bat
+btop
+direnv
+eza
+git
+git-extras
+htop
+jq
+neofetch
+ripgrep
+tldr
+vim
+wget
+zsh-autosuggestions

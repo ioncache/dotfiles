@@ -1,0 +1,161 @@
+# shared shell config
+
+OS=$(uname -s)
+
+add_path_if_dir() {
+  if [ -d "$1" ]; then
+    PATH="$1:$PATH"
+  fi
+}
+
+SHELL_NAME=sh
+
+if [ -n "$BASH_VERSION" ]; then
+  SHELL_NAME=bash
+elif [ -n "$ZSH_VERSION" ]; then
+  SHELL_NAME=zsh
+fi
+
+# enable Homebrew
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
+  eval "$(brew shellenv)"
+
+  # autojump
+  [ -f "$(brew --prefix)"/etc/profile.d/autojump.sh ] && . "$(brew --prefix)"/etc/profile.d/autojump.sh
+
+  # brew shell completion
+  if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+    for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
+      [ -f "$FILE" ] || continue
+      source "$FILE"
+    done
+  fi
+fi
+
+add_path_if_dir "/usr/sbin"
+add_path_if_dir "/usr/local/sbin"
+add_path_if_dir "/sbin"
+add_path_if_dir "/usr/local/opt/gnu-tar/libexec/gnubin"
+add_path_if_dir "/usr/local/bin"
+add_path_if_dir "$HOME/bin"
+add_path_if_dir "$HOME/.cargo/bin"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# uncomment for a colored prompt, if the terminal has the capability
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    color_prompt=yes
+  else
+    unset color_prompt
+  fi
+fi
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+  debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+if [ "$color_prompt" = yes ]; then
+  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
+else
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
+fi
+
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm* | rxvt*)
+  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+  ;;
+*) ;;
+esac
+
+# Starship is a cross-platform command prompt
+if [ -x "$(command -v starship)" ]; then
+  eval "$(starship init "$SHELL_NAME")"
+fi
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+  test -r "$HOME"/.dircolors && eval "$(dircolors -b "$HOME"/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+  alias grep='grep --color=always'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+# setup iterm2 stuff if it exists
+test -e "${HOME}/.iterm2_shell_integration.${SHELL_NAME}" && source "${HOME}/.iterm2_shell_integration.${SHELL_NAME}"
+
+# 'ls' related aliases
+if which eza >/dev/null; then
+  alias ls='eza'
+  alias l='ls -F'
+  alias la='ls -a'
+  alias ll='ls --header --long --all --group-directories-first --git'
+else
+  alias l='ls -CF'
+  alias la='ls -A'
+  alias ll='ls -alhF --color --group-directories-first'
+fi
+
+if which bat >/dev/null; then
+  alias cat='bat -p --paging=never'
+fi
+
+# some OS specific aliases/options
+case $OS in
+Darwin)
+  if ! which eza >/dev/null; then
+    alias ll='ls -alhFG'
+  fi
+
+  alias updatedb='sudo /usr/libexec/locate.updatedb'
+  ;;
+
+SunOS)
+  alias top='prstat -s cpu -a -n 8 '
+  if [ -f /usr/ucb/ps ]; then
+    alias ps='/usr/ucb/ps'
+  fi
+  ;;
+esac
+
+if which code-insiders >/dev/null; then
+  alias code=code-insiders
+fi
+
+if which direnv >/dev/null; then
+  eval "$(direnv hook "$SHELL_NAME")"
+fi
+
+# fzf is a fuzzy finder
+[ -f "$HOME/.fzf.${SHELL_NAME}" ] && source "$HOME/.fzf.${SHELL_NAME}"
+
+# non-system node
+if [ -d "$HOME/.volta" ]; then
+  export VOLTA_HOME="$HOME/.volta"
+  export PATH="$VOLTA_HOME/bin:$PATH"
+elif [ -d "$HOME/.nodenv/shims" ]; then
+  export PATH="$HOME/.nodenv/shims:$PATH"
+  eval "$(nodenv init -)"
+elif [ -d "$HOME"/n ]; then
+  export N_PREFIX="$HOME/n"
+  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+elif [ -d "$HOME/.nenv/bin" ]; then
+  export PATH="$HOME/.nenv/bin:$PATH"
+  eval "$(nenv init -)"
+fi
+
+# add npm completion
+if which npm >/dev/null; then
+  source <(npm completion)
+fi
+
+export EDITOR=vim
+export PAGER=less
