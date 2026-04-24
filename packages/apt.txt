@@ -4,11 +4,9 @@ direnv
 eza
 git
 git-extras
-htop
 jq
 ripgrep
 tldr
 vim
 wget
-zsh-autosuggestions
 zoxide

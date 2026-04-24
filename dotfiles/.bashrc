@@ -27,11 +27,6 @@ if which gr >/dev/null; then
   eval "$(gr completion)"
 fi
 
-# thefuck is a command spelling error fixer
-if which thefuck >/dev/null; then
-  eval "$(thefuck --alias)"
-fi
-
 export HISTSIZE=1000
 export HISTFILESIZE=2000
 export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history

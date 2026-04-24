@@ -32,16 +32,21 @@ This will:
 ## Setup Commands
 
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
-- `deps` - will try to install dependencies
+- `deps` - will install the base dependency set
+- `deps <group...>` - will install the base dependency set plus optional package groups, for example `./setup.sh deps azure kubernetes`
 - `dotfiles` - will install the new dotfiles to `~/`
 - `fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
+- `groups` - will list the optional package groups available for the current OS
 - `install` - runs `backup`, `deps`, `setup_git`, `dotfiles`, and `fonts` -- **this is the default command**
+- `install <group...>` - runs the default install flow and also installs optional package groups
 - `restore` - will restore backed up dotfiles, usage `RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore`
 - `setup_git` - asks you to enter a name and email that will be used when making commits with git
 
 ## Dependencies
 
 Not completely necessary, but may be desired. Will be installed by default if possible.
+
+### Base
 
 - bat - A cat(1) clone with wings - <https://github.com/sharkdp/bat#installation>
 - delta - syntax-highlighting pager for git and diff output - <https://github.com/dandavison/delta>
@@ -51,6 +56,7 @@ Not completely necessary, but may be desired. Will be installed by default if po
 - fd - A simple, fast and user-friendly alternative to 'find' - <https://github.com/sharkdp/fd>
 - fzf - command-line fuzzy finder - <https://github.com/junegunn/fzf>
 - git-extras - some extra commands for git - <https://github.com/tj/git-extras>
+- btop - system monitor - <https://github.com/aristocratos/btop>
 - homebrew - package management for OSX - <https://brew.sh/>
 - jq - like sed for json - <https://stedolan.github.io/jq/>
 - starship - cross shell prompt - <https://github.com/starship/starship>
@@ -58,6 +64,24 @@ Not completely necessary, but may be desired. Will be installed by default if po
 - zoxide - smarter directory jumping - <https://github.com/ajeetdsouza/zoxide>
 
 On apt-based Linux, `fastfetch` and `git-delta` are installed only when the package is available in the configured repositories.
+
+### Optional Infra And Cloud Groups
+
+Use `./setup.sh groups` to list the groups available for the current OS.
+
+- `azure` - Azure CLI tools
+- `aws` - AWS CLI tools
+- `gcp` - Google Cloud CLI tools
+- `digitalocean` - DigitalOcean CLI tools
+- `kubernetes` - cluster tooling such as `kubectl`, `helm`, and `k9s`
+- `containers` - container tooling such as Docker CLI-related packages
+- `local-runtime-macos` - macOS-only local runtime tools such as OrbStack
+
+Examples:
+
+- `./setup.sh deps azure kubernetes`
+- `./setup.sh install aws containers`
+- `./setup.sh install digitalocean local-runtime-macos`
 
 ## Post Install Manual Changes
 

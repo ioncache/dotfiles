@@ -8,13 +8,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 load_package_file() {
   local package_file="$1"
+  local package_line
+
+  PACKAGE_LIST=()
 
   if [ ! -f "$package_file" ]; then
     printf "Missing package manifest: %s\n" "$package_file" >&2
     exit 1
   fi
 
-  mapfile -t PACKAGE_LIST <"$package_file"
+  while IFS= read -r package_line || [ -n "$package_line" ]; do
+    case "$package_line" in
+    '' | \#*)
+      continue
+      ;;
+    *)
+      PACKAGE_LIST+=("$package_line")
+      ;;
+    esac
+  done <"$package_file"
 }
 
 apt_install_if_available() {
@@ -26,6 +38,82 @@ apt_install_if_available() {
   else
     printf "\tskipping optional apt dependency %s (package not available)\n" "$package_name"
   fi
+}
+
+brew_install_package() {
+  local package_name="$1"
+
+  case "$package_name" in
+  cask:*)
+    package_name="${package_name#cask:}"
+    printf "\tinstalling %s (cask)\n" "$package_name"
+    brew install --cask "$package_name"
+    ;;
+  *)
+    printf "\tinstalling %s\n" "$package_name"
+    brew install "$package_name"
+    ;;
+  esac
+}
+
+optional_manifest_dir() {
+  if [ "$OS" = Darwin ]; then
+    printf "%s\n" "$SCRIPT_DIR/packages/optional/homebrew"
+  else
+    printf "%s\n" "$SCRIPT_DIR/packages/optional/apt"
+  fi
+}
+
+list_optional_groups() {
+  local manifest_dir manifest_file
+
+  manifest_dir="$(optional_manifest_dir)"
+
+  for manifest_file in "$manifest_dir"/*.txt; do
+    [ -f "$manifest_file" ] || continue
+    basename "$manifest_file" .txt
+  done
+}
+
+install_optional_groups() {
+  local group_name manifest_path dep
+
+  [ "$#" -gt 0 ] || return 0
+
+  echo
+  echo '***** Installing Optional Package Groups *****'
+  echo
+
+  for group_name in "$@"; do
+    manifest_path="$(optional_manifest_dir)/$group_name.txt"
+
+    if [ ! -f "$manifest_path" ]; then
+      printf "Unknown optional package group: %s\n" "$group_name" >&2
+      printf "Available groups for %s:\n" "$OS" >&2
+      list_optional_groups >&2
+      exit 1
+    fi
+
+    printf "\tgroup: %s\n" "$group_name"
+    load_package_file "$manifest_path"
+
+    if [ "$OS" = Darwin ]; then
+      if [ ! -x "$(command -v brew)" ]; then
+        printf "\tSkipping %s because Homebrew is not available\n" "$group_name"
+        continue
+      fi
+
+      for dep in "${PACKAGE_LIST[@]}"; do
+        brew_install_package "$dep"
+      done
+    elif [ -x "$(command -v apt)" ]; then
+      for dep in "${PACKAGE_LIST[@]}"; do
+        apt_install_if_available "$dep"
+      done
+    else
+      printf "\tSkipping %s because no supported package manager was detected\n" "$group_name"
+    fi
+  done
 }
 
 backup() {
@@ -71,8 +159,7 @@ deps() {
     if [ -x "$(command -v brew)" ]; then
 
       for dep in "${PACKAGE_LIST[@]}"; do
-        printf "\tinstalling %s\n" "$dep"
-        brew install "$dep"
+        brew_install_package "$dep"
       done
 
       if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f /usr/local/bin/ctags ]; then
@@ -121,6 +208,8 @@ deps() {
 
     # TODO: setup azure-cli, fd, scc
   fi
+
+  install_optional_groups "$@"
 
   # Common Deps
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d ~/.oh-my-zsh ]; then
@@ -204,10 +293,17 @@ setup_git() {
 
 install() {
   backup
-  deps
+  deps "$@"
   setup_git
   dotfiles
   fonts
+}
+
+groups() {
+  echo
+  echo '***** Optional Package Groups *****'
+  echo
+  list_optional_groups
 }
 
 help() {
@@ -216,11 +312,14 @@ help() {
 
   printf "\n  Default:\n\n"
   printf "    install - runs the 'backup', 'deps' 'dotfiles', 'fonts' and 'setup_git' targets\n"
+  printf "    install <group...> - same as install, but also installs optional package groups\n"
 
   printf "\n  Individual setup:\n\n"
   printf "    deps - will try to install dependencies\n"
+  printf "    deps <group...> - installs base dependencies plus optional package groups\n"
   printf "    dotfiles - will install the new dotfiles to '~/'\n"
   printf "    fonts - will install new fonts to '~/Library/Fonts' or '~/.fonts' on other systems\n"
+  printf "    groups - lists available optional package groups for the current OS\n"
 
   printf "\n  Utility:\n\n"
   printf "    backup - will backup current dotfiles to '~/.dotfile_backups/<current timestamp>'\n"
@@ -229,58 +328,52 @@ help() {
 
   printf "\n  Flags:\n\n"
   printf "    --help - prints this help information (actually any unknown command will print the help)\n"
+  printf "\n  Examples:\n\n"
+  printf "    ./setup.sh deps azure kubernetes\n"
+  printf "    ./setup.sh install aws containers\n"
+  printf "    ./setup.sh groups\n"
   echo
 }
 
-COMMAND_RUN=0
+COMMAND="${1:-install}"
 
-for key in "$@"; do
-  case $key in
-  backup)
-    backup
-    COMMAND_RUN=1
-    break
-    ;;
-  deps)
-    deps
-    COMMAND_RUN=1
-    break
-    ;;
-  install)
-    install
-    COMMAND_RUN=1
-    break
-    ;;
-  dotfiles)
-    dotfiles
-    COMMAND_RUN=1
-    break
-    ;;
-  fonts)
-    fonts
-    COMMAND_RUN=1
-    break
-    ;;
-  restore)
-    restore
-    COMMAND_RUN=1
-    break
-    ;;
-  setup_git)
-    setup_git
-    COMMAND_RUN=1
-    break
-    ;;
-  *)
-    help
-    exit
-    ;;
-  esac
-done
-
-if [ $COMMAND_RUN = 0 ]; then
-  install
+if [ "$#" -gt 0 ]; then
+  shift
 fi
+
+case "$COMMAND" in
+backup)
+  backup
+  ;;
+deps)
+  deps "$@"
+  ;;
+install)
+  install "$@"
+  ;;
+dotfiles)
+  dotfiles
+  ;;
+fonts)
+  fonts
+  ;;
+groups)
+  groups
+  ;;
+restore)
+  restore
+  ;;
+setup_git)
+  setup_git
+  ;;
+--help | help)
+  help
+  ;;
+*)
+  help
+  exit 1
+  ;;
+esac
 
 echo
 echo "NOTE: you will need to reload your \$SHELL config or open a new terminal for installation to take effect"

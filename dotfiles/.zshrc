@@ -6,11 +6,6 @@
 source "$HOME/.ohmyzshrc"
 source "$HOME/.shell_common"
 
-if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
-  export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
-  [ -f "$ZPLUG_HOME/init.zsh" ] && source "$ZPLUG_HOME/init.zsh"
-fi
-
 if [ -f "$HOME"/.zsh_aliases ]; then
   source "$HOME"/.zsh_aliases
 fi

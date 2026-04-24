@@ -23,7 +23,6 @@ call plug#end()
 
 " Some basic VIM settings
 
-au BufReadPost *.pl   set keywordprg=perldoc\ -f
 colorscheme desert
 filetype plugin indent on
 nnoremap j gj
@@ -62,11 +61,6 @@ set smartindent
 
 " word wrap vimdiff
 autocmd FilterWritePre * if &diff | setlocal wrap< | endif
-
-" some Perl settings
-"autocmd FileType perl set showmatch
-command -range=% -nargs=* Tidy <line1>,<line2>!
-  \perltidy -pbp <args>
 
 " key remaps
 

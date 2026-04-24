@@ -1,4 +1,3 @@
-azure-cli
 bat
 btop
 direnv
@@ -9,12 +8,10 @@ fzf
 git
 git-delta
 git-extras
-htop
 jq
 ripgrep
 scc
 starship
-thefuck
 tldr
 vim
 wget
