@@ -40,41 +40,39 @@ add_path_if_dir "$HOME/.cargo/bin"
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# uncomment for a colored prompt, if the terminal has the capability
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    color_prompt=yes
-  else
-    unset color_prompt
-  fi
-fi
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-if [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
-else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
-fi
-
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm* | rxvt*)
-  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-  ;;
-*) ;;
-esac
-
 # Starship is a cross-platform command prompt
 if [ -x "$(command -v starship)" ]; then
   eval "$(starship init "$SHELL_NAME")"
+else
+  # Fallback prompt for environments where starship is not installed.
+  force_color_prompt=yes
+
+  if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+      color_prompt=yes
+    else
+      unset color_prompt
+    fi
+  fi
+
+  if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+  fi
+
+  if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
+  else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
+  fi
+
+  unset color_prompt force_color_prompt
+
+  case "$TERM" in
+  xterm* | rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+  *) ;;
+  esac
 fi
 
 # enable color support of ls and also add handy aliases
