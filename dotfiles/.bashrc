@@ -4,7 +4,11 @@
 [ -z "$PS1" ] && return
 
 # enable Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+OS=$(uname -s)
+
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
+  eval "$(brew shellenv)"
+fi
 
 if [ -d "/usr/sbin" ]; then
   PATH="/usr/sbin:$PATH"
@@ -109,16 +113,17 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 # brew shell completion
-if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
-  for FILE in $(brew --prefix)/etc/bash_completion.d; do
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ] && [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+  for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
+    [ -f "$FILE" ] || continue
     source "$FILE"
   done
 fi
 
 # 'ls' related aliases
-if which exa >/dev/null; then
-  # exa is a `ls` replacement
-  alias ls='exa'
+if which eza >/dev/null; then
+  # eza is a `ls` replacement
+  alias ls='eza'
   alias l='ls -F'
   alias la='ls -a'
   alias ll='ls --header --long --all --group-directories-first --git'
@@ -132,13 +137,10 @@ if which bat >/dev/null; then
   alias cat='bat -p --paging=never'
 fi
 
-# cache OS name for some conditionals
-OS=$(uname -s)
-
 # some OS specific aliases/options
 case $OS in
 Darwin)
-  if ! which exa >/dev/null; then
+  if ! which eza >/dev/null; then
     alias ll='ls -alhFG'
   fi
 
@@ -194,10 +196,14 @@ if which npm >/dev/null; then
 fi
 
 # thefuck is a command spelling error fixer
-eval "$(thefuck --alias)"
+if which thefuck >/dev/null; then
+  eval "$(thefuck --alias)"
+fi
 
 # autojump
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ] && [ -f "$(brew --prefix)"/etc/profile.d/autojump.sh ]; then
+  . "$(brew --prefix)"/etc/profile.d/autojump.sh
+fi
 
 #########################
 # environment variables #

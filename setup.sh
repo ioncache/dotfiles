@@ -75,7 +75,7 @@ deps() {
     if [ -x "$(command -v apt)" ]; then
       printf "\tinstalling apt dependencies\n"
       sudo apt update
-      sudo apt install "$LINUX_DEPS"
+      sudo apt install "${LINUX_DEPS[@]}"
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
@@ -112,7 +112,7 @@ dotfiles() {
 
   for f in ./dotfiles/.[a-z]*; do
     printf "\tinstalling %s" "$f"
-    if [ "$f" == ".shell_secrets" ] && [ -f "$HOME/.shell_secrets" ]; then
+    if [ "$f" = "./dotfiles/.shell_secrets" ] && [ -f "$HOME/.shell_secrets" ]; then
       printf ": already exists, skipping"
     else
       cp ./"$f" "$HOME/"

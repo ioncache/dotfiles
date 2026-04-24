@@ -13,18 +13,19 @@ source $HOME/.ohmyzshrc
 OS=$(uname -s)
 
 # enable Homebrew
-if [ "$OS" = Darwin ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
+  eval "$(brew shellenv)"
 
-  export ZPLUG_HOME=$(brew --prefix)/opt/zplug
-  source $ZPLUG_HOME/init.zsh
+  export ZPLUG_HOME="$(brew --prefix)/opt/zplug"
+  [ -f "$ZPLUG_HOME/init.zsh" ] && source "$ZPLUG_HOME/init.zsh"
 
   # autojump
-  [ -f $(brew --prefix)/etc/profile.d/autojump.sh ] && . $(brew --prefix)/etc/profile.d/autojump.sh
+  [ -f "$(brew --prefix)"/etc/profile.d/autojump.sh ] && . "$(brew --prefix)"/etc/profile.d/autojump.sh
 
   # brew shell completion
   if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
-    for FILE in $(brew --prefix)/etc/bash_completion.d; do
+    for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
+      [ -f "$FILE" ] || continue
       source "$FILE"
     done
   fi
@@ -117,7 +118,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # alias definitions #
 #####################
 
-if [ -f "$HOME"/.zsh ]; then
+if [ -f "$HOME"/.zsh_aliases ]; then
   source "$HOME"/.zsh_aliases
 fi
 
@@ -126,9 +127,9 @@ if [ -f /etc/zsh ] && ! setopt -oq posix; then
 fi
 
 # 'ls' related aliases
-if which exa >/dev/null; then
-  # exa is a `ls` replacement
-  alias ls='exa'
+if which eza >/dev/null; then
+  # eza is a `ls` replacement
+  alias ls='eza'
   alias l='ls -F'
   alias la='ls -a'
   alias ll='ls --header --long --all --group-directories-first --git'
@@ -145,7 +146,7 @@ fi
 # some OS specific aliases/options
 case $OS in
 Darwin)
-  if ! which exa >/dev/null; then
+  if ! which eza >/dev/null; then
     alias ll='ls -alhFG'
   fi
 

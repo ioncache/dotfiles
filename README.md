@@ -48,7 +48,7 @@ Not completely necessary, but may be desired. Will be installed by default if po
 - autojump - a faster way to navigate your filesystem - <https://github.com/wting/autojump>
 - bat - A cat(1) clone with wings - <https://github.com/sharkdp/bat#installation>
 - ctags - this will only install on OSX as the BSD one installed is fairly outdated - <https://github.com/universal-ctags/homebrew-universal-ctags>
-- exa - ls replacement - <https://github.com/ogham/exa>
+- eza - ls replacement - <https://github.com/eza-community/eza>
 - fd - A simple, fast and user-friendly alternative to 'find' - <https://github.com/sharkdp/fd>
 - fzf - command-line fuzzy finder - <https://github.com/junegunn/fzf>
 - git-extras - some extra commands for git - <https://github.com/tj/git-extras>
