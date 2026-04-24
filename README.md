@@ -25,19 +25,17 @@ This will:
 
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
-- generate a self-signed ssl cert and copy it to `~/`
 - install new dotfiles to `~/`
 - install new fonts to `~/Library/Fonts` on OSX or `~/.fonts` elsewhere
+- prompt for git name and email, then write `~/.gitconfig_custom`
 
 ## Setup Commands
 
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - `deps` - will try to install dependencies
-- `generate_ssl_cert` - will generate a self-signed ssl cert and copy the files to your home folder
-- `install`: runs the `backup`, `deps` `generate_ssl_cert` `install_dotfiles`, `install_fonts` and `setup_git` targets -- **this is the default command**
-- `install_bin` - will install new binaries to `~/bin`; `~/bin` is already added to the path in the included .bashrc
-- `install_dotfiles` - will install the new dotfiles to `~/`
-- `install_fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
+- `dotfiles` - will install the new dotfiles to `~/`
+- `fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
+- `install` - runs `backup`, `deps`, `setup_git`, `dotfiles`, and `fonts` -- **this is the default command**
 - `restore` - will restore backed up dotfiles, usage `RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore`
 - `setup_git` - asks you to enter a name and email that will be used when making commits with git
 
@@ -45,10 +43,11 @@ This will:
 
 Not completely necessary, but may be desired. Will be installed by default if possible.
 
-- autojump - a faster way to navigate your filesystem - <https://github.com/wting/autojump>
 - bat - A cat(1) clone with wings - <https://github.com/sharkdp/bat#installation>
+- delta - syntax-highlighting pager for git and diff output - <https://github.com/dandavison/delta>
 - ctags - this will only install on OSX as the BSD one installed is fairly outdated - <https://github.com/universal-ctags/homebrew-universal-ctags>
 - eza - ls replacement - <https://github.com/eza-community/eza>
+- fastfetch - system information tool - <https://github.com/fastfetch-cli/fastfetch>
 - fd - A simple, fast and user-friendly alternative to 'find' - <https://github.com/sharkdp/fd>
 - fzf - command-line fuzzy finder - <https://github.com/junegunn/fzf>
 - git-extras - some extra commands for git - <https://github.com/tj/git-extras>
@@ -56,6 +55,9 @@ Not completely necessary, but may be desired. Will be installed by default if po
 - jq - like sed for json - <https://stedolan.github.io/jq/>
 - starship - cross shell prompt - <https://github.com/starship/starship>
 - vim-plug - vim plugin manager - <https://github.com/junegunn/vim-plug>
+- zoxide - smarter directory jumping - <https://github.com/ajeetdsouza/zoxide>
+
+On apt-based Linux, `fastfetch` and `git-delta` are installed only when the package is available in the configured repositories.
 
 ## Post Install Manual Changes
 

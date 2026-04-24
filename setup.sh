@@ -17,6 +17,17 @@ load_package_file() {
   mapfile -t PACKAGE_LIST <"$package_file"
 }
 
+apt_install_if_available() {
+  local package_name="$1"
+
+  if apt-cache show "$package_name" >/dev/null 2>&1; then
+    printf "\tinstalling optional apt dependency %s\n" "$package_name"
+    sudo apt install "$package_name"
+  else
+    printf "\tskipping optional apt dependency %s (package not available)\n" "$package_name"
+  fi
+}
+
 backup() {
   echo
   echo '***** Backing up current Dotfiles *****'
@@ -91,6 +102,8 @@ deps() {
       printf "\tinstalling apt dependencies\n"
       sudo apt update
       sudo apt install "${PACKAGE_LIST[@]}"
+      apt_install_if_available fastfetch
+      apt_install_if_available git-delta
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then

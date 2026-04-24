@@ -1,4 +1,3 @@
-autojump
 bat
 btop
 direnv
@@ -7,9 +6,9 @@ git
 git-extras
 htop
 jq
-neofetch
 ripgrep
 tldr
 vim
 wget
 zsh-autosuggestions
+zoxide

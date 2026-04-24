@@ -1,17 +1,16 @@
 azure-cli
-autojump
 bat
 btop
-diff-so-fancy
 direnv
 eza
+fastfetch
 fd
 fzf
 git
+git-delta
 git-extras
 htop
 jq
-neofetch
 ripgrep
 scc
 starship
@@ -19,3 +18,4 @@ thefuck
 tldr
 vim
 wget
+zoxide

@@ -20,9 +20,6 @@ fi
 if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
   eval "$(brew shellenv)"
 
-  # autojump
-  [ -f "$(brew --prefix)"/etc/profile.d/autojump.sh ] && . "$(brew --prefix)"/etc/profile.d/autojump.sh
-
   # brew shell completion
   if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
     for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
@@ -132,6 +129,10 @@ fi
 
 if which direnv >/dev/null; then
   eval "$(direnv hook "$SHELL_NAME")"
+fi
+
+if which zoxide >/dev/null; then
+  eval "$(zoxide init "$SHELL_NAME")"
 fi
 
 # fzf is a fuzzy finder
