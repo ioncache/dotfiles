@@ -130,7 +130,7 @@ deps() {
         brew_install_package "$dep"
       done
 
-      if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f /usr/local/bin/ctags ]; then
+      if [ "$FORCE_UPGRADE" = 1 ] || ! brew list universal-ctags >/dev/null 2>&1; then
         printf "\tinstalling ctags from homebrew\n"
         brew install --HEAD universal-ctags/universal-ctags/universal-ctags
       fi

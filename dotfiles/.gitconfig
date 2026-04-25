@@ -56,7 +56,7 @@
   find = !git ls-files | grep --color -i
   fl = log -u
   flog = log --stat --abbrev-commit --relative-date --pretty=oneline
-  heads = !"git log origin/master.. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
+  heads = !"upstream=$(git symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null || true); upstream=${upstream#refs/remotes/}; upstream=${upstream:-origin/HEAD}; git log \"$upstream\".. --format='%Cred%h%Creset;%C(yellow)%an%Creset;%H;%Cblue%f%Creset' | git name-rev --stdin --branch --always --name-only | column -t -s';'"
   ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
   lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
   le = log --oneline --decorate
@@ -64,9 +64,9 @@
   ls = ls-files
   lsb = !"git for-each-ref --format='%(refname:short)' refs/heads/$1*"
   plog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  rmu = !"rm `git ls-files --others --exclude-standard`"
+  rmu = !"git ls-files --others --exclude-standard -z | xargs -0 rm --"
   slog = log --pretty=format:\"%h %s\" --graph
   st = status
   undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
   undo = reset --soft HEAD^
-  vim = !sh -c 'nvim `git ls-files | grep $0 | head -1`'
+  vim = !"f() { git ls-files -- \"$1\" '*$1*' | head -1 | xargs -r nvim --; }; f"
