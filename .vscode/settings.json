@@ -1,0 +1,19 @@
+{
+  "files.associations": {
+    ".bash_profile": "shellscript",
+    ".bashrc": "shellscript",
+    ".ohmyzshrc": "shellscript",
+    ".profile": "shellscript",
+    ".shell_common": "shellscript",
+    ".shell_secrets": "shellscript",
+    ".zshrc": "shellscript",
+    "*.jsonc": "jsonc"
+  },
+  "shellcheck.useWorkspaceRootAsCwd": true,
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on"
+  }
+}

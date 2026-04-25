@@ -50,6 +50,8 @@ For unattended setup, use `NONINTERACTIVE=1` and preseed git identity:
 
 Install repo-local development tooling with `npm install`.
 
+See [docs/development.md](docs/development.md) for the local development workflow.
+
 - `npm run lint` is the umbrella lint entrypoint and currently runs the shell lint suite.
 - `npm run lint:shell` runs `shellcheck` against bash and sh files and `zsh -n` against zsh-specific files.
 - `npm run lint:shell:staged` runs the staged-file version used by `pre-commit`.
