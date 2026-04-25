@@ -52,10 +52,11 @@ Install repo-local development tooling with `npm install`.
 
 See [docs/development.md](docs/development.md) for the local development workflow.
 
-- `npm run lint` is the umbrella lint entrypoint and currently runs the shell lint suite.
+- `npm run lint` is the umbrella lint entrypoint and runs shell plus Markdown linting.
+- `npm run lint:md` runs `markdownlint-cli2` for repo Markdown files.
 - `npm run lint:shell` runs `shellcheck` against bash and sh files and `zsh -n` against zsh-specific files.
 - `npm run lint:shell:staged` runs the staged-file version used by `pre-commit`.
-- `husky` and `lint-staged` run the same shell lint checks during `pre-commit` for staged shell files.
+- `husky` and `lint-staged` run the same shell and Markdown lint checks during `pre-commit` for staged files.
 
 ## Dependencies
 

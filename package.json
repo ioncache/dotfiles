@@ -3,16 +3,19 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "lint": "npm run lint:shell",
+    "lint": "npm run lint:shell && npm run lint:md",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
     "lint:shell": "bash scripts/lint-shell.sh setup.sh lib/install_packages.sh lib/install_dotfiles.sh lib/install_fonts.sh lib/setup_git.sh dotfiles/.bash_profile dotfiles/.bashrc dotfiles/.profile dotfiles/.shell_common dotfiles/.zshrc dotfiles/.ohmyzshrc",
     "lint:shell:staged": "lint-staged"
   },
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
+    "markdownlint-cli2": "^0.18.1",
     "shellcheck": "^4.1.0"
   },
   "lint-staged": {
-    "{setup.sh,lib/**/*.sh,dotfiles/.bash_profile,dotfiles/.bashrc,dotfiles/.profile,dotfiles/.shell_common,dotfiles/.zshrc,dotfiles/.ohmyzshrc}": "bash scripts/lint-shell.sh"
+    "{setup.sh,lib/**/*.sh,dotfiles/.bash_profile,dotfiles/.bashrc,dotfiles/.profile,dotfiles/.shell_common,dotfiles/.zshrc,dotfiles/.ohmyzshrc}": "bash scripts/lint-shell.sh",
+    "**/*.md": "markdownlint-cli2"
   }
 }

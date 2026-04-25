@@ -14,10 +14,11 @@ npm install
 npm run lint
 ```
 
-This runs the repo shell lint suite:
+This runs the repo lint suite:
 
 - `shellcheck` for bash and sh-oriented files
 - `zsh -n` for zsh-specific files
+- `markdownlint-cli2` for Markdown files
 
 To run the staged-file variant used by pre-commit:
 
