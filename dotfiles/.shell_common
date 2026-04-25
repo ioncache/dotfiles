@@ -19,14 +19,6 @@ fi
 # enable Homebrew
 if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
   eval "$(brew shellenv)"
-
-  # brew shell completion
-  if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
-    for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
-      [ -f "$FILE" ] || continue
-      source "$FILE"
-    done
-  fi
 fi
 
 add_path_if_dir "/usr/sbin"
@@ -139,6 +131,7 @@ fi
 
 if which zoxide >/dev/null; then
   eval "$(zoxide init "$SHELL_NAME")"
+  alias j='z'
 fi
 
 # fzf is a fuzzy finder
@@ -157,11 +150,6 @@ elif [ -d "$HOME"/n ]; then
 elif [ -d "$HOME/.nenv/bin" ]; then
   export PATH="$HOME/.nenv/bin:$PATH"
   eval "$(nenv init -)"
-fi
-
-# add npm completion
-if which npm >/dev/null; then
-  source <(npm completion)
 fi
 
 export EDITOR=nvim

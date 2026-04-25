@@ -81,6 +81,10 @@ Neovim is now the default editor. For fresh installs, `~/.config/nvim/init.vim` 
 
 If `~/.config/nvim/init.lua` already exists, the installer preserves it and skips the repo's `init.vim` shim to avoid Neovim's conflicting-config error.
 
+Shell completions are now configured per shell instead of through the shared runtime. Bash loads Homebrew `bash_completion.d` scripts from `.bashrc`, while zsh uses Homebrew's native `share/zsh/site-functions` completions with `compinit` from `.zshrc`.
+
+The old `j` muscle-memory command is kept as a compatibility alias backed by `zoxide`.
+
 ### Optional Infra And Cloud Groups
 
 Use `./setup.sh groups` to list the groups available for the current OS.

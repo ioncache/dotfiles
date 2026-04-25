@@ -3,8 +3,18 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+if [ -x "$(command -v brew)" ]; then
+  BREW_ZSH_COMPLETIONS="$(brew --prefix)/share/zsh/site-functions"
+  if [ -d "$BREW_ZSH_COMPLETIONS" ]; then
+    fpath=("$BREW_ZSH_COMPLETIONS" $fpath)
+  fi
+fi
+
 source "$HOME/.ohmyzshrc"
 source "$HOME/.shell_common"
+
+autoload -Uz compinit
+compinit -i
 
 if [ -f "$HOME"/.zsh_aliases ]; then
   source "$HOME"/.zsh_aliases

@@ -5,6 +5,15 @@
 
 source "$HOME/.shell_common"
 
+if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
+  if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
+    for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
+      [ -f "$FILE" ] || continue
+      source "$FILE"
+    done
+  fi
+fi
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -25,6 +34,10 @@ if which gr >/dev/null; then
   # NOTE: error when running the line below, using eval instead, yes it's evil
   # . <(gr completion)
   eval "$(gr completion)"
+fi
+
+if which npm >/dev/null; then
+  source <(npm completion)
 fi
 
 export HISTSIZE=1000
