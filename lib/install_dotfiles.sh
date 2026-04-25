@@ -2,7 +2,7 @@
 
 install_dotfile_path() {
   local source_path="$1"
-  local target_path="$HOME/${source_path#$DOTFILES_DIR/}"
+  local target_path="$HOME/${source_path#"$DOTFILES_DIR"/}"
   local remove_legacy_nvim_init=0
 
   printf "\tinstalling %s" "$source_path"

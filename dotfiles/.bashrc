@@ -1,14 +1,18 @@
+# shellcheck shell=bash
+
 # base .bashrc
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# shellcheck disable=SC1090,SC1091
 source "$HOME/.shell_common"
 
 if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
   if [ -d "$(brew --prefix)"/etc/bash_completion.d ]; then
     for FILE in "$(brew --prefix)"/etc/bash_completion.d/*; do
       [ -f "$FILE" ] || continue
+      # shellcheck disable=SC1090,SC1091
       source "$FILE"
     done
   fi
@@ -22,10 +26,12 @@ shopt -s checkwinsize
 shopt -s histappend
 
 if [ -f "$HOME"/.bash_aliases ]; then
+  # shellcheck disable=SC1090,SC1091
   source "$HOME"/.bash_aliases
 fi
 
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+  # shellcheck disable=SC1091
   source /etc/bash_completion
 fi
 
@@ -37,6 +43,7 @@ if which gr >/dev/null; then
 fi
 
 if which npm >/dev/null; then
+  # shellcheck disable=SC1090,SC1091
   source <(npm completion)
 fi
 
@@ -49,5 +56,6 @@ export HISTCONTROL=ignoreboth           # ignore same sucessive entries
 # store any access keys, credentials, etc. in $HOME/.shell_secrets
 # can also be used to setup other custom things, like extra additions to $PATH or custom aliases
 if [ -f "$HOME"/.shell_secrets ]; then
+  # shellcheck disable=SC1090,SC1091
   source "$HOME"/.shell_secrets
 fi

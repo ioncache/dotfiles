@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 # shared shell config
 
 OS=$(uname -s)
@@ -8,7 +10,7 @@ add_path_if_dir() {
   fi
 }
 
-SHELL_NAME=sh
+SHELL_NAME="sh"
 
 if [ -n "$BASH_VERSION" ]; then
   SHELL_NAME=bash
@@ -69,7 +71,11 @@ fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-  test -r "$HOME"/.dircolors && eval "$(dircolors -b "$HOME"/.dircolors)" || eval "$(dircolors -b)"
+  if [ -r "$HOME/.dircolors" ]; then
+    eval "$(dircolors -b "$HOME/.dircolors")"
+  else
+    eval "$(dircolors -b)"
+  fi
   alias ls='ls --color=auto'
   alias grep='grep --color=always'
   alias fgrep='fgrep --color=auto'
@@ -85,6 +91,7 @@ if ! which fd >/dev/null && which fdfind >/dev/null; then
 fi
 
 # setup iterm2 stuff if it exists
+# shellcheck disable=SC1090
 test -e "${HOME}/.iterm2_shell_integration.${SHELL_NAME}" && source "${HOME}/.iterm2_shell_integration.${SHELL_NAME}"
 
 # 'ls' related aliases
@@ -135,6 +142,7 @@ if which zoxide >/dev/null; then
 fi
 
 # fzf is a fuzzy finder
+# shellcheck disable=SC1090
 [ -f "$HOME/.fzf.${SHELL_NAME}" ] && source "$HOME/.fzf.${SHELL_NAME}"
 
 # non-system node

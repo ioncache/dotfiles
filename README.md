@@ -46,6 +46,15 @@ For unattended setup, use `NONINTERACTIVE=1` and preseed git identity:
 
 - `NONINTERACTIVE=1 GIT_NAME='Jane Doe' GIT_EMAIL='jane@example.com' ./setup.sh install`
 
+## Development Tooling
+
+Install repo-local development tooling with `npm install`.
+
+- `npm run lint` is the umbrella lint entrypoint and currently runs the shell lint suite.
+- `npm run lint:shell` runs `shellcheck` against bash and sh files and `zsh -n` against zsh-specific files.
+- `npm run lint:shell:staged` runs the staged-file version used by `pre-commit`.
+- `husky` and `lint-staged` run the same shell lint checks during `pre-commit` for staged shell files.
+
 ## Dependencies
 
 Not completely necessary, but may be desired. Will be installed by default if possible.
