@@ -27,7 +27,7 @@ This will:
 - install dependencies if possible
 - install new dotfiles to `~/`
 - install new fonts to `~/Library/Fonts` on macOS or `~/.local/share/fonts` elsewhere
-- prompt for git name and email, then write `~/.gitconfig_custom`
+- configure `~/.gitconfig_custom` from `GIT_NAME` and `GIT_EMAIL`, reuse an existing file, or prompt if needed
 
 ## Setup Commands
 
@@ -40,7 +40,11 @@ This will:
 - `install` - runs `backup`, `deps`, `setup_git`, `dotfiles`, and `fonts` -- **this is the default command**
 - `install <group...>` - runs the default install flow and also installs optional package groups
 - `restore` - will restore backed up dotfiles, usage `RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore`
-- `setup_git` - asks you to enter a name and email that will be used when making commits with git
+- `setup_git` - configures git identity from environment, existing config, or a prompt when needed
+
+For unattended setup, use `NONINTERACTIVE=1` and preseed git identity:
+
+- `NONINTERACTIVE=1 GIT_NAME='Jane Doe' GIT_EMAIL='jane@example.com' ./setup.sh install`
 
 ## Dependencies
 
@@ -106,6 +110,6 @@ Examples:
 - make dependencies install correctly on linux -- mostly done
 - install vim-plug plugins automatically
 - if the dotfiles installed did not exist before the installation, then maybe the restore task should remove them; but this could have issues if the user subsequently added one of those files; maybe ask the user if they want the files removed
-- ask user if they would like vim or emacs (or editor of their choice) to be their default editor in the EDITOR env variable
-- make dependency installation interactive so user can choose which they want... maybe entire process could be interactive
+- ask user if they would like neovim or another editor to be their default editor in the EDITOR env variable
+- add a more explicit guided mode for choosing optional package groups during install
 - **shell integration** - allow for shells other than `bash` to be used

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 FORCE_UPGRADE="${FORCE_UPGRADE:-0}"
+NONINTERACTIVE="${NONINTERACTIVE:-0}"
 MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
@@ -34,7 +35,7 @@ apt_install_if_available() {
 
   if apt-cache show "$package_name" >/dev/null 2>&1; then
     printf "\tinstalling optional apt dependency %s\n" "$package_name"
-    sudo apt install "$package_name"
+    sudo apt install -y "$package_name"
   else
     printf "\tskipping optional apt dependency %s (package not available)\n" "$package_name"
   fi
@@ -185,7 +186,7 @@ deps() {
 
     # install homebrew if not already installed -- the installation will pause and allow for cancelling if desired
     if [ ! -x "$(command -v brew)" ]; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       if [ -x "$(command -v brew)" ]; then
         eval "$(brew shellenv)"
       fi
@@ -204,7 +205,7 @@ deps() {
 
       if [ -x "$(command -v fzf)" ]; then
         printf "\tinstalling fzf bindings and fuzzy completion\n"
-        "$(brew --prefix)/opt/fzf/install"
+        "$(brew --prefix)/opt/fzf/install" --all
       fi
     fi
 
@@ -223,7 +224,7 @@ deps() {
     if [ -x "$(command -v apt)" ]; then
       printf "\tinstalling apt dependencies\n"
       sudo apt update
-      sudo apt install "${PACKAGE_LIST[@]}"
+      sudo apt install -y "${PACKAGE_LIST[@]}"
       apt_install_if_available fastfetch
       apt_install_if_available git-delta
       apt_install_if_available starship
@@ -231,7 +232,6 @@ deps() {
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
       printf "\tinstalling fzf\n"
-      printf "\tanswer y, n, during install\n"
       if [ -d ~/.fzf ]; then
         cd ~/.fzf || exit
         git pull
@@ -239,7 +239,7 @@ deps() {
       else
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
       fi
-      ~/.fzf/install
+      ~/.fzf/install --all
     fi
 
     # TODO: setup azure-cli, fd, scc
@@ -249,7 +249,7 @@ deps() {
 
   # Common Deps
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d ~/.oh-my-zsh ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   fi
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ] || [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
@@ -312,21 +312,34 @@ restore() {
 }
 
 setup_git() {
+  local git_name="${GIT_NAME:-${GIT_COMMIT_NAME:-}}"
+  local git_email="${GIT_EMAIL:-${GIT_COMMIT_EMAIL:-}}"
+
   echo
   echo '***** Setting up git user information *****'
   echo
 
-  echo "Enter the name for your git commits, followed by [ENTER]:"
-  read -r GIT_NAME
+  if [ -n "$git_name" ] && [ -n "$git_email" ]; then
+    printf "Using git identity from environment\n"
+  elif [ -f "$HOME/.gitconfig_custom" ] && [ "$FORCE_UPGRADE" != 1 ]; then
+    printf "Existing ~/.gitconfig_custom found, leaving it unchanged\n"
+    return 0
+  elif [ "$NONINTERACTIVE" = 1 ]; then
+    printf "Skipping git identity prompt in non-interactive mode; set GIT_NAME and GIT_EMAIL to configure it automatically\n"
+    return 0
+  else
+    echo "Enter the name for your git commits, followed by [ENTER]:"
+    read -r git_name
 
-  echo
+    echo
 
-  echo "Enter the email address for your git commits, followed by [ENTER]:"
-  read -r GIT_EMAIL
+    echo "Enter the email address for your git commits, followed by [ENTER]:"
+    read -r git_email
+  fi
 
   echo "[user]
-  name = $GIT_NAME
-  email = $GIT_EMAIL
+  name = $git_name
+  email = $git_email
   " >"$HOME"/.gitconfig_custom
 }
 
@@ -363,13 +376,15 @@ help() {
   printf "\n  Utility:\n\n"
   printf "    backup - will backup current dotfiles to '~/.dotfile_backups/<current timestamp>'\n"
   printf "    restore - will restore backed up dotfiles, usage 'RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore'\n"
-  printf "    setup_git - asks you to enter a name and email used when making commits with git\n"
+  printf "    setup_git - configures git identity, prompting only when env vars or an existing custom config are unavailable\n"
 
   printf "\n  Flags:\n\n"
   printf "    --help - prints this help information (actually any unknown command will print the help)\n"
+  printf "    Environment: NONINTERACTIVE=1 disables remaining prompts; GIT_NAME/GIT_EMAIL preseed git identity\n"
   printf "\n  Examples:\n\n"
   printf "    ./setup.sh deps azure kubernetes\n"
   printf "    ./setup.sh install aws containers\n"
+  printf "    NONINTERACTIVE=1 GIT_NAME='Jane Doe' GIT_EMAIL='jane@example.com' ./setup.sh install\n"
   printf "    ./setup.sh groups\n"
   echo
 }
