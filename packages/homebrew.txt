@@ -13,6 +13,6 @@ ripgrep
 scc
 starship
 tldr
-vim
+neovim
 wget
 zoxide

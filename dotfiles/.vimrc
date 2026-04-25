@@ -1,23 +1,22 @@
-call plug#begin('~/.vim/plugged')
+if has('nvim')
+    call plug#begin(stdpath('data') . '/plugged')
+else
+    call plug#begin('~/.vim/plugged')
+endif
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ervandew/supertab'
-Plug 'henrik/vim-indexed-search'
+Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'rstacruz/vim-hyperstyle'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
+Plug 'preservim/tagbar'
+Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'vim-scripts/SearchComplete'
-Plug 'vim-scripts/yaifa.vim'
 
 call plug#end()
 
@@ -42,8 +41,10 @@ set laststatus=2
 set number
 set showmatch
 set smartcase
+if has('termguicolors')
+    set termguicolors
+endif
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set t_Co=256
 set undolevels=1000
 syntax enable
 
@@ -95,27 +96,19 @@ endfunction
 " NERDTTree config
 map <leader>n :NERDTreeToggle<CR>
 
-" syntastic config
+" ale config
 set matchpairs=(:),{:},[:],<:>
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_fix_on_save = 0
+let g:ale_open_list = 1
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 0
 
 " Airline config
 let g:airline_powerline_fonts = 1
 
-" multi-cursor config
-let g:multi_cursor_use_default_mapping = 0
-let g:multi_cursor_start_word_key      = '<C-n>'
-let g:multi_cursor_select_all_word_key = '<A-n>'
-let g:multi_cursor_start_key           = 'g<C-n>'
-let g:multi_cursor_select_all_key      = 'g<A-n>'
-let g:multi_cursor_next_key            = '<C-n>'
-let g:multi_cursor_prev_key            = '<C-p>'
-let g:multi_cursor_skip_key            = '<C-x>'
-let g:multi_cursor_quit_key            = '<Esc>'
+" vim-visual-multi config
+let g:VM_default_mappings = 1
 
 " commands
 command! -bar -nargs=0 Sudow :silent exe "write !sudo tee % >/dev/null"|silent edit!

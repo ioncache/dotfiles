@@ -7,6 +7,6 @@ git-extras
 jq
 ripgrep
 tldr
-vim
+neovim
 wget
 zoxide

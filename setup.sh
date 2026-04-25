@@ -56,6 +56,41 @@ brew_install_package() {
   esac
 }
 
+install_dotfile_path() {
+  local source_path="$1"
+  local target_path="$HOME/${source_path#./dotfiles/}"
+  local remove_legacy_nvim_init=0
+
+  printf "\tinstalling %s" "$source_path"
+
+  if [ "$source_path" = "./dotfiles/.shell_secrets" ] && [ -f "$HOME/.shell_secrets" ]; then
+    printf ": already exists, skipping\n"
+    return 0
+  fi
+
+  if [ "$source_path" = "./dotfiles/.config" ] && [ -f "$HOME/.config/nvim/init.lua" ]; then
+    mkdir -p "$target_path"
+
+    if [ -f "$HOME/.config/nvim/init.vim" ] && cmp -s "$HOME/.config/nvim/init.vim" "./dotfiles/.config/nvim/init.vim"; then
+      remove_legacy_nvim_init=1
+    fi
+
+    tar -C "$source_path" --exclude='./nvim/init.vim' -cf - . | tar -C "$target_path" -xf -
+
+    if [ "$remove_legacy_nvim_init" -eq 1 ]; then
+      rm -f "$HOME/.config/nvim/init.vim"
+      printf ": kept existing ~/.config/nvim/init.lua and removed repo init.vim shim\n"
+    else
+      printf ": kept existing ~/.config/nvim/init.lua and skipped repo init.vim shim\n"
+    fi
+
+    return 0
+  fi
+
+  cp -R "$source_path" "$HOME/"
+  printf "\n"
+}
+
 optional_manifest_dir() {
   if [ "$OS" = Darwin ]; then
     printf "%s\n" "$SCRIPT_DIR/packages/optional/homebrew"
@@ -132,9 +167,9 @@ backup() {
   for f in ./dotfiles/.[a-z]*; do
     dotfile=${f#"./dotfiles/"}
 
-    if [ -f "$HOME/$dotfile" ]; then
+    if [ -e "$HOME/$dotfile" ]; then
       printf "\tbacking up %s\n" "$dotfile"
-      cp "$HOME"/"$dotfile" "$HOME"/.dotfile_backups/"$MAKE_TIMESTAMP"
+      cp -R "$HOME"/"$dotfile" "$HOME"/.dotfile_backups/"$MAKE_TIMESTAMP"
     fi
   done
 }
@@ -191,6 +226,7 @@ deps() {
       sudo apt install "${PACKAGE_LIST[@]}"
       apt_install_if_available fastfetch
       apt_install_if_available git-delta
+      apt_install_if_available starship
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
@@ -216,9 +252,10 @@ deps() {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   fi
 
-  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ]; then
-    printf "\tinstalling vim-plug\n"
+  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ] || [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
+    printf "\tinstalling vim-plug for vim and neovim\n"
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
 
@@ -228,13 +265,7 @@ dotfiles() {
   echo
 
   for f in ./dotfiles/.[a-z]*; do
-    printf "\tinstalling %s" "$f"
-    if [ "$f" = "./dotfiles/.shell_secrets" ] && [ -f "$HOME/.shell_secrets" ]; then
-      printf ": already exists, skipping"
-    else
-      cp ./"$f" "$HOME/"
-    fi
-    printf "\n"
+    install_dotfile_path "$f"
   done
 }
 
@@ -247,12 +278,17 @@ fonts() {
     printf "\tCopying new fonts to ~/Library/Fonts\n"
     cp ./fonts/* "$HOME/Library/Fonts"
   else
-    if [ ! -d "$HOME/.fonts" ]; then
-      mkdir "$HOME"/.fonts
+    if [ ! -d "$HOME/.local/share/fonts" ]; then
+      mkdir -p "$HOME/.local/share/fonts"
     fi
 
-    printf "\tCopying new fonts to ~/.fonts\n"
-    cp ./fonts/* "$HOME"/.fonts
+    printf "\tCopying new fonts to ~/.local/share/fonts\n"
+    cp ./fonts/* "$HOME/.local/share/fonts"
+
+    if [ -x "$(command -v fc-cache)" ]; then
+      printf "\tRefreshing font cache\n"
+      fc-cache -f "$HOME/.local/share/fonts"
+    fi
   fi
 }
 
@@ -266,7 +302,10 @@ restore() {
     echo "***** Restoring dotfiles from timestamp '$RESTORE_TIMESTAMP' *****"
     echo
 
-    cp "$HOME"/.dotfile_backups/"$RESTORE_TIMESTAMP"/.* "$HOME"/ 2>/dev/null
+    for f in "$HOME"/.dotfile_backups/"$RESTORE_TIMESTAMP"/.[!.]* "$HOME"/.dotfile_backups/"$RESTORE_TIMESTAMP"/..?*; do
+      [ -e "$f" ] || continue
+      cp -R "$f" "$HOME"/
+    done
   else
     printf "\tNo backups found for timestamp %s\n" "$RESTORE_TIMESTAMP"
   fi
@@ -318,7 +357,7 @@ help() {
   printf "    deps - will try to install dependencies\n"
   printf "    deps <group...> - installs base dependencies plus optional package groups\n"
   printf "    dotfiles - will install the new dotfiles to '~/'\n"
-  printf "    fonts - will install new fonts to '~/Library/Fonts' or '~/.fonts' on other systems\n"
+  printf "    fonts - will install new fonts to '~/Library/Fonts' on macOS or '~/.local/share/fonts' on other systems\n"
   printf "    groups - lists available optional package groups for the current OS\n"
 
   printf "\n  Utility:\n\n"

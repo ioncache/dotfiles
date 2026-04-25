@@ -26,7 +26,7 @@ This will:
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
 - install new dotfiles to `~/`
-- install new fonts to `~/Library/Fonts` on OSX or `~/.fonts` elsewhere
+- install new fonts to `~/Library/Fonts` on macOS or `~/.local/share/fonts` elsewhere
 - prompt for git name and email, then write `~/.gitconfig_custom`
 
 ## Setup Commands
@@ -35,7 +35,7 @@ This will:
 - `deps` - will install the base dependency set
 - `deps <group...>` - will install the base dependency set plus optional package groups, for example `./setup.sh deps azure kubernetes`
 - `dotfiles` - will install the new dotfiles to `~/`
-- `fonts` - will install new fonts to `~/Library/Fonts` or `~/.fonts` on other systems
+- `fonts` - will install new fonts to `~/Library/Fonts` on macOS or `~/.local/share/fonts` on other systems
 - `groups` - will list the optional package groups available for the current OS
 - `install` - runs `backup`, `deps`, `setup_git`, `dotfiles`, and `fonts` -- **this is the default command**
 - `install <group...>` - runs the default install flow and also installs optional package groups
@@ -59,11 +59,23 @@ Not completely necessary, but may be desired. Will be installed by default if po
 - btop - system monitor - <https://github.com/aristocratos/btop>
 - homebrew - package management for OSX - <https://brew.sh/>
 - jq - like sed for json - <https://stedolan.github.io/jq/>
+- neovim - modern Vim-compatible editor - <https://neovim.io/>
 - starship - cross shell prompt - <https://github.com/starship/starship>
 - vim-plug - vim plugin manager - <https://github.com/junegunn/vim-plug>
 - zoxide - smarter directory jumping - <https://github.com/ajeetdsouza/zoxide>
 
 On apt-based Linux, `fastfetch` and `git-delta` are installed only when the package is available in the configured repositories.
+
+On Debian-family Linux, the shell config also normalizes a couple of common package-name differences when needed:
+
+- `batcat` is aliased to `bat`
+- `fdfind` is aliased to `fd`
+
+The installer also attempts a best-effort Linux install of `starship` when it is available via apt.
+
+Neovim is now the default editor. For fresh installs, `~/.config/nvim/init.vim` sources the shared `~/.vimrc`, so the core configuration works in both Vim and Neovim while the default editor command path uses `nvim`.
+
+If `~/.config/nvim/init.lua` already exists, the installer preserves it and skips the repo's `init.vim` shim to avoid Neovim's conflicting-config error.
 
 ### Optional Infra And Cloud Groups
 

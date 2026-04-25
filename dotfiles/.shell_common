@@ -84,6 +84,14 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
+if ! which bat >/dev/null && which batcat >/dev/null; then
+  alias bat='batcat'
+fi
+
+if ! which fd >/dev/null && which fdfind >/dev/null; then
+  alias fd='fdfind'
+fi
+
 # setup iterm2 stuff if it exists
 test -e "${HOME}/.iterm2_shell_integration.${SHELL_NAME}" && source "${HOME}/.iterm2_shell_integration.${SHELL_NAME}"
 
@@ -156,5 +164,5 @@ if which npm >/dev/null; then
   source <(npm completion)
 fi
 
-export EDITOR=vim
+export EDITOR=nvim
 export PAGER=less

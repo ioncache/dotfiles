@@ -2,7 +2,7 @@
 [include]
   path = ~/.gitconfig_custom
 [core]
-  editor = vim
+  editor = nvim
   excludesfile = ~/.gitignore
 [branch]
   autosetupmerge = true
@@ -32,8 +32,10 @@
   changed = green
   untracked = cyan
 [diff]
-  tool = vimdiff
+  tool = nvimdiff
   prompt = false
+[difftool "nvimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE"
 [push]
   default = simple
 [tag]
@@ -46,7 +48,7 @@
   conflicts = diff --name-only --diff-filter=U
   di = dlt
   diff2 = diff --word-diff
-  diff3 = difftool --tool=vimdiff
+  diff3 = difftool --tool=nvimdiff
   dl = "!git ll -1"
   dlc = diff --cached HEAD^
   dlog = log --date-order --graph --tags --simplify-by-decoration --pretty=format:\"%ai %h %d\"
@@ -67,4 +69,4 @@
   st = status
   undelete = !"git checkout $(git rev-list -n 1 HEAD -- $1)^" -- $1
   undo = reset --soft HEAD^
-  vim = !sh -c 'vim `git ls-files | grep $0 | head -1`'
+  vim = !sh -c 'nvim `git ls-files | grep $0 | head -1`'
