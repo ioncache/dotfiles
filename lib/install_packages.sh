@@ -157,6 +157,7 @@ deps() {
       sudo apt install -y "${PACKAGE_LIST[@]}"
       apt_install_if_available fastfetch
       apt_install_if_available git-delta
+      apt_install_if_available lazygit
       apt_install_if_available starship
     fi
 

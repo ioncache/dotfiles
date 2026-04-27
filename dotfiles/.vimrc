@@ -6,15 +6,27 @@ endif
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'bronson/vim-trailing-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dense-analysis/ale'
+Plug 'github/copilot.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+
+if has('nvim-0.10')
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'lewis6991/gitsigns.nvim'
+    Plug 'stevearc/oil.nvim'
+    Plug 'ibhagwan/fzf-lua'
+    Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
+else
+    Plug 'junegunn/fzf.vim'
+    Plug 'preservim/nerdtree'
+endif
+
 Plug 'mg979/vim-visual-multi'
 Plug 'preservim/tagbar'
-Plug 'preservim/nerdcommenter'
-Plug 'preservim/nerdtree'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 
@@ -93,8 +105,10 @@ endfunction
 
 " plugin specific settings
 
-" NERDTTree config
-map <leader>n :NERDTreeToggle<CR>
+if !has('nvim-0.10')
+    " NERDTree stays as the Vim-only file explorer.
+    nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+endif
 
 " ale config
 set matchpairs=(:),{:},[:],<:>
@@ -103,6 +117,10 @@ let g:ale_fix_on_save = 0
 let g:ale_open_list = 1
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
+
+" Copilot config
+let g:copilot_no_tab_map = 1
+imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 
 " Airline config
 let g:airline_powerline_fonts = 1

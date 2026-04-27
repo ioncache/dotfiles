@@ -93,9 +93,9 @@ On Debian-family Linux, the shell config also normalizes a couple of common pack
 - `batcat` is aliased to `bat`
 - `fdfind` is aliased to `fd`
 
-The installer also attempts a best-effort Linux install of `starship` when it is available via apt.
+The installer also attempts best-effort Linux installs of `lazygit` and `starship` when they are available via apt.
 
-Neovim is now the default editor. For fresh installs, `~/.config/nvim/init.vim` sources the shared `~/.vimrc`, so the core configuration works in both Vim and Neovim while the default editor command path uses `nvim`.
+Neovim is now the default editor. For fresh installs, `~/.config/nvim/init.vim` sources the shared `~/.vimrc`, then loads a small Neovim-only Lua layer from `~/.config/nvim/lua/ioncache/init.lua` when Neovim 0.10+ is available. This keeps the core configuration shared between Vim and Neovim while allowing modern Neovim-only plugins and mappings on newer Neovim builds without breaking older packaged versions.
 
 If `~/.config/nvim/init.lua` already exists, the installer preserves it and skips the repo's `init.vim` shim to avoid Neovim's conflicting-config error.
 

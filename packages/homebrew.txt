@@ -9,6 +9,7 @@ git
 git-delta
 git-extras
 jq
+lazygit
 ripgrep
 scc
 starship
