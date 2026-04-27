@@ -6,6 +6,7 @@
 *.ksf
 *.pem
 *.swp
+*.code-workspace
 npm-debug.log
 
 # folders

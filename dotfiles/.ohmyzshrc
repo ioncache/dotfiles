@@ -12,6 +12,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# shellcheck disable=SC2034  # Read by oh-my-zsh during startup.
 ZSH_THEME="amuse"
 
 # Set list of themes to pick from when loading at random
@@ -74,8 +75,55 @@ ZSH_THEME="amuse"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git git-extras)
 
+append_omz_plugin_if_command() {
+	local plugin_name="$1"
+	local command_name="${2:-$1}"
+
+	if command -v "$command_name" >/dev/null 2>&1; then
+		plugins+=("$plugin_name")
+	fi
+}
+
+append_omz_plugin_if_executable() {
+	local plugin_name="$1"
+	shift
+
+	while [ "$#" -gt 0 ]; do
+		if [ -x "$1" ]; then
+			plugins+=("$plugin_name")
+			return
+		fi
+		shift
+	done
+}
+
+# Keep tool-specific OMZ integrations here and leave shared hooks such as
+# direnv, eza, fzf, starship, and zoxide in .shell_common to avoid duplicate init.
+append_omz_plugin_if_executable brew \
+	/opt/homebrew/bin/brew \
+	/usr/local/bin/brew \
+	/home/linuxbrew/.linuxbrew/bin/brew \
+	"$HOME/.linuxbrew/bin/brew"
+append_omz_plugin_if_command npm
+append_omz_plugin_if_command volta
+
+append_omz_plugin_if_command aws
+append_omz_plugin_if_command doctl
+
+if command -v docker >/dev/null 2>&1 || command -v docker-compose >/dev/null 2>&1; then
+	plugins+=(docker docker-compose)
+fi
+
+append_omz_plugin_if_command kubectl
+append_omz_plugin_if_command helm
+append_omz_plugin_if_command k9s
+
+unset -f append_omz_plugin_if_command
+unset -f append_omz_plugin_if_executable
+
+# shellcheck disable=SC1091  # oh-my-zsh lives outside the repo worktree.
 source "$ZSH"/oh-my-zsh.sh
 
 # User configuration
