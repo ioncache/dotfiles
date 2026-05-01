@@ -1,6 +1,7 @@
 # user specific config, such as name and email
 [include]
   path = ~/.gitconfig_custom
+  path = ~/.config/delta/themes.gitconfig
 [core]
   editor = nvim
   excludesfile = ~/.gitignore
@@ -32,6 +33,8 @@
   added = yellow
   changed = green
   untracked = cyan
+[delta]
+  features = mantis-shrimp-lite
 [diff]
   tool = nvimdiff
   prompt = false
