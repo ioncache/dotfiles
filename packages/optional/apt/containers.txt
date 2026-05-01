@@ -1,3 +1,4 @@
+# description: Container tooling (Docker, Compose, lazydocker)
 docker.io
 docker-compose-v2
 lazydocker

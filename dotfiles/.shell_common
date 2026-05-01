@@ -82,11 +82,11 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-if ! which bat >/dev/null && which batcat >/dev/null; then
+if ! command -v bat >/dev/null 2>&1 && command -v batcat >/dev/null 2>&1; then
   alias bat='batcat'
 fi
 
-if ! which fd >/dev/null && which fdfind >/dev/null; then
+if ! command -v fd >/dev/null 2>&1 && command -v fdfind >/dev/null 2>&1; then
   alias fd='fdfind'
 fi
 
@@ -95,7 +95,7 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.${SHELL_NAME}" && source "${HOME}/.iterm2_shell_integration.${SHELL_NAME}"
 
 # 'ls' related aliases
-if which eza >/dev/null; then
+if command -v eza >/dev/null 2>&1; then
   alias ls='eza'
   alias l='ls -F'
   alias la='ls -a'
@@ -106,14 +106,14 @@ else
   alias ll='ls -alhF --color --group-directories-first'
 fi
 
-if which bat >/dev/null; then
+if command -v bat >/dev/null 2>&1; then
   alias cat='bat -p --paging=never'
 fi
 
 # some OS specific aliases/options
 case $OS in
 Darwin)
-  if ! which eza >/dev/null; then
+  if ! command -v eza >/dev/null 2>&1; then
     alias ll='ls -alhFG'
   fi
 
@@ -128,15 +128,15 @@ SunOS)
   ;;
 esac
 
-if which code-insiders >/dev/null; then
+if command -v code-insiders >/dev/null 2>&1; then
   alias code=code-insiders
 fi
 
-if which direnv >/dev/null; then
+if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook "$SHELL_NAME")"
 fi
 
-if which zoxide >/dev/null; then
+if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init "$SHELL_NAME")"
   alias j='z'
 fi

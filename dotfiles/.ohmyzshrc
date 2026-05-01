@@ -75,7 +75,7 @@ ZSH_THEME="amuse"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-extras zsh-autosuggestions)
+plugins=(aliases git git-extras zsh-autosuggestions zsh-syntax-highlighting)
 
 append_omz_plugin_if_command() {
 	local plugin_name="$1"
@@ -106,6 +106,7 @@ append_omz_plugin_if_executable brew \
 	/usr/local/bin/brew \
 	/home/linuxbrew/.linuxbrew/bin/brew \
 	"$HOME/.linuxbrew/bin/brew"
+append_omz_plugin_if_command gh
 append_omz_plugin_if_command npm
 append_omz_plugin_if_command volta
 
@@ -117,6 +118,7 @@ if command -v docker >/dev/null 2>&1 || command -v docker-compose >/dev/null 2>&
 fi
 
 append_omz_plugin_if_command kubectl
+append_omz_plugin_if_command kubectx
 append_omz_plugin_if_command helm
 append_omz_plugin_if_command k9s
 

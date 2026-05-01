@@ -1,1 +1,2 @@
-google-cloud-sdk
+# description: Google Cloud CLI tools
+cask:gcloud-cli

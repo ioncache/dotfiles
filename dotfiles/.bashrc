@@ -49,8 +49,7 @@ fi
 
 export HISTSIZE=1000
 export HISTFILESIZE=2000
-export HISTCONTROL=ignoredups:erasedups # don't put duplicate lines in the history
-export HISTCONTROL=ignoreboth           # ignore same sucessive entries
+export HISTCONTROL=ignoreboth:erasedups # ignore duplicates, leading spaces, and erase older dupes
 
 # NOTE: leave this as the last section of this file so things in .shell_secrets can override anything else in this file
 # store any access keys, credentials, etc. in $HOME/.shell_secrets

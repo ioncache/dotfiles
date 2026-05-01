@@ -65,7 +65,14 @@ list_optional_groups() {
 
   for manifest_file in "$manifest_dir"/*.txt; do
     [ -f "$manifest_file" ] || continue
-    basename "$manifest_file" .txt
+    local group_name desc
+    group_name=$(basename "$manifest_file" .txt)
+    desc=$(grep -m1 '^# description: ' "$manifest_file" 2>/dev/null | sed 's/^# description: //')
+    if [ -n "$desc" ]; then
+      printf "  %-24s %s\n" "$group_name" "$desc"
+    else
+      printf "  %s\n" "$group_name"
+    fi
   done
 }
 
@@ -180,6 +187,18 @@ deps() {
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d ~/.oh-my-zsh ]; then
     RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  fi
+
+  ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    printf "\tinstalling zsh-autosuggestions plugin\n"
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+  fi
+
+  if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+    printf "\tinstalling zsh-syntax-highlighting plugin\n"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
   fi
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ] || [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then

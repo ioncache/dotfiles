@@ -96,7 +96,6 @@
       "error",
       "safe"
     ],
-    "valid-jsdoc": "error",
     "wrap-iife": [
       "error",
       "any"

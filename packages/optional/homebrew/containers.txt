@@ -1,3 +1,4 @@
+# description: Container tooling (Docker CLI, Compose, lazydocker)
 docker
 docker-buildx
 docker-compose
