@@ -15,7 +15,6 @@ jq
 lazygit
 ripgrep
 scc
-sl
 starship
 tldr
 tokei
