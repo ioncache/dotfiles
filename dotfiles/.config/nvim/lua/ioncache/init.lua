@@ -1,3 +1,28 @@
+-- Workaround for neovim 0.12+ / VS Code terminal bug where Shift+0-9 produces
+-- digits instead of !@#$%^&*(). See https://github.com/neovim/neovim/issues/38651
+-- Remove this block once VS Code ships the xterm.js fix (xtermjs/xterm.js#5791).
+if vim.env.TERM_PROGRAM == 'vscode' then
+  local shifted_digits = {
+    ['<S-1>'] = '!',
+    ['<S-2>'] = '@',
+    ['<S-3>'] = '#',
+    ['<S-4>'] = '$',
+    ['<S-5>'] = '%',
+    ['<S-6>'] = '^',
+    ['<S-7>'] = '&',
+    ['<S-8>'] = '*',
+    ['<S-9>'] = '(',
+    ['<S-0>'] = ')',
+  }
+
+  for lhs, rhs in pairs(shifted_digits) do
+    vim.keymap.set({ 'n', 'x', 'i' }, lhs, rhs, { noremap = true, silent = true })
+    vim.keymap.set('c', lhs, function()
+      return rhs
+    end, { expr = true, noremap = true })
+  end
+end
+
 local function map(mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc })
 end

@@ -4,6 +4,7 @@
 [core]
   editor = nvim
   excludesfile = ~/.gitignore
+  pager = bat --paging=auto -p
 [branch]
   autosetupmerge = true
 [color]
