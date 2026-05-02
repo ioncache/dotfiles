@@ -169,15 +169,19 @@ deps() {
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then
-      printf "\tinstalling fzf\n"
-      if [ -d ~/.fzf ]; then
-        cd ~/.fzf || exit
-        git pull
-        cd - || exit
+      if [ -x "$(command -v git)" ]; then
+        printf "\tinstalling fzf\n"
+        if [ -d ~/.fzf ]; then
+          cd ~/.fzf || exit
+          git pull
+          cd - || exit
+        else
+          git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        fi
+        ~/.fzf/install --all
       else
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        printf "\tskipping fzf install (git not available)\n"
       fi
-      ~/.fzf/install --all
     fi
 
     # TODO: setup azure-cli, fd, scc
@@ -192,13 +196,21 @@ deps() {
   ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-    printf "\tinstalling zsh-autosuggestions plugin\n"
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    if [ -x "$(command -v git)" ]; then
+      printf "\tinstalling zsh-autosuggestions plugin\n"
+      git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    else
+      printf "\tskipping zsh-autosuggestions install (git not available)\n"
+    fi
   fi
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-    printf "\tinstalling zsh-syntax-highlighting plugin\n"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    if [ -x "$(command -v git)" ]; then
+      printf "\tinstalling zsh-syntax-highlighting plugin\n"
+      git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    else
+      printf "\tskipping zsh-syntax-highlighting install (git not available)\n"
+    fi
   fi
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -f ~/.vim/autoload/plug.vim ] || [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
