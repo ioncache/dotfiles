@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Check for --debug flag
+DEBUG=0
+for arg in "$@"; do
+  if [[ "$arg" == "--debug" ]]; then
+    DEBUG=1
+  fi
+done
+
+# ANSI colors (disable when stdout is not a terminal)
+if [[ -t 1 ]]; then
+  YELLOW='\033[1;33m'
+  GREEN='\033[0;32m'
+  RED='\033[0;31m'
+  RESET='\033[0m'
+else
+  YELLOW=''
+  GREEN=''
+  RED=''
+  RESET=''
+fi
+
+# Header
+printf "%-30s | %10s | %9s | %12s | %12s | %9s | %9s | %12s\n" \
+  "Author" "Commits" "%Commits" "Insertions" "Deletions" "%Ins" "%Del" "Net"
+printf "%s\n" "-------------------------------+------------+-----------+--------------+--------------+-----------+-----------+--------------"
+
+# Temp files
+tmpfile=$(mktemp)
+totalsfile=$(mktemp)
+trap 'rm -f "$tmpfile" "$totalsfile"' EXIT
+
+# Parse git log and collect stats
+git log --no-merges --pretty='@@@%an' --numstat | awk -v debug="$DEBUG" '
+  BEGIN { FS="\t" }
+
+  /^@@@/ {
+    author = substr($0, 4)
+    commits[author]++
+    total_commits++
+    next
+  }
+
+  $1 ~ /^[0-9]+$/ && $2 ~ /^[0-9]+$/ {
+    if (author != "") {
+      insertions[author] += $1
+      deletions[author] += $2
+      total_insertions += $1
+      total_deletions += $2
+    }
+    next
+  }
+
+  {
+    if (debug == 1) {
+      print "DEBUG skipped line: \"" $0 "\" with author=\"" author "\"" > "/dev/stderr"
+    }
+  }
+
+  END {
+    for (a in commits) {
+      printf "%s|%d|%d|%d\n", a, commits[a], insertions[a], deletions[a]
+    }
+    printf "TOTALS|%d|%d|%d\n", total_commits, total_insertions, total_deletions > "/dev/stderr"
+  }
+' >"$tmpfile" 2>"$totalsfile"
+
+# Read totals
+IFS='|' read -r _ total_commits total_insertions total_deletions < <(grep '^TOTALS|' "$totalsfile")
+
+# Read author stats
+declare -A commits_map insertions_map deletions_map
+
+while IFS='|' read -r name count ins del; do
+  commits_map["$name"]=$count
+  insertions_map["$name"]=$ins
+  deletions_map["$name"]=$del
+done <"$tmpfile"
+
+# Sort and print rows
+for name in "${!commits_map[@]}"; do
+  echo -e "${commits_map[$name]}\t$name"
+done | sort -rn | while IFS=$'\t' read -r commits name; do
+  ins=${insertions_map["$name"]}
+  del=${deletions_map["$name"]}
+
+  pct_commits=$(awk -v a="$commits" -v t="$total_commits" 'BEGIN { if (t==0) print "0.0"; else printf "%.1f", (a/t)*100 }')
+  pct_ins=$(awk -v a="$ins" -v t="$total_insertions" 'BEGIN { if (t==0) print "0.0"; else printf "%.1f", (a/t)*100 }')
+  pct_del=$(awk -v a="$del" -v t="$total_deletions" 'BEGIN { if (t==0) print "0.0"; else printf "%.1f", (a/t)*100 }')
+
+  net=$((ins - del))
+  printf "%-30s | ${YELLOW}%10d${RESET} | %8s%% | ${GREEN}%12d${RESET} | ${RED}%12d${RESET} | %8s%% | %8s%% | %12d\n" \
+    "$name" "$commits" "$pct_commits" "$ins" "$del" "$pct_ins" "$pct_del" "$net"
+done
+
+# Totals row
+printf "%s\n" "-------------------------------+------------+-----------+--------------+--------------+-----------+-----------+--------------"
+total_net=$((total_insertions - total_deletions))
+printf "%-30s | ${YELLOW}%10d${RESET} | %8s%% | ${GREEN}%12d${RESET} | ${RED}%12d${RESET} | %8s%% | %8s%% | %12d\n" \
+  "TOTAL" "$total_commits" "100.0" "$total_insertions" "$total_deletions" "100.0" "100.0" "$total_net"
