@@ -6,9 +6,11 @@ MAKE_TIMESTAMP="$(date +%s)"
 OS="$(uname -s)"
 RESTORE_TIMESTAMP="${RESTORE_TIMESTAMP:-notarealbackuptimestamp}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN_DIR="$SCRIPT_DIR/bin"
 DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 FONTS_DIR="$SCRIPT_DIR/fonts"
 
+. "$SCRIPT_DIR/lib/install_bin.sh"
 . "$SCRIPT_DIR/lib/install_packages.sh"
 . "$SCRIPT_DIR/lib/install_dotfiles.sh"
 . "$SCRIPT_DIR/lib/install_fonts.sh"
@@ -18,6 +20,7 @@ install() {
   backup
   deps "$@"
   setup_git
+  bin_scripts
   dotfiles
   fonts
 }
@@ -34,10 +37,11 @@ help() {
   echo "Commands:"
 
   printf "\n  Default:\n\n"
-  printf "    install - runs the 'backup', 'deps' 'dotfiles', 'fonts' and 'setup_git' targets\n"
+  printf "    install - runs the 'backup', 'deps', 'bin', 'dotfiles', 'fonts' and 'setup_git' targets\n"
   printf "    install <group...> - same as install, but also installs optional package groups\n"
 
   printf "\n  Individual setup:\n\n"
+  printf "    bin - will install scripts from the repo's bin/ directory to '~/bin'\n"
   printf "    deps - will try to install dependencies\n"
   printf "    deps <group...> - installs base dependencies plus optional package groups\n"
   printf "    dotfiles - will install the new dotfiles to '~/'\n"
@@ -69,6 +73,9 @@ fi
 case "$COMMAND" in
 backup)
   backup
+  ;;
+bin)
+  bin_scripts
   ;;
 deps)
   deps "$@"

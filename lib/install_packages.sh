@@ -166,6 +166,7 @@ deps() {
       apt_install_if_available git-delta
       apt_install_if_available lazygit
       apt_install_if_available starship
+      apt_install_if_available tokei
     fi
 
     if [ "$FORCE_UPGRADE" = 1 ] || [ ! -x "$(command -v fzf)" ]; then

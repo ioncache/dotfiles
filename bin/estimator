@@ -1,0 +1,300 @@
+#!/usr/bin/env node
+
+/**
+ * A simple project effort estimator based on SLOC data from Tokei.
+ * Usage:
+ *    tokei --output json | ./estimator [options]
+ */
+
+import { json } from "node:stream/consumers";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+
+const domainComplexity = {
+  simple: 0.8,
+  frontend: 1.0,
+  backend: 1.1,
+  healthtech: 1.3,
+  embedded: 1.4,
+};
+
+const languageWeights = {
+  JavaScript: 1.0,
+  JSX: 1.0,
+  TypeScript: 1.0,
+  TSX: 1.0,
+  Python: 1.0,
+  Rust: 1.0,
+  Go: 1.0,
+  Java: 1.0,
+  CSharp: 1.0,
+  Ruby: 1.0,
+  Kotlin: 1.0,
+  Swift: 1.0,
+  Cpp: 1.0,
+  CppHeader: 1.0,
+  C: 1.0,
+  CHeader: 1.0,
+  CSS: 0.5,
+  Sass: 0.5,
+  Less: 0.5,
+  HTML: 0.4,
+  FreeMarker: 0.3,
+  Handlebars: 0.3,
+  Vue: 0.8,
+  Svelte: 0.8,
+  Dockerfile: 0.2,
+  Shell: 0.3,
+  BASH: 0.3,
+  YAML: 0.1,
+  TOML: 0.1,
+  JSON: 0.05,
+  SVG: 0.0,
+  Markdown: 0.0,
+  "Plain Text": 0.0,
+};
+
+const DEFAULT_WEIGHT = 0.5;
+
+/**
+ * @typedef {Object} LanguageBreakdown
+ * @property {string} lang - Language name from Tokei
+ * @property {number} code - Raw SLOC count
+ * @property {number} weight - Applied language weight
+ * @property {number} weighted - Effective SLOC (code * weight)
+ */
+
+/**
+ * @typedef {Object} ParsedTokei
+ * @property {number} rawSLOC - Total raw source lines of code
+ * @property {number} weightedSLOC - Total weighted SLOC
+ * @property {LanguageBreakdown[]} breakdown - Per-language breakdown
+ */
+
+/**
+ * @typedef {Object} EstimateResult
+ * @property {number} rawSLOC - Total raw SLOC
+ * @property {number} weightedSLOC - Total weighted SLOC
+ * @property {number} adjustedSLOC - Weighted SLOC * domain complexity
+ * @property {number} effortPersonMonths - Estimated person-months of effort
+ * @property {number} teamSize - Recommended team size for target duration
+ * @property {number} totalCost - Estimated total cost
+ */
+
+/**
+ * @typedef {Object} EstimateConfig
+ * @property {number} locPerDevPerMonth - Developer productivity rate
+ * @property {number} monthlyDevCost - Monthly cost per developer
+ * @property {number} complexityMultiplier - Domain complexity factor
+ * @property {number} projectDurationMonths - Target project duration
+ * @property {number} scalingExponent - Diseconomies of scale exponent
+ */
+
+/**
+ * Parses CLI arguments and validates constraints.
+ *
+ * @returns {object} Parsed yargs argv object
+ */
+function parseArgs() {
+  const argv = yargs(hideBin(process.argv))
+    .option("domain", {
+      alias: "d",
+      describe: "Project domain complexity",
+      choices: Object.keys(domainComplexity),
+      default: "frontend",
+    })
+    .option("rate", {
+      alias: "r",
+      describe: "Developer productivity (LOC/dev/month)",
+      type: "number",
+      default: 3000,
+    })
+    .option("cost", {
+      alias: "c",
+      describe: "Monthly cost per developer ($)",
+      type: "number",
+      default: 12000,
+    })
+    .option("months", {
+      alias: "m",
+      describe: "Target project duration (months)",
+      type: "number",
+      default: 6,
+    })
+    .option("exponent", {
+      alias: "e",
+      describe: "Scaling exponent for diseconomies of scale (1.0 = linear)",
+      type: "number",
+      default: 1.05,
+    })
+    .option("breakdown", {
+      alias: "b",
+      describe: "Show per-language breakdown",
+      type: "boolean",
+      default: false,
+    })
+    .help().argv;
+
+  if (argv.rate <= 0) {
+    console.error("Error: --rate must be a positive number.");
+    process.exit(1);
+  }
+
+  return argv;
+}
+
+/**
+ * Extracts and weights SLOC data from parsed Tokei JSON output.
+ *
+ * @param {Object<string, {code: number}>} data - Parsed Tokei JSON keyed by language
+ * @returns {ParsedTokei} Raw and weighted SLOC totals with per-language breakdown
+ *
+ * @example
+ * const parsed = parseTokeiData({ JavaScript: { code: 500 }, CSS: { code: 200 } })
+ * // parsed.rawSLOC === 700
+ * // parsed.weightedSLOC === 600 (500 * 1.0 + 200 * 0.5)
+ */
+function parseTokeiData(data) {
+  let rawSLOC = 0;
+  let weightedSLOC = 0;
+  const breakdown = [];
+
+  for (const [lang, stats] of Object.entries(data)) {
+    if (lang === "Total") continue;
+    const code = stats.code || 0;
+    if (code === 0) continue;
+
+    rawSLOC += code;
+    const weight = languageWeights[lang] ?? DEFAULT_WEIGHT;
+    const weighted = Math.round(code * weight);
+    weightedSLOC += weighted;
+
+    breakdown.push({ lang, code, weight, weighted });
+  }
+
+  breakdown.sort((a, b) => b.weighted - a.weighted);
+  return { rawSLOC, weightedSLOC, breakdown };
+}
+
+/**
+ * Calculates effort, team size, and cost from parsed SLOC data.
+ *
+ * @param {ParsedTokei} parsed - Parsed Tokei SLOC data
+ * @param {EstimateConfig} cfg - Estimation configuration
+ * @returns {EstimateResult} Calculated estimate
+ *
+ * @example
+ * const result = calculateEstimate(
+ *   { rawSLOC: 10000, weightedSLOC: 8000, breakdown: [] },
+ *   { locPerDevPerMonth: 3000, monthlyDevCost: 12000, complexityMultiplier: 1.3, projectDurationMonths: 6, scalingExponent: 1.05 }
+ * )
+ */
+function calculateEstimate(parsed, cfg) {
+  const { rawSLOC, weightedSLOC } = parsed;
+  const adjustedSLOC = weightedSLOC * cfg.complexityMultiplier;
+  const ksloc = adjustedSLOC / 1000;
+  const effortPersonMonths =
+    (Math.pow(ksloc, cfg.scalingExponent) * 1000) / cfg.locPerDevPerMonth;
+  const teamSize = Math.max(
+    1,
+    Math.round(effortPersonMonths / cfg.projectDurationMonths),
+  );
+  const totalCost = effortPersonMonths * cfg.monthlyDevCost;
+
+  return {
+    rawSLOC,
+    weightedSLOC,
+    adjustedSLOC: Math.round(adjustedSLOC),
+    effortPersonMonths,
+    teamSize,
+    totalCost,
+  };
+}
+
+/**
+ * Formats a number as a USD currency string with no decimal places.
+ *
+ * @param {number} amount - Dollar amount to format
+ * @returns {string} Formatted currency string
+ *
+ * @example
+ * formatCurrency(962983) // '$962,983'
+ */
+function formatCurrency(amount) {
+  return `$${amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+}
+
+/**
+ * Prints the estimation results to stdout.
+ *
+ * @param {EstimateResult & {breakdown: LanguageBreakdown[]}} est - Estimate with breakdown
+ * @param {Object} options - Display options
+ * @param {string} options.domain - Domain name used for the estimate
+ * @param {EstimateConfig} options.config - Config values to display
+ * @param {boolean} options.showBreakdown - Whether to print per-language table
+ */
+function printEstimate(est, { domain, config, showBreakdown }) {
+  console.log("--- Project Estimation ---");
+  console.log(`Domain:               ${domain}`);
+  console.log(
+    `Productivity:         ${config.locPerDevPerMonth} LOC/dev/month`,
+  );
+  console.log(`Scaling exponent:     ${config.scalingExponent}`);
+  console.log(`Raw SLOC:             ${est.rawSLOC.toLocaleString()}`);
+  console.log(`Weighted SLOC:        ${est.weightedSLOC.toLocaleString()}`);
+  console.log(`Adjusted SLOC:        ${est.adjustedSLOC.toLocaleString()}`);
+  console.log(`Effort (person-mo):   ${est.effortPersonMonths.toFixed(1)}`);
+  console.log(`Team Size (est.):     ${est.teamSize}`);
+  console.log(`Total Estimated Cost: ${formatCurrency(est.totalCost)}`);
+
+  if (showBreakdown && est.breakdown.length > 0) {
+    console.log("\n--- Language Breakdown ---");
+    const h = `${"Language".padEnd(20)} ${"SLOC".padStart(8)} ${"Weight".padStart(7)} ${"Effective".padStart(10)}`;
+    console.log(h);
+    console.log("-".repeat(h.length));
+    for (const { lang, code, weight, weighted } of est.breakdown) {
+      console.log(
+        `${lang.padEnd(20)} ${code.toLocaleString().padStart(8)} ${weight.toFixed(2).padStart(7)} ${weighted.toLocaleString().padStart(10)}`,
+      );
+    }
+  }
+}
+
+/**
+ * Reads piped Tokei JSON from stdin, calculates project effort estimates,
+ * and prints the results.
+ */
+async function estimate() {
+  const argv = parseArgs();
+
+  const config = {
+    locPerDevPerMonth: argv.rate,
+    monthlyDevCost: argv.cost,
+    complexityMultiplier: domainComplexity[argv.domain] || 1.0,
+    projectDurationMonths: argv.months,
+    scalingExponent: argv.exponent,
+  };
+
+  const data = await json(process.stdin);
+  const parsed = parseTokeiData(data);
+  if (parsed.rawSLOC === 0) {
+    console.error(
+      "Warning: No SLOC found in input. Check Tokei output format.",
+    );
+    process.exit(1);
+  }
+
+  const result = calculateEstimate(parsed, config);
+  printEstimate(
+    { ...result, breakdown: parsed.breakdown },
+    { domain: argv.domain, config, showBreakdown: argv.breakdown },
+  );
+}
+
+estimate().catch((err) => {
+  console.error(err.message);
+  console.error(
+    "Ensure you pipe in JSON output from `tokei --output json`.",
+  );
+  process.exit(1);
+});

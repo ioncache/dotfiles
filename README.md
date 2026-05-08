@@ -29,6 +29,7 @@ This will:
 - backup all current dotfiles to `~/.dotfile_backups/<current timestamp>`
 - install dependencies if possible
 - install new dotfiles to `~/`
+- install scripts from the repo's `bin/` directory to `~/bin`
 - install new fonts to `~/Library/Fonts` on macOS or `~/.local/share/fonts` elsewhere
 - configure `~/.gitconfig_custom` from `GIT_NAME` and `GIT_EMAIL`, reuse an existing file, or prompt if needed
 
@@ -37,12 +38,13 @@ After installation, set your terminal font to one of the patched fonts from the 
 ## Setup Commands
 
 - `backup` - will backup current dotfiles to `~/.dotfile_backups/<current timestamp>`
+- `bin` - will install scripts from the repo's `bin/` directory to `~/bin`
 - `deps` - will install the base dependency set
 - `deps <group...>` - will install the base dependency set plus optional package groups, for example `./setup.sh deps azure kubernetes`
 - `dotfiles` - will install the new dotfiles to `~/`
 - `fonts` - will install new fonts to `~/Library/Fonts` on macOS or `~/.local/share/fonts` on other systems
 - `groups` - will list the optional package groups available for the current OS
-- `install` - runs `backup`, `deps`, `setup_git`, `dotfiles`, and `fonts` -- **this is the default command**
+- `install` - runs `backup`, `deps`, `setup_git`, `bin`, `dotfiles`, and `fonts` -- **this is the default command**
 - `install <group...>` - runs the default install flow and also installs optional package groups
 - `restore` - will restore backed up dotfiles, usage `RESTORE_TIMESTAMP=<desired timestamp> ./setup.sh restore`
 - `setup_git` - configures git identity from environment, existing config, or a prompt when needed
