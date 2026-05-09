@@ -10,6 +10,10 @@ if [ -x "$(command -v brew)" ]; then
   fi
 fi
 
+if [ -L /usr/share/zsh/vendor-completions/_docker ] && [ ! -e /usr/share/zsh/vendor-completions/_docker ]; then
+  fpath=(${fpath:#/usr/share/zsh/vendor-completions})
+fi
+
 source "$HOME/.ohmyzshrc"
 source "$HOME/.shell_common"
 

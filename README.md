@@ -103,6 +103,8 @@ If `~/.config/nvim/init.lua` already exists, the installer preserves it and skip
 
 Shell completions are now configured per shell instead of through the shared runtime. Bash loads Homebrew `bash_completion.d` scripts from `.bashrc`, while zsh uses Homebrew's native `share/zsh/site-functions` completions with `compinit` from `.zshrc`.
 
+To keep zsh startup stable on Ubuntu/WSL when Docker Desktop integration is toggled off, `.zshenv` sets `skip_global_compinit=1` so `/etc/zsh/zshrc` does not run `compinit` first. `.zshrc` then owns completion setup and drops `/usr/share/zsh/vendor-completions` from `fpath` only when Docker's `_docker` completion symlink is dangling.
+
 When oh-my-zsh is present, `.ohmyzshrc` now enables plugins for repo-installed CLIs when those commands are available, including `brew`, `git-extras`, `npm`, `volta`, and optional cloud or container tools such as `aws`, `docker`, `kubectl`, and `helm`. Shared shell hooks that are already managed in `.shell_common`, such as `direnv`, `fzf`, `starship`, and `zoxide`, stay there so they are initialized only once.
 
 The old `j` muscle-memory command is kept as a compatibility alias backed by `zoxide`.
