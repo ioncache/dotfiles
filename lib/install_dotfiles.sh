@@ -71,6 +71,19 @@ dotfiles() {
   for file_path in "$DOTFILES_DIR"/.[a-z]*; do
     install_dotfile_path "$file_path"
   done
+
+  # Keep git pager executable names aligned with the platform.
+  if command -v git >/dev/null 2>&1; then
+    if [ "$OS" = Darwin ]; then
+      if command -v bat >/dev/null 2>&1; then
+        git config --global core.pager "bat --paging=auto -p"
+      fi
+    else
+      if command -v batcat >/dev/null 2>&1; then
+        git config --global core.pager "batcat --paging=auto -p"
+      fi
+    fi
+  fi
 }
 
 restore() {

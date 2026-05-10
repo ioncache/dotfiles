@@ -95,6 +95,8 @@ On Debian-family Linux, the shell config also normalizes a couple of common pack
 - `batcat` is aliased to `bat`
 - `fdfind` is aliased to `fd`
 
+During dotfile installation, Git pager config is normalized by executable availability so `core.pager` uses `batcat` on Linux systems where `batcat` is the packaged binary name.
+
 The installer also attempts best-effort Linux installs of `lazygit` and `starship` when they are available via apt.
 
 Neovim is now the default editor. For fresh installs, `~/.config/nvim/init.vim` sources the shared `~/.vimrc`, then loads a small Neovim-only Lua layer from `~/.config/nvim/lua/ioncache/init.lua` when Neovim 0.10+ is available. This keeps the core configuration shared between Vim and Neovim while allowing modern Neovim-only plugins and mappings on newer Neovim builds without breaking older packaged versions.
