@@ -1,0 +1,6 @@
+# description: Infrastructure as Code tooling (terraform, terragrunt, linting, docs)
+terraform
+terragrunt
+tflint
+terraform-docs
+tfsec

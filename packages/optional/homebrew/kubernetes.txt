@@ -1,5 +1,6 @@
 # description: Kubernetes cluster tooling (kubectl, helm, k9s)
 kubectl
 kubectx
+kustomize
 helm
 k9s
