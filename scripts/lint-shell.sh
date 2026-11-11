@@ -12,7 +12,7 @@ zsh_files=()
 
 for file_path in "$@"; do
   case "$file_path" in
-  dotfiles/.zshrc | dotfiles/.ohmyzshrc)
+  dotfiles/.zprofile | dotfiles/.zshrc | dotfiles/.ohmyzshrc)
     zsh_files+=("$file_path")
     ;;
   dotfiles/.profile)
@@ -33,5 +33,7 @@ if [ "${#bash_files[@]}" -gt 0 ]; then
 fi
 
 if [ "${#zsh_files[@]}" -gt 0 ]; then
-  zsh -n "${zsh_files[@]}"
+  for file_path in "${zsh_files[@]}"; do
+    zsh -n "$file_path"
+  done
 fi

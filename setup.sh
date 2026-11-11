@@ -18,7 +18,7 @@ FONTS_DIR="$SCRIPT_DIR/fonts"
 
 install() {
   backup
-  deps "$@"
+  deps "$@" || return
   setup_git
   bin_scripts
   dotfiles
@@ -78,10 +78,10 @@ bin)
   bin_scripts
   ;;
 deps)
-  deps "$@"
+  deps "$@" || exit
   ;;
 install)
-  install "$@"
+  install "$@" || exit
   ;;
 dotfiles)
   dotfiles

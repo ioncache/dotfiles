@@ -34,11 +34,31 @@ The `pre-commit` hook runs `lint-staged`, which applies shell linting only to st
 
 ## Safe Shell Change Validation
 
+Run the runtime regression tests without installing tools or changing your real home directory:
+
+```bash
+npm test
+```
+
+These tests use temporary homes and stubbed commands to cover mise precedence, Volta fallback, login shims, migration defaults, and installer failures. Bash and Zsh must be installed.
+
+Run the configuration-preservation regressions with mise and jq installed:
+
+```bash
+npm run test:mise
+```
+
+These tests use the real mise CLI with isolated home directories and linked fake tools. They do not download runtimes or change your mise configuration. They cover session overrides, home-directory project configuration, global fragments, custom global config files, and repeated setup. Set `MISE_TEST_BIN` to an absolute executable path to test a mise installation that is not on PATH.
+
 For narrow local checks while iterating:
 
 ```bash
-bash -n setup.sh lib/*.sh dotfiles/.bash_profile dotfiles/.bashrc dotfiles/.profile dotfiles/.shell_common
-zsh -n dotfiles/.zshrc dotfiles/.ohmyzshrc
+for file in setup.sh lib/*.sh dotfiles/.bash_profile dotfiles/.bashrc dotfiles/.profile dotfiles/.shell_common; do
+  bash -n "$file"
+done
+for file in dotfiles/.zprofile dotfiles/.zshrc dotfiles/.ohmyzshrc; do
+  zsh -n "$file"
+done
 ```
 
 ## Applying Dotfile Changes Locally

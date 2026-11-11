@@ -16,6 +16,7 @@ The setup flow is primarily exercised on macOS, but the repo also supports Debia
   - [Development Tooling](#development-tooling)
   - [Dependencies](#dependencies)
     - [Base](#base)
+    - [Node.js Runtime](#nodejs-runtime)
     - [Optional Infra And Cloud Groups](#optional-infra-and-cloud-groups)
 
 ## Installation
@@ -60,6 +61,8 @@ Install repo-local development tooling with `npm install`.
 See [docs/development.md](docs/development.md) for the local development workflow.
 
 - `npm run lint` is the umbrella lint entrypoint and runs shell plus Markdown linting.
+- `npm test` checks runtime precedence and installer behavior in temporary home directories with stubbed tools.
+- `npm run test:mise` checks configuration preservation with the real mise CLI and jq in isolated home directories.
 - `npm run lint:md` runs `markdownlint-cli2` for repo Markdown files.
 - `npm run lint:shell` runs `shellcheck` against bash and sh files and `zsh -n` against zsh-specific files.
 - `npm run lint:shell:staged` runs the staged-file version used by `pre-commit`.
@@ -83,6 +86,7 @@ On macOS, the installer bootstraps Homebrew if needed and uses it to install the
 - git-extras - additional Git subcommands - <https://github.com/tj/git-extras>
 - btop - interactive system monitor - <https://github.com/aristocratos/btop>
 - jq - command-line JSON processor - <https://stedolan.github.io/jq/>
+- mise - primary Node.js runtime and npm CLI manager - <https://mise.jdx.dev/>
 - neovim - modern Vim-compatible editor - <https://neovim.io/>
 - starship - cross-shell prompt - <https://github.com/starship/starship>
 - vim-plug - Vim and Neovim plugin manager - <https://github.com/junegunn/vim-plug>
@@ -110,6 +114,32 @@ To keep zsh startup stable on Ubuntu/WSL when Docker Desktop integration is togg
 When oh-my-zsh is present, `.ohmyzshrc` now enables plugins for repo-installed CLIs when those commands are available, including `brew`, `git-extras`, `npm`, `volta`, and optional cloud or container tools such as `aws`, `docker`, `kubectl`, and `helm`. Shared shell hooks that are already managed in `.shell_common`, such as `direnv`, `fzf`, `starship`, and `zoxide`, stay there so they are initialized only once.
 
 The old `j` muscle-memory command is kept as a compatibility alias backed by `zoxide`.
+
+### Node.js Runtime
+
+Mise is the primary Node.js manager on macOS and Linux. Setup reuses an existing mise executable. Otherwise, it installs mise through Homebrew on macOS when available, or through the official installer at `https://mise.run`. The official installer writes to `~/.local/bin/mise`.
+
+Setup preserves existing global mise tool requests. If Node is not configured in mise, setup copies Volta's default Node version, not the version selected by the current project. Without a Volta default, it selects `node@lts`. Setup excludes project configuration and temporary version selections from global provisioning, while respecting custom global configuration locations.
+
+The packages in `packages/npm-global.txt` are installed as global mise `npm:` tools. This keeps `npm-check-updates` and `snyk` available across Node-version switches. Other CLI packages previously installed under Volta are not migrated automatically.
+
+Interactive Bash and Zsh activate mise in their shell-specific startup files. Login profiles expose mise shims to noninteractive consumers. Scripts and services that do not read these profiles should use `mise exec -- <command>` or configure their own PATH.
+
+When mise is unavailable, interactive shells fall back to Volta, then nodenv, n, or nenv. Setup does not install or remove Volta. Existing Volta installations remain available for explicit use even while mise is primary:
+
+```bash
+"${VOLTA_HOME:-$HOME/.volta}/bin/volta" run node --version
+```
+
+Setup enables mise's Node idiomatic-version-file support so `.nvmrc` and `.node-version` files can select project versions. It retains existing enabled languages, including those configured in global fragments. The dotfiles do not initialize nvm itself. Volta pins in `package.json` need an explicit mise configuration; they are not automatically migrated.
+
+Upstream documentation:
+
+- Installation: <https://mise.jdx.dev/installing-mise.html>
+- Shell activation and login shims: <https://mise.jdx.dev/dev-tools/shims.html>
+- Node version files: <https://mise.jdx.dev/lang/node.html>
+- Global npm CLIs: <https://mise.jdx.dev/dev-tools/backends/npm.html>
+- Reading a Volta pin from mise configuration: <https://mise.jdx.dev/templates.html#read-structured>
 
 ### Optional Infra And Cloud Groups
 

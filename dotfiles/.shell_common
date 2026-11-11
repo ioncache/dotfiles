@@ -19,6 +19,11 @@ elif [ -n "$ZSH_VERSION" ]; then
 fi
 
 # enable Homebrew
+if [ "$OS" = Darwin ]; then
+  add_path_if_dir "/opt/homebrew/bin"
+fi
+add_path_if_dir "$HOME/.local/bin"
+
 if [ "$OS" = Darwin ] && [ -x "$(command -v brew)" ]; then
   eval "$(brew shellenv)"
 fi
@@ -145,19 +150,20 @@ fi
 # shellcheck disable=SC1090
 [ -f "$HOME/.fzf.${SHELL_NAME}" ] && source "$HOME/.fzf.${SHELL_NAME}"
 
-# non-system node
-if [ -d "$HOME/.volta" ]; then
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
-elif [ -d "$HOME/.nodenv/shims" ]; then
-  export PATH="$HOME/.nodenv/shims:$PATH"
-  eval "$(nodenv init -)"
-elif [ -d "$HOME"/n ]; then
-  export N_PREFIX="$HOME/n"
-  [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
-elif [ -d "$HOME/.nenv/bin" ]; then
-  export PATH="$HOME/.nenv/bin:$PATH"
-  eval "$(nenv init -)"
+if ! command -v mise >/dev/null 2>&1; then
+  if [ -d "${VOLTA_HOME:-$HOME/.volta}/bin" ]; then
+    export VOLTA_HOME="${VOLTA_HOME:-$HOME/.volta}"
+    export PATH="$VOLTA_HOME/bin:$PATH"
+  elif [ -d "$HOME/.nodenv/shims" ]; then
+    export PATH="$HOME/.nodenv/shims:$PATH"
+    eval "$(nodenv init -)"
+  elif [ -d "$HOME"/n ]; then
+    export N_PREFIX="$HOME/n"
+    [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"
+  elif [ -d "$HOME/.nenv/bin" ]; then
+    export PATH="$HOME/.nenv/bin:$PATH"
+    eval "$(nenv init -)"
+  fi
 fi
 
 export EDITOR=nvim
