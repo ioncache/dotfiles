@@ -1,5 +1,5 @@
 ---
-applyTo: "setup.sh,lib/**/*.sh,dotfiles/.bash_profile,dotfiles/.bashrc,dotfiles/.profile,dotfiles/.shell_common,dotfiles/.zshrc,dotfiles/.ohmyzshrc"
+applyTo: "setup.sh,lib/**/*.sh,dotfiles/.bash_profile,dotfiles/.bashrc,dotfiles/.profile,dotfiles/.shell_common,dotfiles/.zprofile,dotfiles/.zshrc,dotfiles/.ohmyzshrc"
 ---
 
 # Shell And Dotfiles Conventions
@@ -15,7 +15,7 @@ applyTo: "setup.sh,lib/**/*.sh,dotfiles/.bash_profile,dotfiles/.bashrc,dotfiles/
 
 - Run `npm run lint` after shell changes.
 - Use `bash -n` for bash-oriented files and `zsh -n` for zsh-specific files when narrowing failures.
-- Treat `.zshrc` and `.ohmyzshrc` as zsh-native surfaces; do not assume bash completion or bash-only behavior there.
+- Treat `.zprofile`, `.zshrc`, and `.ohmyzshrc` as zsh-native surfaces; do not assume bash completion or bash-only behavior there.
 
 ## Editing Guidelines
 

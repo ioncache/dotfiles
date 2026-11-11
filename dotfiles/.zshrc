@@ -17,6 +17,10 @@ fi
 source "$HOME/.ohmyzshrc"
 source "$HOME/.shell_common"
 
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
 autoload -Uz compinit
 compinit -i
 

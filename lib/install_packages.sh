@@ -117,6 +117,98 @@ install_optional_groups() {
   done
 }
 
+install_mise() {
+  if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+  fi
+  if [ "$OS" = Darwin ] && [ -d /opt/homebrew/bin ]; then
+    PATH="$PATH:/opt/homebrew/bin"
+  fi
+  export PATH
+
+  if command -v mise >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [ "$OS" = Darwin ] && command -v brew >/dev/null 2>&1; then
+    brew install mise || return
+  else
+    (set -o pipefail; curl -fsSL https://mise.run | sh) || return
+    PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  command -v mise >/dev/null 2>&1
+}
+
+default_node_version() {
+  local volta_command node_version
+
+  volta_command="${VOLTA_HOME:-$HOME/.volta}/bin/volta"
+  if [ ! -x "$volta_command" ]; then
+    volta_command="$(command -v volta)" || volta_command=
+  fi
+
+  if [ -n "$volta_command" ]; then
+    node_version="$("$volta_command" list --default --format plain node)" || return
+    node_version="$(printf '%s\n' "$node_version" | awk '$1 == "runtime" && $2 ~ /^node@/ { sub(/^node@/, "", $2); print $2; exit }')"
+  fi
+
+  printf '%s\n' "${node_version:-lts}"
+}
+
+install_global_mise_tool() {
+  local tool="$1"
+  local version=latest
+  local configured
+
+  configured="$(mise ls --global --current --no-header "$tool")" || return
+  if [ -n "$configured" ]; then
+    mise install "$tool"
+  else
+    if [ "$tool" = node ]; then
+      version="$(default_node_version)" || return
+    fi
+    mise use --global "$tool@$version"
+  fi
+}
+
+enable_node_version_files() {
+  local enabled_tools
+
+  enabled_tools="$(mise settings --json idiomatic_version_file_enable_tools)" || return
+  enabled_tools="$(printf '%s\n' "$enabled_tools" | jq -r 'if index("node") then empty else . + ["node"] | join(",") end')" || return
+
+  if [ -n "$enabled_tools" ]; then
+    mise settings set idiomatic_version_file_enable_tools "$enabled_tools"
+  fi
+}
+
+install_node_tools() (
+  local dep variable
+
+  printf "\tinstalling mise Node.js tools and global npm CLIs\n"
+  install_mise || return
+  # Session selections and home-directory project files must not become global defaults.
+  cd "$HOME" || return
+  MISE_CEILING_PATHS="$(pwd -P)" || return
+  export MISE_CEILING_PATHS
+  while IFS= read -r variable; do
+    case "$variable" in
+    MISE_*_VERSION | MISE_IDIOMATIC_VERSION_FILE_ENABLE_TOOLS)
+      unset "$variable" || return
+      ;;
+    esac
+  done < <(compgen -e)
+
+  install_global_mise_tool node || return
+  enable_node_version_files || return
+
+  load_package_file "$SCRIPT_DIR/packages/npm-global.txt"
+  for dep in "${PACKAGE_LIST[@]}"; do
+    install_global_mise_tool "npm:$dep" || return
+  done
+)
+
 deps() {
   echo
   echo '***** Installing Dependencies *****'
@@ -147,14 +239,6 @@ deps() {
         "$(brew --prefix)/opt/fzf/install" --all
       fi
     fi
-
-    printf "\tinstalling Volta nodejs tools and some global npm packages\n"
-    curl https://get.volta.sh | bash
-    VOLTA_HOME="$HOME/.volta"
-    PATH="$VOLTA_HOME/bin:$PATH"
-    volta install node
-    load_package_file "$SCRIPT_DIR/packages/npm-global.txt"
-    npm install --global "${PACKAGE_LIST[@]}"
   else
     load_package_file "$SCRIPT_DIR/packages/apt.txt"
 
@@ -188,6 +272,7 @@ deps() {
     # TODO: setup azure-cli, fd, scc
   fi
 
+  install_node_tools || return
   install_optional_groups "$@"
 
   if [ "$FORCE_UPGRADE" = 1 ] || [ ! -d ~/.oh-my-zsh ]; then
